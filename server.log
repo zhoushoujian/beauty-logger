@@ -1,0 +1,201 @@
+[2019-1-28 13:12:06.537]  [DEBUG]  this is string
+[2019-1-28 13:12:06.538]  [DEBUG]  0
+[2019-1-28 13:12:06.538]  [INFO]  false
+[2019-1-28 13:12:06.538]  [INFO]  null
+[2019-1-28 13:12:06.538]  [WARN]  2,7,1,5,6
+[2019-1-28 13:12:06.538]  [WARN]  {"g":1,"h":{"i":"undefined"}}
+[2019-1-28 13:12:06.538]  [ERROR]  undefined
+[2019-1-28 13:12:06.538]  [ERROR]  function (a, b) {
+	let sum = a + b;
+	return sum;
+}
+[2019-1-28 13:12:06.540]  [DEBUG]  这是双参数用例str  [ext] "this is string"
+[2019-1-28 13:12:06.540]  [DEBUG]  这是双参数用例num  [ext] 0
+[2019-1-28 13:12:06.540]  [INFO]  这是双参数用例bool  [ext] false
+[2019-1-28 13:12:06.540]  [INFO]  这是双参数用例null  [ext] null
+[2019-1-28 13:12:06.540]  [WARN]  这是双参数用例arr  [ext] [
+    {
+        "a": {
+            "e": {
+                "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+            }
+        },
+        "b": [
+            2,
+            7,
+            [
+                1,
+                5,
+                6
+            ]
+        ],
+        "c": {
+            "D": {
+                "g": 1,
+                "h": {
+                    "i": "undefined"
+                }
+            }
+        }
+    },
+    "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}",
+    [
+        2,
+        7,
+        [
+            1,
+            5,
+            6
+        ]
+    ]
+]
+[2019-1-28 13:12:06.551]  [WARN]  这是双参数用例obj  [ext] {
+    "a": {
+        "e": {
+            "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+        }
+    },
+    "b": [
+        2,
+        7,
+        [
+            1,
+            5,
+            6
+        ]
+    ],
+    "c": {
+        "D": {
+            "g": 1,
+            "h": {
+                "i": "undefined"
+            }
+        }
+    }
+}
+[2019-1-28 13:12:06.551]  [ERROR]  这是双参数用例undefined  [ext] 
+[2019-1-28 13:12:06.551]  [ERROR]  这是双参数用例func  [ext] "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+[2019-1-28 13:12:06.556]  [DEBUG]  这是四参数用例str  [ext] "this is string","this is string","this is string"
+[2019-1-28 13:12:06.556]  [DEBUG]  这是四参数用例num  [ext] 0,"this is number",0
+[2019-1-28 13:12:06.556]  [INFO]  这是四参数用例bool  [ext] false,"this is bool",false
+[2019-1-28 13:12:06.597]  [INFO]  这是四参数用例null  [ext] null,"this is null",null
+[2019-1-28 13:12:06.600]  [WARN]  这是四参数用例arr  [ext] [
+    {
+        "a": {
+            "e": {
+                "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+            }
+        },
+        "b": [
+            2,
+            7,
+            [
+                1,
+                5,
+                6
+            ]
+        ],
+        "c": {
+            "D": {
+                "g": 1,
+                "h": {
+                    "i": "undefined"
+                }
+            }
+        }
+    },
+    "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}",
+    [
+        2,
+        7,
+        [
+            1,
+            5,
+            6
+        ]
+    ]
+],"this is array",[
+    {
+        "a": {
+            "e": {
+                "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+            }
+        },
+        "b": [
+            2,
+            7,
+            [
+                1,
+                5,
+                6
+            ]
+        ],
+        "c": {
+            "D": {
+                "g": 1,
+                "h": {
+                    "i": "undefined"
+                }
+            }
+        }
+    },
+    "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}",
+    [
+        2,
+        7,
+        [
+            1,
+            5,
+            6
+        ]
+    ]
+]
+[2019-1-28 13:12:06.600]  [WARN]  这是四参数用例obj  [ext] {
+    "a": {
+        "e": {
+            "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+        }
+    },
+    "b": [
+        2,
+        7,
+        [
+            1,
+            5,
+            6
+        ]
+    ],
+    "c": {
+        "D": {
+            "g": 1,
+            "h": {
+                "i": "undefined"
+            }
+        }
+    }
+},"this is obj",{
+    "a": {
+        "e": {
+            "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+        }
+    },
+    "b": [
+        2,
+        7,
+        [
+            1,
+            5,
+            6
+        ]
+    ],
+    "c": {
+        "D": {
+            "g": 1,
+            "h": {
+                "i": "undefined"
+            }
+        }
+    }
+}
+[2019-1-28 13:12:06.600]  [ERROR]  这是四参数用例undefined  [ext] ,"this is undefined",
+[2019-1-28 13:12:06.600]  [ERROR]  这是四参数用例func  [ext] "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}","this is no args function","function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
