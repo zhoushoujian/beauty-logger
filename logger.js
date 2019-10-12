@@ -29,7 +29,11 @@ let fs = require('fs'),
                             var p = v[i];
                             v[i] = p instanceof Function ? String(p) : p instanceof Error ? (v.stack || v.toString()) : p;
                         }
-                        return v;
+                        if(JSON.stringify(v) === "{}"){
+                            return (`${v.toString()} => {}`)
+                        } else {
+                            return v;
+                        }
                     }
                 }, 4)
             });
@@ -158,7 +162,11 @@ function loggerInFile(level, data, ...args) {
                     var v = o[k];
                     o[k] = v instanceof Function ? String(v) : v instanceof Error ? (v.stack || v.toString()) : v;
                 }
-                return o;
+                if(JSON.stringify(o) === "{}"){
+                    return (`${o.toString()} => {}`)
+                } else {
+                    return o;
+                }
             }
         }, 4));
         if (extend) {
