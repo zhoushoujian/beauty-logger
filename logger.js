@@ -30,6 +30,7 @@ let fs = require('fs'),
                             v[i] = p instanceof Function ? String(p) : p instanceof Error ? (v.stack || v.toString()) : p;
                         }
                         if(JSON.stringify(v) === "{}"){
+                            console.warn(v)
                             return (`${v.toString()} => {}`)
                         } else {
                             return v;
@@ -163,6 +164,7 @@ function loggerInFile(level, data, ...args) {
                     o[k] = v instanceof Function ? String(v) : v instanceof Error ? (v.stack || v.toString()) : v;
                 }
                 if(JSON.stringify(o) === "{}"){
+                    console.warn(o)
                     return (`${o.toString()} => {}`)
                 } else {
                     return o;
