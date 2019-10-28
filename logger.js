@@ -111,7 +111,7 @@ function checkFileState() {
 function checkFileSize(size) {
     return new Promise((resolve) => {
         if (size > LOG_FILE_MAX_SIZE) {
-            fs.readdir("/", (err, files) => {
+            fs.readdir(path.join(__dirname) + "/", (err, files) => {
                 if (err) throw err;
                 let fileList = files.filter(function (file) {
                     return /^server[0-9]*\.log$/i.test(file);
@@ -119,10 +119,10 @@ function checkFileSize(size) {
 
                 for (let i = fileList.length; i > 0; i--) {
                     if (i >= 10) {
-                        fs.unlinkSync("/" + fileList[i - 1]);
+                        fs.unlinkSync(path.join(__dirname) + "/"  + fileList[i - 1]);
                         continue;
                     }
-                    fs.renameSync("/" + fileList[i - 1], "server" + i + ".log");
+                    fs.renameSync(path.join(__dirname) + "/"  + fileList[i - 1], "server" + i + ".log");
                     resolve();
                 }
             });
