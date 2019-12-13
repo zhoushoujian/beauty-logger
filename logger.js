@@ -25,9 +25,13 @@ let fs = require('fs'),
                     } else if (Object.prototype.toString.call(v) === '[object Error]'){
                         return v.stack || v.toString()
                     } else {
-                        for (var i in v) {
-                            var p = v[i];
-                            v[i] = p instanceof Function ? String(p) : p instanceof Error ? (v.stack || v.toString()) : p;
+                        try {
+                            for (var i in v) {
+                                var p = v[i];
+                                v[i] = p instanceof Function ? String(p) : p instanceof Error ? (v.stack || v.toString()) : p;
+                            }
+                        } catch (err){
+                            console.log("logger err", err)
                         }
                         if(JSON.stringify(v) === "{}"){
                             console.warn(v)
@@ -159,9 +163,13 @@ function loggerInFile(level, data, ...args) {
             } else if (Object.prototype.toString.call(v) === '[object Error]'){
                 return v.stack || v.toString()
             } else {
-                for (var k in o) {
-                    var v = o[k];
-                    o[k] = v instanceof Function ? String(v) : v instanceof Error ? (v.stack || v.toString()) : v;
+                try {
+                    for (var k in o) {
+                        var v = o[k];
+                        o[k] = v instanceof Function ? String(v) : v instanceof Error ? (v.stack || v.toString()) : v;
+                    }
+                } catch(err){
+                    console.log("loggerInFile err", err)
                 }
                 if(JSON.stringify(o) === "{}"){
                     console.warn(o)
