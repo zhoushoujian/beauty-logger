@@ -30,14 +30,15 @@ let fs = require('fs'),
                                 var p = v[i];
                                 v[i] = p instanceof Function ? String(p) : p instanceof Error ? (v.stack || v.toString()) : p;
                             }
+                            if(JSON.stringify(v) === "{}"){
+                                console.warn(v)
+                                return (`${v.toString()} => {}`)
+                            } else {
+                                return v;
+                            }
                         } catch (err){
                             console.log("logger err", err)
-                        }
-                        if(JSON.stringify(v) === "{}"){
-                            console.warn(v)
-                            return (`${v.toString()} => {}`)
-                        } else {
-                            return v;
+                            return {}
                         }
                     }
                 }, 4)
@@ -168,14 +169,15 @@ function loggerInFile(level, data, ...args) {
                         var v = o[k];
                         o[k] = v instanceof Function ? String(v) : v instanceof Error ? (v.stack || v.toString()) : v;
                     }
+                    if(JSON.stringify(o) === "{}"){
+                        console.warn(o)
+                        return (`${o.toString()} => {}`)
+                    } else {
+                        return o;
+                    }
                 } catch(err){
                     console.log("loggerInFile err", err)
-                }
-                if(JSON.stringify(o) === "{}"){
-                    console.warn(o)
-                    return (`${o.toString()} => {}`)
-                } else {
-                    return o;
+                    return {}
                 }
             }
         }, 4));
