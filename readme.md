@@ -1,13 +1,35 @@
-#console and log print system
+# light-logger
+A light logger system for both nodejs and browser
 
-````console````
-after requiring this package,when you use 'console.info' or 'console.debug' or 'console.warn' or 'console,error' in your project,the console could display as follows:
-It contains printing time,log level and log info.Besides,special color with log level is necessary.
+# Usage
+```shell
+const path = require("path")  
+const LightLogger = require("light-logger");  
+const logger = new LightLogger({  
+	logFileSize: 1024 * 1024 * 5,  
+	logFilePath: path.join(__dirname + "/server.log")  
+})  
+logger.info("logger", "string")  // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] string
+```
 
-````log print system````
-after required this,when you use 'logger.debug' or 'logger.info' or 'logger.warn' or 'console.error',the console shows the same style like the front introduction.Addition,the system will print the log to file which named server.log in current dirctory.And the content of server.log will be the same as what showing in console.
+# Test
+```shell
+npm run test  
+```
 
-````others````
-The test file is in current directory named logger_test,you can type 'node logger_test' which provides three types of case in current directory to check the correctness of function.
-If you have any problem with the package,conact me with issue in github at any time.
-Wish you like it,best wishes!
+# Functions
+1. Support user define the slice of log file size and log file path.  
+2. Only modify the prototype of console.debug, console.info, console.warn and console.error.  
+3. Only logger.debug doesn't log to file, all if them can be print in console.  
+4. Only identify 999 levels in input value which contains object or array.  
+5. Data type includes Number, String, Undefined, Null, Boolean, Object, Array, Function, Error and Symbol can be support stringify.  
+6. Support to print part of req and res in nodejs  
+
+# Preview pictures
+![log_example_1](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_example_1.png)  
+![log_example_2](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_example_2.png)  
+![log_req](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_req.png)  
+![log_res](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_res.png)  
+
+# License
+[The MIT License (MIT)](https://github.com/zhoushoujian/light-logger/blob/master/LICENSE)  

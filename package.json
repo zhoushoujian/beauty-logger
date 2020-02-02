@@ -1,0 +1,12 @@
+{
+	"name": "light-logger",
+	"version": "0.0.1",
+	"private": false,
+	"devDependencies": {},
+	"scripts": {
+		"test": "node light-logger_test.js "
+	},
+	"dependencies": {
+		"deepcopy": "^2.0.0"
+	}
+}
