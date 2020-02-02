@@ -32,4 +32,4 @@ npm run test
 ![log_res](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_res.png)  
 
 # License
-[The MIT License (MIT)](https://github.com/zhoushoujian/light-logger/blob/master/LICENSE)  
+[MIT](https://github.com/zhoushoujian/light-logger/blob/master/LICENSE)  
