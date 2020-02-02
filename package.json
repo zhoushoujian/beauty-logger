@@ -2,6 +2,8 @@
 	"name": "light-logger",
 	"version": "0.0.1",
 	"private": false,
+	"author": "zhoushoujian",
+	"license": "MIT",
 	"devDependencies": {},
 	"scripts": {
 		"test": "node light-logger_test.js "
