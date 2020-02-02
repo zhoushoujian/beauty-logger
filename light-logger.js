@@ -1,7 +1,7 @@
 //made by zhoushoujian on 2018/12/13
 const fs = require('fs')
 ,    path = require('path')
-,    deepcopy = require('deepcopy')
+,    deepcopy = require('./deepcopy')
 ,    list = []
 ,    LOGGER_LEVEL = ["debug", "info", "warn", "error"]
 
@@ -37,7 +37,7 @@ function dealWithItems(item){
             return formatDataType(value)
         }, 4)
     } catch (err){
-        return Object.prototype.toString.call(dist)
+        return Object.prototype.toString.call(item)
     }
 }
 
