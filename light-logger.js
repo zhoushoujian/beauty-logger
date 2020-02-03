@@ -19,29 +19,29 @@ let loopTimes = 0
         FgYellow: "\x1b[33m",
         FgBlue: "\x1b[34m"
     };
-    "debug:debug:FgBlue,info::FgGreen,warn:警告:FgYellow,error:error:FgRed".split(",").forEach(function (logColor) {
+    "debug:debug:FgBlue,info::FgGreen,warn:warn:FgYellow,error:error:FgRed".split(",").forEach(function (logColor) {
         const [log, info, color] = logColor.split(':');
         const logger = function (...args) {
             loopTimes = 0
-            const content = args.slice(1, args.length - 1).map(item => dealWithItems(item));
+            const content = args.slice(1, args.length - 1).map(item => dealWithItems(item, false));
             console.log(args[0] + content + args[args.length - 1])
         }
         console[log] = (...args) => logger.apply(null, [`${colors[color]}[${getTime()}] [${info.toUpperCase()||log.toUpperCase()}]${colors.Reset} `, ...args, colors.Reset]);
     });
 }
 
-function dealWithItems(item){
+function dealWithItems(item, noWarn){
     try{
         const dist = deepcopy(item);
         return JSON.stringify(dist, function(key, value){
-            return formatDataType(value)
+            return formatDataType(value, noWarn)
         }, 4)
     } catch (err){
         return Object.prototype.toString.call(item)
     }
 }
 
-function formatDataType(value){
+function formatDataType(value, noWarn){
     loopTimes++
     let formatedOnes = ""
     try {
@@ -59,21 +59,13 @@ function formatDataType(value){
                 for (let i in value) {
                     try {
                         if(value.hasOwnProperty && value.hasOwnProperty(i)){
-                            try {
-                                if(loopTimes > 999) {
-                                    value[i] = Object.prototype.toString.call(value[i])
-                                } else {
-                                    value[i] = formatDataType(value[i])
-                                }
-                            } catch(err){
-                                value[i] = valueType
+                            if(loopTimes > 999) {
+                                value[i] = Object.prototype.toString.call(value[i])
+                            } else {
+                                value[i] = formatDataType(value[i], noWarn)
                             }
                         } else {
-                            try {
-                                value[i] = Object.prototype.toString.call(value[i])
-                            } catch(err){
-                                value[i] = valueType
-                            }
+                            value[i] = Object.prototype.toString.call(value[i])
                         }
                     } catch (err){
                         value[i] = valueType
@@ -82,24 +74,33 @@ function formatDataType(value){
                 formatedOnes = value
                 break;
             case '[object Function]':
-                try {
-                    formatedOnes = Function.prototype.toString.call(value)
-                } catch (err){
-                    formatedOnes = valueType
-                }
+				if(noWarn) console.warn("we don't recommend to print function directly")
+                formatedOnes = Function.prototype.toString.call(value)
                 break;
             case '[object Error]':
                 formatedOnes = value.stack || value.toString()
                 break;
             case '[object Symbol]':
+				if(noWarn) console.warn("we don't recommend to print Symbol directly")
                 formatedOnes = value.toString()
+				break;
+			case '[object Set]':
+				if(noWarn) console.warn("we don't recommend to print Set directly")
+				formatedOnes = [...value]
+				break;
+			case '[object Map]':
+				if(noWarn) console.warn("we don't recommend to print Map directly")
+				const obj = {}
+				for (let [key, item] of value) {
+					obj[key] = item
+				}
+                formatedOnes = obj
                 break;
             default:
                 formatedOnes = Object.prototype.toString.call(value)
                 break;
         }
     } catch (err) {
-        console.log("formatDataType err", err)
         formatedOnes = {}
     }
     return formatedOnes
@@ -222,11 +223,11 @@ function loggerInFile(level, data, ...args) {
     loopTimes = 0
     let dist = deepcopy(data);
     dist = JSON.stringify(dist, function(key, value){
-        return formatDataType(value)
+        return formatDataType(value, true)
     }, 4)
     let extend = [];
     if (args.length) {
-		extend = args.map(item => dealWithItems(item));
+		extend = args.map(item => dealWithItems(item, true));
         if (extend.length) {
             extend = `  [ext] ${extend.join("")}`;
         }

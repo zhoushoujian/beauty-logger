@@ -9,7 +9,7 @@ const str = "this is string";
 const num = 0;
 const bool = false;
 const empty = null;
-const undefine = undefined;
+const undefined1 = undefined;
 const func = function (a, b) {
 	let sum = a + b;
 	return sum;
@@ -35,8 +35,11 @@ const obj = {
 };
 const arr = [obj, func, arr2];
 const fun = obj.a.e.f(1,2)
+const symbol = Symbol('symbol')
+const set = new Set(arr2)
+const map = new Map([['title','hello world'],['year','2020']]);
 
-//单参数用例
+//single parameter test case
 {
 	logger.debug(str);
 	logger.debug(num);
@@ -44,44 +47,50 @@ const fun = obj.a.e.f(1,2)
 	logger.info(empty);
 	logger.warn(arr);
 	logger.warn(obj);
-	logger.error(undefine);
+	logger.error(undefined1);
 	logger.error(func);
 	logger.info(fun)
+	logger.info(symbol)
+	logger.info(set)
+	logger.info(map)
 
-	console.log("\r\n\r\n------------------这是一道神奇的分割线-------------------------");
-	// 下面的不会打印到日志文件
+	console.log("\r\n\r\n------------------Amazing line-------------------------");
+	// these can't be print to log file
 	console.debug(str);
 	console.debug(num);
 	console.info(bool);
 	console.info(empty);
 	console.warn(arr);
 	console.warn(obj);
-	console.error(undefine);
+	console.error(undefined1);
 	console.error(func);
 }
 
 
-//双参数用例
+//double parameter test case
 {
-	console.log("*********************双参数用例***************************************");
-	logger.debug("这是双参数用例str", str);
-	logger.debug("这是双参数用例num", num);
-	logger.info("这是双参数用例bool", bool);
-	logger.info("这是双参数用例null", empty);
-	logger.warn("这是双参数用例arr", arr);
-	logger.warn("这是双参数用例obj", obj);
-	logger.error("这是双参数用例undefined", undefine);
-	logger.error("这是双参数用例func", func);
+	console.log("*********************Double parameter test case***************************************");
+	logger.debug("str", str);
+	logger.debug("num", num);
+	logger.info("bool", bool);
+	logger.info("null", empty);
+	logger.warn("arr", arr);
+	logger.warn("obj", obj);
+	logger.error("undefined", undefined1);
+	logger.error("func", func);
 	logger.info("fun", fun)
+	logger.info("symbol", symbol)
+	logger.info("set", set)
+	logger.info("map", map)
 
-	console.log("\r\n\r\n------------------这是一道神奇的分割线-------------------------");
-	// 下面的不会打印到日志文件
-	console.debug("这是双参数用例", str);
-	console.debug("这是双参数用例", num);
-	console.info("这是双参数用例", bool);
-	console.info("这是双参数用例", empty);
-	console.warn("这是双参数用例", arr);
-	console.warn("这是双参数用例", obj);
-	console.error("这是双参数用例", undefine);
-	console.error("这是双参数用例", func);
+	console.log("\r\n\r\n------------------Amazing line-------------------------");
+	// these can't be print to log file
+	console.debug("str", str);
+	console.debug("num", num);
+	console.info("bool", bool);
+	console.info("empty", empty);
+	console.warn("arr", arr);
+	console.warn("obj", obj);
+	console.error("undefined", undefined1);
+	console.error("func", func);
 }

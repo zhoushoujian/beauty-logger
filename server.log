@@ -1,8 +1,6 @@
-[2020-2-2 22:13:54.549]  [DEBUG]  "this is string"
-[2020-2-2 22:13:54.551]  [DEBUG]  0
-[2020-2-2 22:13:54.551]  [INFO]  false
-[2020-2-2 22:13:54.551]  [INFO]  null
-[2020-2-2 22:13:54.553]  [WARN]  [
+[2020-2-3 12:53:03.661]  [INFO]  false
+[2020-2-3 12:53:03.662]  [INFO]  null
+[2020-2-3 12:53:03.667]  [WARN]  [
     {
         "a": {
             "e": {
@@ -38,7 +36,7 @@
         ]
     ]
 ]
-[2020-2-2 22:13:54.554]  [WARN]  {
+[2020-2-3 12:53:03.668]  [WARN]  {
     "a": {
         "e": {
             "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
@@ -62,14 +60,26 @@
         }
     }
 }
-[2020-2-2 22:13:54.555]  [ERROR]  undefined
-[2020-2-2 22:13:54.555]  [ERROR]  "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
-[2020-2-2 22:13:54.555]  [INFO]  3
-[2020-2-2 22:13:54.559]  [DEBUG]  "这是双参数用例str"  [ext] "this is string"
-[2020-2-2 22:13:54.559]  [DEBUG]  "这是双参数用例num"  [ext] 0
-[2020-2-2 22:13:54.559]  [INFO]  "这是双参数用例bool"  [ext] false
-[2020-2-2 22:13:54.560]  [INFO]  "这是双参数用例null"  [ext] null
-[2020-2-2 22:13:54.560]  [WARN]  "这是双参数用例arr"  [ext] [
+[2020-2-3 12:53:03.668]  [ERROR]  undefined
+[2020-2-3 12:53:03.669]  [ERROR]  "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+[2020-2-3 12:53:03.669]  [INFO]  3
+[2020-2-3 12:53:03.670]  [INFO]  "Symbol(symbol)"
+[2020-2-3 12:53:03.671]  [INFO]  [
+    2,
+    7,
+    [
+        1,
+        5,
+        6
+    ]
+]
+[2020-2-3 12:53:03.673]  [INFO]  {
+    "title": "hello world",
+    "year": "2020"
+}
+[2020-2-3 12:53:03.679]  [INFO]  "bool"  [ext] false
+[2020-2-3 12:53:03.679]  [INFO]  "null"  [ext] null
+[2020-2-3 12:53:03.681]  [WARN]  "arr"  [ext] [
     {
         "a": {
             "e": {
@@ -105,7 +115,7 @@
         ]
     ]
 ]
-[2020-2-2 22:13:54.561]  [WARN]  "这是双参数用例obj"  [ext] {
+[2020-2-3 12:53:03.683]  [WARN]  "obj"  [ext] {
     "a": {
         "e": {
             "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
@@ -129,6 +139,20 @@
         }
     }
 }
-[2020-2-2 22:13:54.561]  [ERROR]  "这是双参数用例undefined"  [ext] 
-[2020-2-2 22:13:54.562]  [ERROR]  "这是双参数用例func"  [ext] "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
-[2020-2-2 22:13:54.562]  [INFO]  "fun"  [ext] 3
+[2020-2-3 12:53:03.684]  [ERROR]  "undefined"  [ext] 
+[2020-2-3 12:53:03.685]  [ERROR]  "func"  [ext] "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+[2020-2-3 12:53:03.685]  [INFO]  "fun"  [ext] 3
+[2020-2-3 12:53:03.686]  [INFO]  "symbol"  [ext] "Symbol(symbol)"
+[2020-2-3 12:53:03.687]  [INFO]  "set"  [ext] [
+    2,
+    7,
+    [
+        1,
+        5,
+        6
+    ]
+]
+[2020-2-3 12:53:03.688]  [INFO]  "map"  [ext] {
+    "title": "hello world",
+    "year": "2020"
+}
