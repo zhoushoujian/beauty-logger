@@ -213,7 +213,7 @@ function InitLogger(config) {
 		LOG_FILE_MAX_SIZE = (typeof(userConfig.logFileSize) === 'number' ? userConfig.logFileSize : 1024 * 1024 * 10)
 		LOG_PATH = (typeof(userConfig.logFilePath) === 'string' ? userConfig.logFilePath : path.join(__dirname, "./server.log"))
 	} else {
-		throw new Error("light-logger config must be an object")
+		throw new Error("beauty-logger config must be an object")
 	}
 }
 

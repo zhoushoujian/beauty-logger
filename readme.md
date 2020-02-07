@@ -1,10 +1,10 @@
-# light-logger
+# beauty-logger
 A light logger system for both nodejs and browser
 
 # Usage
 ```shell
 const path = require("path")  
-const LightLogger = require("light-logger");  
+const LightLogger = require("beauty-logger");  
 const logger = new LightLogger({  
 	logFileSize: 1024 * 1024 * 5,  
 	logFilePath: path.join(__dirname + "/server.log")  
@@ -27,10 +27,10 @@ npm run test
 7. Although we support print Function, Set, Map and Symbol directly, we still don't recommend to print it without any transfer, and it will give a warn to remind you.  
 
 # Preview pictures
-![log_example_1](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_example_1.png)  
-![log_example_2](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_example_2.png)  
-![log_req](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_req.png)  
-![log_res](https://github.com/zhoushoujian/light-logger/blob/master/docs/log_res.png)  
+![log_example_1](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_1.png)  
+![log_example_2](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_2.png)  
+![log_req](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_req.png)  
+![log_res](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_res.png)  
 
 # License
-[MIT](https://github.com/zhoushoujian/light-logger/blob/master/LICENSE)  
+[MIT](https://github.com/zhoushoujian/beauty-logger/blob/master/LICENSE)  

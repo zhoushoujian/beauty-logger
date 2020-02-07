@@ -1,6 +1,6 @@
-[2020-2-3 12:53:03.661]  [INFO]  false
-[2020-2-3 12:53:03.662]  [INFO]  null
-[2020-2-3 12:53:03.667]  [WARN]  [
+[2020-2-7 14:53:49.304]  [INFO]  false
+[2020-2-7 14:53:49.307]  [INFO]  null
+[2020-2-7 14:53:49.333]  [WARN]  [
     {
         "a": {
             "e": {
@@ -36,7 +36,7 @@
         ]
     ]
 ]
-[2020-2-3 12:53:03.668]  [WARN]  {
+[2020-2-7 14:53:49.345]  [WARN]  {
     "a": {
         "e": {
             "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
@@ -60,11 +60,11 @@
         }
     }
 }
-[2020-2-3 12:53:03.668]  [ERROR]  undefined
-[2020-2-3 12:53:03.669]  [ERROR]  "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
-[2020-2-3 12:53:03.669]  [INFO]  3
-[2020-2-3 12:53:03.670]  [INFO]  "Symbol(symbol)"
-[2020-2-3 12:53:03.671]  [INFO]  [
+[2020-2-7 14:53:49.346]  [ERROR]  undefined
+[2020-2-7 14:53:49.346]  [ERROR]  "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+[2020-2-7 14:53:49.347]  [INFO]  3
+[2020-2-7 14:53:49.348]  [INFO]  "Symbol(symbol)"
+[2020-2-7 14:53:49.351]  [INFO]  [
     2,
     7,
     [
@@ -73,13 +73,13 @@
         6
     ]
 ]
-[2020-2-3 12:53:03.673]  [INFO]  {
+[2020-2-7 14:53:49.354]  [INFO]  {
     "title": "hello world",
     "year": "2020"
 }
-[2020-2-3 12:53:03.679]  [INFO]  "bool"  [ext] false
-[2020-2-3 12:53:03.679]  [INFO]  "null"  [ext] null
-[2020-2-3 12:53:03.681]  [WARN]  "arr"  [ext] [
+[2020-2-7 14:53:49.423]  [INFO]  "bool"  [ext] false
+[2020-2-7 14:53:49.434]  [INFO]  "null"  [ext] null
+[2020-2-7 14:53:49.514]  [WARN]  "arr"  [ext] [
     {
         "a": {
             "e": {
@@ -115,7 +115,7 @@
         ]
     ]
 ]
-[2020-2-3 12:53:03.683]  [WARN]  "obj"  [ext] {
+[2020-2-7 14:53:49.532]  [WARN]  "obj"  [ext] {
     "a": {
         "e": {
             "f": "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
@@ -139,11 +139,11 @@
         }
     }
 }
-[2020-2-3 12:53:03.684]  [ERROR]  "undefined"  [ext] 
-[2020-2-3 12:53:03.685]  [ERROR]  "func"  [ext] "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
-[2020-2-3 12:53:03.685]  [INFO]  "fun"  [ext] 3
-[2020-2-3 12:53:03.686]  [INFO]  "symbol"  [ext] "Symbol(symbol)"
-[2020-2-3 12:53:03.687]  [INFO]  "set"  [ext] [
+[2020-2-7 14:53:49.533]  [ERROR]  "undefined"  [ext] 
+[2020-2-7 14:53:49.535]  [ERROR]  "func"  [ext] "function (a, b) {\r\n\tlet sum = a + b;\r\n\treturn sum;\r\n}"
+[2020-2-7 14:53:49.537]  [INFO]  "fun"  [ext] 3
+[2020-2-7 14:53:49.548]  [INFO]  "symbol"  [ext] "Symbol(symbol)"
+[2020-2-7 14:53:49.551]  [INFO]  "set"  [ext] [
     2,
     7,
     [
@@ -152,7 +152,7 @@
         6
     ]
 ]
-[2020-2-3 12:53:03.688]  [INFO]  "map"  [ext] {
+[2020-2-7 14:53:49.566]  [INFO]  "map"  [ext] {
     "title": "hello world",
     "year": "2020"
 }

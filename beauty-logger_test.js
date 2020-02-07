@@ -1,5 +1,5 @@
 const path = require("path")
-const LightLogger = require("./light-logger");
+const LightLogger = require("./beauty-logger");
 const logger = new LightLogger({
 	logFileSize: 1024 * 1024 * 5,
 	logFilePath: path.join(__dirname + "/server.log")

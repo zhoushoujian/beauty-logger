@@ -1,13 +1,13 @@
 {
-	"name": "light-logger",
+	"name": "beauty-logger",
 	"version": "0.0.1",
 	"private": false,
 	"author": "zhoushoujian",
 	"license": "MIT",
-	"main": "light-logger.js",
+	"main": "beauty-logger.js",
 	"devDependencies": {},
 	"scripts": {
-		"test": "node light-logger_test.js "
+		"test": "node beauty-logger_test.js "
 	},
 	"dependencies": {}
 }
