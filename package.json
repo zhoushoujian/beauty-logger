@@ -9,6 +9,5 @@
 	"scripts": {
 		"test": "node light-logger_test.js "
 	},
-	"dependencies": {},
-	"publishConfig": { "registry": "https://npm.pkg.github.com/" }
+	"dependencies": {}
 }
