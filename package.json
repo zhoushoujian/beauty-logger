@@ -1,13 +1,25 @@
 {
 	"name": "beauty-logger",
-	"version": "0.0.1",
-	"private": false,
-	"author": "zhoushoujian",
+	"version": "0.0.2",
+	"author": {
+		"name": "Shoujian Zhou",
+		"email": "qianchengyimeng@qq.com"
+	},
 	"license": "MIT",
 	"main": "beauty-logger.js",
+	"bugs": {
+		"url": "https://github.com/zhoushoujian/beauty-logger/issues"
+	},
+	"description": "A light logger system for both nodejs and browser.",
 	"devDependencies": {},
 	"scripts": {
 		"test": "node beauty-logger_test.js "
 	},
-	"dependencies": {}
+	"dependencies": {},
+	"homepage": "https://github.com/zhoushoujian/beauty-logger",
+  	"repository": {
+  	  "type": "git",
+  	  "url": "https://github.com/zhoushoujian/beauty-logger"
+  	}
+
 }

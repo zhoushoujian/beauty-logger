@@ -1,4 +1,3 @@
-//made by zhoushoujian on 2018/12/13
 const fs = require('fs')
 ,    path = require('path')
 ,    deepcopy = require('./deepcopy')
@@ -9,6 +8,7 @@ let loopTimes = 0
 , 	userConfig = {}
 ,	LOG_FILE_MAX_SIZE = 1024 * 1024 * 10
 ,   LOG_PATH = path.join(__dirname, "./server.log")
+,   ENABLE_DATA_TYPE_WARN = false
 
 //自定义控制台颜色输出
 {
@@ -30,18 +30,18 @@ let loopTimes = 0
     });
 }
 
-function dealWithItems(item, noWarn){
+function dealWithItems(item, needWarn){
     try{
         const dist = deepcopy(item);
         return JSON.stringify(dist, function(key, value){
-            return formatDataType(value, noWarn)
+            return formatDataType(value, needWarn)
         }, 4)
     } catch (err){
         return Object.prototype.toString.call(item)
     }
 }
 
-function formatDataType(value, noWarn){
+function formatDataType(value, needWarn){
     loopTimes++
     let formatedOnes = ""
     try {
@@ -62,7 +62,7 @@ function formatDataType(value, noWarn){
                             if(loopTimes > 999) {
                                 value[i] = Object.prototype.toString.call(value[i])
                             } else {
-                                value[i] = formatDataType(value[i], noWarn)
+                                value[i] = formatDataType(value[i], needWarn)
                             }
                         } else {
                             value[i] = Object.prototype.toString.call(value[i])
@@ -74,22 +74,22 @@ function formatDataType(value, noWarn){
                 formatedOnes = value
                 break;
             case '[object Function]':
-				if(noWarn) console.warn("we don't recommend to print function directly")
+				if(needWarn) console.warn("we don't recommend to print function directly")
                 formatedOnes = Function.prototype.toString.call(value)
                 break;
             case '[object Error]':
                 formatedOnes = value.stack || value.toString()
                 break;
             case '[object Symbol]':
-				if(noWarn) console.warn("we don't recommend to print Symbol directly")
+				if(needWarn) console.warn("we don't recommend to print Symbol directly")
                 formatedOnes = value.toString()
 				break;
 			case '[object Set]':
-				if(noWarn) console.warn("we don't recommend to print Set directly")
+				if(needWarn) console.warn("we don't recommend to print Set directly")
 				formatedOnes = [...value]
 				break;
 			case '[object Map]':
-				if(noWarn) console.warn("we don't recommend to print Map directly")
+				if(needWarn) console.warn("we don't recommend to print Map directly")
 				const obj = {}
 				for (let [key, item] of value) {
 					obj[key] = item
@@ -211,7 +211,8 @@ function InitLogger(config) {
 	if(config === undefined || Object.prototype.toString.call(config) === '[object Object]'){
 		userConfig = (config || {})
 		LOG_FILE_MAX_SIZE = (typeof(userConfig.logFileSize) === 'number' ? userConfig.logFileSize : 1024 * 1024 * 10)
-		LOG_PATH = (typeof(userConfig.logFilePath) === 'string' ? userConfig.logFilePath : path.join(__dirname, "./server.log"))
+        LOG_PATH = (typeof(userConfig.logFilePath) === 'string' ? userConfig.logFilePath : path.join(__dirname, "./server.log"))
+        ENABLE_DATA_TYPE_WARN = (typeof(userConfig.dataTypeWarn) === 'boolean' ? userConfig.dataTypeWarn : false)
 	} else {
 		throw new Error("beauty-logger config must be an object")
 	}
@@ -223,11 +224,11 @@ function loggerInFile(level, data, ...args) {
     loopTimes = 0
     let dist = deepcopy(data);
     dist = JSON.stringify(dist, function(key, value){
-        return formatDataType(value, true)
+        return formatDataType(value, ENABLE_DATA_TYPE_WARN)
     }, 4)
     let extend = [];
     if (args.length) {
-		extend = args.map(item => dealWithItems(item, true));
+		extend = args.map(item => dealWithItems(item, ENABLE_DATA_TYPE_WARN));
         if (extend.length) {
             extend = `  [ext] ${extend.join("")}`;
         }
