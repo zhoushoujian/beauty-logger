@@ -28,10 +28,10 @@ npm run test
 7. Although we support print Function, Set, Map and Symbol directly, we still don't recommend to print it without any transfer, and it will give a warn to remind you if you set dataTypeWarn to be true.  
 
 # Preview pictures
-[![log_example_1]](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_1.png)  
-[![log_example_2]](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_2.png)  
-[![log_req]](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_req.png)  
-[![log_res]](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_res.png)  
+[![log_example_1](https://www.zhoushoujian.com/beauty-logger/log_example_2.png)](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_1.png)  
+[![log_example_2](https://www.zhoushoujian.com/beauty-logger/log_example_2.png)](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_2.png)  
+[![log_req](https://www.zhoushoujian.com/beauty-logger/log_req.png)](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_req.png)  
+[![log_res](https://www.zhoushoujian.com/beauty-logger/log_res.png)](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_res.png)  
 
 # License
 [MIT](https://github.com/zhoushoujian/beauty-logger/blob/master/LICENSE)  
