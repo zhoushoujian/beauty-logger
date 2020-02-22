@@ -1,6 +1,6 @@
 {
 	"name": "beauty-logger",
-	"version": "0.0.2",
+	"version": "0.0.6",
 	"author": {
 		"name": "Shoujian Zhou",
 		"email": "qianchengyimeng@qq.com"
@@ -20,6 +20,12 @@
   	"repository": {
   	  "type": "git",
   	  "url": "https://github.com/zhoushoujian/beauty-logger"
-  	}
-
+	  },
+	  "keywords": [
+		"logger",
+		"beauty-logger",
+		"browser",
+		"nodejs",
+		"stringify"
+	  ]
 }
