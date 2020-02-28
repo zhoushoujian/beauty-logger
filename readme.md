@@ -4,8 +4,8 @@ A beautiful logger system for both nodejs and browser
 # Usage
 ```shell
 const path = require("path")  
-const LightLogger = require("beauty-logger");  
-const logger = new LightLogger({  
+const Logger = require("beauty-logger");  
+const logger = new Logger({  
 	logFileSize: 1024 * 1024 * 5,  //default: 10MB 
 	logFilePath: path.join(__dirname + "/server.log")  , //default: server.log in current folder 
 	dataTypeWarn: true //default: false

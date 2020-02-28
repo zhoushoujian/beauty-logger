@@ -1,6 +1,6 @@
 const path = require("path")
-const BeautyLogger = require("./beauty-logger");
-const logger = new BeautyLogger({
+const Logger = require("./beauty-logger");
+const logger = new Logger({
 	logFileSize: 1024 * 1024 * 5,
 	logFilePath: path.join(__dirname + "/server.log"),
 	dataTypeWarn: true
