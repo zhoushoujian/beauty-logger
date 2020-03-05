@@ -9,6 +9,7 @@ const logger = new Logger({
 	logFileSize: 1024 * 1024 * 5,  //default: 10MB 
 	logFilePath: path.join(__dirname + "/server.log")  , //default: server.log in current folder 
 	dataTypeWarn: true //default: false
+	productionModel: false // default: false
 })  
 logger.info("logger", "string")  // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] string
 ```
@@ -26,6 +27,7 @@ npm run test
 5. Support to print part of req and res(big object) in nodejs  
 6. Data type includes Number, String, Undefined, Null, Boolean, Object, Array, Function, Error, Set, Map and Symbol can be support stringify. If something can't be stringify, it will be print data type, such as DOM element, it will print '[object HTMLDivElement]'  
 7. Although we support print Function, Set, Map and Symbol directly, we still don't recommend to print it without any transfer, and it will give a warn to remind you if you set dataTypeWarn to be true.  
+8. Enable productionModel will not print log to console, it will be fast for program in production environment.
 
 # Preview pictures
 [![log_example_1](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_2.png)](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_1.png)  

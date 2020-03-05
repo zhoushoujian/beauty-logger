@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    <script src="./beauty-logger.js"></script>
+</head>
+
+<body>
+    <div>打开控制台查看结果</div>
+</body>
+<script>
+	var obj = {
+		a: [1,2,3],
+		b: function(){return 1111},
+		c: {
+			cc: "111"
+		},
+		d: new Set([1,2,3,4])
+	}
+    const logger = new InitLogger()
+    logger.info("this is info obj", obj)
+    logger.debug("this is debug obj", obj)
+    logger.warn("this is warn obj", obj)
+    logger.error("this is error obj", obj)
+</script>
+</html>

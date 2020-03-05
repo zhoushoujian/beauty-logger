@@ -3,7 +3,8 @@ const Logger = require("./beauty-logger");
 const logger = new Logger({
 	logFileSize: 1024 * 1024 * 5,
 	logFilePath: path.join(__dirname + "/server.log"),
-	dataTypeWarn: true
+	dataTypeWarn: true,
+	productionModel: false
 })
 
 const str = "this is string";
@@ -40,6 +41,7 @@ const symbol = Symbol('symbol')
 const set = new Set(arr2)
 const map = new Map([['title','hello world'],['year','2020']]);
 
+console.time("time")
 //single parameter test case
 {
 	logger.debug(str);
@@ -95,3 +97,4 @@ const map = new Map([['title','hello world'],['year','2020']]);
 	console.error("undefined", undefined1);
 	console.error("func", func);
 }
+console.timeEnd("time")
