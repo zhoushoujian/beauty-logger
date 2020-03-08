@@ -8,7 +8,7 @@ let loopTimes = 0
 ,	userConfig = {}
 ,	LOG_FILE_MAX_SIZE = 1024 * 1024 * 10
 ,	ENABLE_DATA_TYPE_WARN = false
-,	LOG_PATH = isNodeJs ? require('path').join(__dirname, "./server.log") : ""
+,	LOG_PATH = isNodeJs ? require('path').join(__dirname, "../../server.log") : ""
 ,	PRODUCTION_MODEL = false
 ,	fs
 ,	path
@@ -211,7 +211,7 @@ function InitLogger(config) {
 		if (isNodeJs) {
 			userConfig = (config || {})
 			LOG_FILE_MAX_SIZE = (typeof (userConfig.logFileSize) === 'number' ? userConfig.logFileSize : 1024 * 1024 * 10)
-			LOG_PATH = (typeof (userConfig.logFilePath) === 'string' ? userConfig.logFilePath : path.join(__dirname, "./server.log"))
+			LOG_PATH = (typeof (userConfig.logFilePath) === 'string' ? userConfig.logFilePath : path.join(__dirname, "../../server.log"))
 			ENABLE_DATA_TYPE_WARN = (typeof (userConfig.dataTypeWarn) === 'boolean' ? userConfig.dataTypeWarn : false)
 			PRODUCTION_MODEL = (typeof (userConfig.productionModel) === 'boolean' ? userConfig.productionModel : false)
 		}
