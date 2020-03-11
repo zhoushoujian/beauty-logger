@@ -131,11 +131,11 @@ function getTime() {
 }
 
 function getLogPath(level){
-	const { enableMultipleLogFile, logFilePath } = this.userConfig
+	const { enableMultipleLogFile, loggerFilePath } = this.userConfig
 	if(enableMultipleLogFile){
-		return logFilePath[level]
+		return loggerFilePath[level]
 	} else {
-		return logFilePath
+		return loggerFilePath
 	}
 }
 
@@ -203,8 +203,8 @@ function InitLogger(config) {
 			path = require('path')
 			deepcopy = require('./deepcopy')
 			this.userConfig = (config || {})
+			const currentProjectPath = process.cwd().split("node_modules")[0]
 			if(/node_modules/.test(process.cwd())){
-				const currentProjectPath = process.cwd().split("node_modules")[0]
 				this.userConfig.loggerFilePath = {
 					info: currentProjectPath + "info.log",
 					warn: currentProjectPath + "warn.log",
@@ -217,7 +217,7 @@ function InitLogger(config) {
 					error: path.join(__dirname, "./error.log"),
 				}
 			}
-			this.userConfig.currentProjectFolder = path.parse(this.userConfig.loggerFilePath['info'])['dir']
+			this.userConfig.currentProjectFolder = currentProjectPath
 			this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
 			this.userConfig.dataTypeWarn = (typeof (this.userConfig.dataTypeWarn) === 'boolean' ? this.userConfig.dataTypeWarn : false)
 			this.userConfig.productionModel = (typeof (this.userConfig.productionModel) === 'boolean' ? this.userConfig.productionModel : false)
@@ -231,7 +231,7 @@ function InitLogger(config) {
 				}
 			}
 			if(!this.userConfig.enableMultipleLogFile){
-				if(typeof(this.userConfig.loggerFilePath) === 'string'){
+				if(typeof(this.userConfig.logFilePath) === 'string'){
 					this.userConfig.loggerFilePath = this.userConfig.logFilePath
 				} else if(Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]'){
 					let hasLogFilePathConfig = false
