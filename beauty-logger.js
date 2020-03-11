@@ -1,24 +1,13 @@
 'use strict'
 
-const list = []
-, 	LOGGER_LEVEL = ["debug", "info", "warn", "error"]
+const LOGGER_LEVEL = ["debug", "info", "warn", "error"]
 , 	isNodeJs = typeof(process) === 'object'
 
 let loopTimes = 0
-,	userConfig = {}
-,	LOG_FILE_MAX_SIZE = 1024 * 1024 * 10
-,	ENABLE_DATA_TYPE_WARN = false
-,	LOG_PATH = isNodeJs ? require('path').join(__dirname, "../../server.log") : ""
-,	PRODUCTION_MODEL = false
 ,	fs
 ,	path
 ,	deepcopy
-
-if(typeof require === 'function'){
-	fs = require('fs'),
-	path = require('path'),
-	deepcopy = require('./deepcopy')
-}
+,	printFunc={}
 
 //自定义控制台颜色输出
 {
@@ -34,7 +23,7 @@ if(typeof require === 'function'){
 		const logger = function (...args) {
 			console.log(...args)
 		}
-		console[log] = (...args) => logger.apply(null, [`${colors[color]}[${getTime()}] [${info.toUpperCase()}]${colors.Reset} `, ...args, isNodeJs ? colors.Reset : ""]);
+		printFunc[log] = (...args) => logger.apply(null, [`${colors[color]}[${getTime()}] [${info.toUpperCase()}]${colors.Reset} `, ...args, isNodeJs ? colors.Reset : ""]);
 	});
 }
 
@@ -48,6 +37,7 @@ function dealWithItems(item, needWarn) {
 		return Object.prototype.toString.call(item)
 	}
 }
+
 function formatDataType(value, needWarn) {
 	loopTimes++
 	let formattedOnes = ""
@@ -112,6 +102,7 @@ function formatDataType(value, needWarn) {
 	}
 	return formattedOnes
 }
+
 function getTime() {
 	const year = new Date().getFullYear();
 	const month = new Date().getMonth() + 1;
@@ -119,7 +110,7 @@ function getTime() {
 	let hour = new Date().getHours();
 	let minute = new Date().getMinutes();
 	let second = new Date().getSeconds();
-	const mileSecond = new Date().getMilliseconds();
+	let mileSecond = new Date().getMilliseconds();
 	if (hour < 10) {
 		hour = "0" + hour
 	}
@@ -130,72 +121,71 @@ function getTime() {
 		second = "0" + second
 	}
 	if (mileSecond < 10) {
-		second = "00" + mileSecond
+		mileSecond = "00" + mileSecond
 	}
 	if (mileSecond < 100) {
-		second = "0" + mileSecond
+		mileSecond = "0" + mileSecond
 	}
 	const time = `${year}-${month}-${day} ${hour}:${minute}:${second}.${mileSecond}`;
 	return time;
 }
-let flag = true
-function doLogInFile(buffer) {
-	buffer && list.push(buffer);
-	flag && activate();
+
+function getLogPath(level){
+	const { enableMultipleLogFile, logFilePath } = this.userConfig
+	if(enableMultipleLogFile){
+		return logFilePath[level]
+	} else {
+		return logFilePath
+	}
 }
-function activate() {
-	flag = false;
-	let buffer = list.shift();
-	execute(buffer).then(() => new Promise(res => {
-		list.length ? activate() : flag = true;
-		res();
-	}).catch(err => {
-		flag = true;
-	}));
+
+async function logInFile(buffer, level) {
+	return checkFileState.bind(this)(level)
+		.then(writeFile.bind(this, buffer, level))
 }
-function execute(buffer) {
-	return checkFileState()
-		.then(() => writeFile(buffer))
-		.catch(err => {})
-}
-function checkFileState() {
+
+function checkFileState(level) {
+	// check file existed or file size
 	return new Promise((resolve) => {
-		fs.stat(LOG_PATH, function (err, stats) {
-			if (!fs.existsSync(LOG_PATH)) {
-				fs.appendFileSync(LOG_PATH, "");
+		const { logFileSize, currentProjectFolder } = this.userConfig
+		fs.stat(getLogPath.bind(this)(level), function (err, stats) {
+			if (!fs.existsSync(getLogPath.bind(this)(level))) {
+				fs.appendFileSync(getLogPath.bind(this)(level), "");
 				resolve();
 			} else {
-				checkFileSize(stats.size)
-					.then(resolve)
-			}
-		});
-	});
-}
-function checkFileSize(size) {
-	return new Promise((resolve) => {
-		if (size > LOG_FILE_MAX_SIZE) {
-			fs.readdir(path.join(__dirname), (err, files) => {
-				if (err) throw err;
-				let fileList = files.filter(function (file) {
-					return /^server[0-9]*\.log$/i.test(file);
-				});
-				for (let i = fileList.length; i > 0; i--) {
-					if (i >= 10) {
-						fs.unlinkSync(path.join(__dirname) + "/" + fileList[i - 1]);
-						continue;
-					}
-					fs.renameSync(path.join(__dirname) + "/" + fileList[i - 1], "server" + i + ".log");
+				// logger is async, so one logger has appendFile after next one check file state
+				if (stats && (stats.size > logFileSize)) {
+					fs.readdir(currentProjectFolder, (err, files) => {
+						const currentLogFilename = path.parse(getLogPath.bind(this)(level))['name']
+						const currentLogFileExtname = path.parse(getLogPath.bind(this)(level))['ext']
+						let currentLogFileExtnameWithoutDot
+						if(currentLogFileExtname){
+							currentLogFileExtnameWithoutDot = currentLogFileExtname.replace(".", "")
+						}
+						const fileList = files.filter(function (file) {
+							return RegExp("^" + currentLogFilename + '[0-9]*\.*' + currentLogFileExtnameWithoutDot + "*$").test(file)
+						});
+						for (let i = fileList.length; i > 0; i--) {
+							if (i >= 10) {
+								fs.unlinkSync(currentProjectFolder + "/" + fileList[i - 1]);
+								continue;
+							}
+							fs.renameSync(currentProjectFolder + "/" + fileList[i - 1], currentLogFilename + i + currentLogFileExtname);
+							resolve();
+						}
+					});
+				} else {
 					resolve();
 				}
-			});
-		} else {
-			resolve();
-		}
+			}
+		}.bind(this));
 	});
 }
-function writeFile(buffer) {
+
+function writeFile(buffer, level) {
+	const self = this
 	return new Promise(function (res) {
-		fs.writeFileSync(LOG_PATH, buffer, {
+		fs.writeFileSync(getLogPath.bind(self)(level), buffer, {
 			flag: "a+" //	以读取追加模式打开文件，如果文件不存在则创建。
 		});
 		res();
@@ -209,11 +199,61 @@ function writeFile(buffer) {
 function InitLogger(config) {
 	if (config === undefined || Object.prototype.toString.call(config) === '[object Object]') {
 		if (isNodeJs) {
-			userConfig = (config || {})
-			LOG_FILE_MAX_SIZE = (typeof (userConfig.logFileSize) === 'number' ? userConfig.logFileSize : 1024 * 1024 * 10)
-			LOG_PATH = (typeof (userConfig.logFilePath) === 'string' ? userConfig.logFilePath : path.join(__dirname, "../../server.log"))
-			ENABLE_DATA_TYPE_WARN = (typeof (userConfig.dataTypeWarn) === 'boolean' ? userConfig.dataTypeWarn : false)
-			PRODUCTION_MODEL = (typeof (userConfig.productionModel) === 'boolean' ? userConfig.productionModel : false)
+			fs = require('fs')
+			path = require('path')
+			deepcopy = require('./deepcopy')
+			this.userConfig = (config || {})
+			if(/node_modules/.test(process.cwd())){
+				const currentProjectPath = process.cwd().split("node_modules")[0]
+				this.userConfig.loggerFilePath = {
+					info: currentProjectPath + "info.log",
+					warn: currentProjectPath + "warn.log",
+					error: currentProjectPath + "error.log",
+				}
+			} else {
+				this.userConfig.loggerFilePath = {
+					info: path.join(__dirname, "./info.log"),
+					warn: path.join(__dirname, "./warn.log"),
+					error: path.join(__dirname, "./error.log"),
+				}
+			}
+			this.userConfig.currentProjectFolder = path.parse(this.userConfig.loggerFilePath['info'])['dir']
+			this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
+			this.userConfig.dataTypeWarn = (typeof (this.userConfig.dataTypeWarn) === 'boolean' ? this.userConfig.dataTypeWarn : false)
+			this.userConfig.productionModel = (typeof (this.userConfig.productionModel) === 'boolean' ? this.userConfig.productionModel : false)
+			// if enableMultipleLogFile, logFilePath must be an object and will generate multiple log files, although this.userConfig.logFilePath is a string
+			this.userConfig.enableMultipleLogFile = (typeof (this.userConfig.enableMultipleLogFile) === 'boolean' ? this.userConfig.enableMultipleLogFile : false)
+			if(Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]'){
+				for(let i in this.userConfig.logFilePath){
+					if(this.userConfig.logFilePath.hasOwnProperty(i)){
+						this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i]
+					}
+				}
+			}
+			if(!this.userConfig.enableMultipleLogFile){
+				if(typeof(this.userConfig.loggerFilePath) === 'string'){
+					this.userConfig.loggerFilePath = this.userConfig.logFilePath
+				} else if(Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]'){
+					let hasLogFilePathConfig = false
+					for(let i in this.userConfig.logFilePath){
+						if(this.userConfig.logFilePath.hasOwnProperty(i)){
+							if(['info', 'warn', 'error'].indexOf(i) !== -1){
+								this.userConfig.loggerFilePath = this.userConfig.logFilePath[i]
+								hasLogFilePathConfig = true
+								break;
+							}
+						}
+					}
+					if(!hasLogFilePathConfig) this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
+				} else {
+					this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
+				}
+			}
+			if(!global.beautyLogger){
+				global.beautyLogger = {}
+				global.beautyLogger.userConfig = []
+			}
+			global.beautyLogger.userConfig.push(this.userConfig)
 		}
 	} else {
 		throw new Error("beauty-logger config must be an object")
@@ -221,29 +261,32 @@ function InitLogger(config) {
 }
 
 function loggerInFile(level, data, ...args) {
-	if(!PRODUCTION_MODEL) console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
 	if (isNodeJs) {
+		const { productionModel, dataTypeWarn } = this.userConfig
+		if(!productionModel) printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
 		if (level === "debug") return
 		loopTimes = 0
 		let dist = deepcopy(data);
 		dist = JSON.stringify(dist, function (key, value) {
-			return formatDataType(value, ENABLE_DATA_TYPE_WARN)
+			return formatDataType(value, dataTypeWarn)
 		}, 4)
 		let extend = [];
 		if (args.length) {
-			extend = args.map(item => dealWithItems(item, ENABLE_DATA_TYPE_WARN));
+			extend = args.map(item => dealWithItems(item, dataTypeWarn));
 			if (extend.length) {
 				extend = `  [ext] ${extend.join("")}`;
 			}
 		}
 		const content = `${dist}` + `${extend}` + "\r\n";
-		return doLogInFile(`[${getTime()}]  [${level.toUpperCase()}]  ${content}`);
+		return logInFile.bind(this)(`[${getTime()}]  [${level.toUpperCase()}]  ${content}`, level);
+	} else {
+		printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
 	}
 }
 
 LOGGER_LEVEL.forEach(function (level) {
 	InitLogger.prototype[level] = function (data, ...args) {
-		loggerInFile(level, data, ...args);
+		loggerInFile.bind(this)(level, data, ...args)
 	}
 })
 

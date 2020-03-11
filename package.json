@@ -1,6 +1,6 @@
 {
 	"name": "beauty-logger",
-	"version": "0.1.1",
+	"version": "1.0.0",
 	"author": {
 		"name": "Shoujian Zhou",
 		"email": "qianchengyimeng@qq.com"
@@ -10,7 +10,7 @@
 	"bugs": {
 		"url": "https://github.com/zhoushoujian/beauty-logger/issues"
 	},
-	"description": "A light logger system for both nodejs and browser.",
+	"description": "A beautiful logger system for both nodejs and browser",
 	"devDependencies": {},
 	"scripts": {
 		"test": "node node_test.js "

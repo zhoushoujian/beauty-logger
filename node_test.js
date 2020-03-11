@@ -1,10 +1,22 @@
 const path = require("path")
 const Logger = require("./beauty-logger");
-const logger = new Logger({
+const logger1 = new Logger({
 	logFileSize: 1024 * 1024 * 5,
-	logFilePath: path.join(__dirname + "/server.log"),
-	dataTypeWarn: true,
-	productionModel: false
+	logFilePath: path.join(__dirname, "./userActivity.log"),
+	dataTypeWarn: false,
+	productionModel: true,
+	enableMultipleLogFile: false
+})
+const logger2 = new Logger({
+	logFileSize: 1024 * 1024 * 10,
+	logFilePath: {
+		info: path.join(__dirname, "./INFO.log"),
+		warn: path.join(__dirname, "./WARN.log"),
+		error: path.join(__dirname, "./ERROR.log"),
+	},
+	dataTypeWarn: false,
+	productionModel: false,
+	enableMultipleLogFile: true
 })
 
 const str = "this is string";
@@ -42,59 +54,39 @@ const set = new Set(arr2)
 const map = new Map([['title','hello world'],['year','2020']]);
 
 console.time("time")
-//single parameter test case
-{
-	logger.debug(str);
-	logger.debug(num);
-	logger.info(bool);
-	logger.info(empty);
-	logger.warn(arr);
-	logger.warn(obj);
-	logger.error(undefined1);
-	logger.error(func);
-	logger.info(fun)
-	logger.info(symbol)
-	logger.info(set)
-	logger.info(map)
 
-	console.log("\r\n\r\n------------------Amazing line-------------------------");
-	// these can't be print to log file
-	console.debug(str);
-	console.debug(num);
-	console.info(bool);
-	console.info(empty);
-	console.warn(arr);
-	console.warn(obj);
-	console.error(undefined1);
-	console.error(func);
+{
+	console.log("*********************logger1 parameter test case***************************************");
+	logger1.debug(str);
+	logger1.debug(num);
+	logger1.info(bool);
+	logger1.info(empty);
+	logger1.warn(arr);
+	logger1.warn(obj);
+	logger1.error(undefined1);
+	logger1.error(func);
+	logger1.info(fun)
+	logger1.info(symbol)
+	logger1.info(set)
+	logger1.info(map)
+}
+{
+	console.log("*********************logger2 parameter test case***************************************");
+	logger2.debug("str", str);
+	logger2.debug("num", num);
+	logger2.info("bool", bool);
+	logger2.info("null", empty);
+	logger2.warn("arr", arr);
+	logger2.warn("obj", obj);
+	logger2.error("undefined", undefined1);
+	logger2.error("func", func);
+	logger2.info("fun", fun)
+	logger2.info("symbol", symbol)
+	logger2.info("set", set)
+	logger2.info("map", map)
 }
 
+console.log("global.beautyLogger", global.beautyLogger)
 
-//double parameter test case
-{
-	console.log("*********************Double parameter test case***************************************");
-	logger.debug("str", str);
-	logger.debug("num", num);
-	logger.info("bool", bool);
-	logger.info("null", empty);
-	logger.warn("arr", arr);
-	logger.warn("obj", obj);
-	logger.error("undefined", undefined1);
-	logger.error("func", func);
-	logger.info("fun", fun)
-	logger.info("symbol", symbol)
-	logger.info("set", set)
-	logger.info("map", map)
-
-	console.log("\r\n\r\n------------------Amazing line-------------------------");
-	// these can't be print to log file
-	console.debug("str", str);
-	console.debug("num", num);
-	console.info("bool", bool);
-	console.info("empty", empty);
-	console.warn("arr", arr);
-	console.warn("obj", obj);
-	console.error("undefined", undefined1);
-	console.error("func", func);
-}
 console.timeEnd("time")
+
