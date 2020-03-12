@@ -17,6 +17,7 @@ const logger = new Logger({
 	enableMultipleLogFile: true // default: true
 })  
 logger.info("logger", "string")  // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] string
+console.log("logger", logger)
 ```
 
 # Test
@@ -33,7 +34,8 @@ npm run test
 6. Although we support print Function, Set, Map and Symbol directly, we still don't recommend to print it without any transfer, and it will give a warn to remind you if you set dataTypeWarn to be true.  
 7. Enable productionModel will not print log to console, it will be fast for program in production environment.
 8. In default, it will log file by log level and it will log into multiple different kinds of files, if set enableMultipleLogFile to false, beauty-logger will print all logs to one file, at the same time, you should specify logFilePath as a path string.
-9. Support new multiple beauty-logger to log different files.
+9. Support new multiple beauty-logger inshance to log different files.
+10. All of logger method support Promise chain call
 
 # Preview pictures
 [![log_example_1](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_2.png)](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_1.png)  
