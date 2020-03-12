@@ -9,7 +9,6 @@ let loopTimes = 0
 ,	deepcopy
 ,	printFunc={}
 
-//自定义控制台颜色输出
 {
 	const colors = {
 		Reset: "\x1b[0m",
@@ -186,16 +185,12 @@ function writeFile(buffer, level) {
 	const self = this
 	return new Promise(function (res) {
 		fs.writeFileSync(getLogPath.bind(self)(level), buffer, {
-			flag: "a+" //	以读取追加模式打开文件，如果文件不存在则创建。
+			flag: "a+"
 		});
 		res();
 	})
 }
 
-/**
- * 初始化日志方法
- * @param {*} InitLogger
- */
 function InitLogger(config) {
 	if (config === undefined || Object.prototype.toString.call(config) === '[object Object]') {
 		if (isNodeJs) {
