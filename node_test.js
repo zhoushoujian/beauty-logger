@@ -86,6 +86,18 @@ console.time("time")
 	logger2.info("map", map)
 }
 
+async function foo(){
+	function chain(){
+		return logger2.info("aaa")
+			.then((result => {
+				console.log("aaaa", result)
+			}))
+	}
+	await chain()
+	console.log("bbbbb")
+}
+foo()
+
 console.log("global.beautyLogger", global.beautyLogger)
 
 console.timeEnd("time")

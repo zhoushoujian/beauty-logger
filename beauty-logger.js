@@ -187,7 +187,7 @@ function writeFile(buffer, level) {
 		fs.writeFileSync(getLogPath.bind(self)(level), buffer, {
 			flag: "a+"
 		});
-		res();
+		res(buffer);
 	})
 }
 
@@ -281,7 +281,7 @@ function loggerInFile(level, data, ...args) {
 
 LOGGER_LEVEL.forEach(function (level) {
 	InitLogger.prototype[level] = function (data, ...args) {
-		loggerInFile.bind(this)(level, data, ...args)
+		return loggerInFile.bind(this)(level, data, ...args)
 	}
 })
 
