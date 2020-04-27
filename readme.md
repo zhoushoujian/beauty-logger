@@ -36,6 +36,7 @@ npm run test
 8. In default, it will log file by log level and it will log into multiple different kinds of files, if set enableMultipleLogFile to false, beauty-logger will print all logs to one file, at the same time, you should specify logFilePath as a path string.
 9. Support new multiple beauty-logger inshance to log different files.
 10. All of logger method support Promise chain call
+11. Reserve data type which is in console, only stringify data which will be written to file. 
 
 # Preview pictures
 [![log_example_1](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_2.png)](https://github.com/zhoushoujian/beauty-logger/blob/master/docs/log_example_1.png)  

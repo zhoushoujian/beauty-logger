@@ -255,7 +255,7 @@ function InitLogger(config) {
 	}
 }
 
-function loggerInFile(level, data, ...args) {
+function loggerInFile(level, data="", ...args) {
 	if (isNodeJs) {
 		const { productionModel, dataTypeWarn } = this.userConfig
 		if(!productionModel) printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
