@@ -1,20 +1,19 @@
-'use strict'
-
 const LOGGER_LEVEL = ["debug", "info", "warn", "error"]
-, 	isNodeJs = typeof(process) === 'object'
+, 	isNodeJs = typeof (process) === 'object'
 
 let loopTimes = 0
 ,	fs
 ,	path
-,	deepcopy
-,	printFunc={}
+,	deepcopy;
+
+const printFunc = {}
 
 {
 	const colors = {
 		Reset: "\x1b[0m",
 		FgRed: "\x1b[31m",
 		FgGreen: "\x1b[32m",
-		FgYellow: isNodeJs ? "\x1b[33m": "\x1b[43m",
+		FgYellow: isNodeJs ? "\x1b[33m" : "\x1b[43m",
 		FgBlue: "\x1b[34m"
 	};
 	"debug:debug:FgBlue,info:info:FgGreen,warn:warn:FgYellow,error:error:FgRed".split(",").forEach(function (logColor) {
@@ -52,19 +51,15 @@ function formatDataType(value, needWarn) {
 				break;
 			case '[object Object]':
 			case '[object Array]':
-				for (let i in value) {
-					try {
-						if (value.hasOwnProperty && value.hasOwnProperty(i)) {
-							if (loopTimes > 999) {
-								value[i] = Object.prototype.toString.call(value[i])
-							} else {
-								value[i] = formatDataType(value[i], needWarn)
-							}
-						} else {
+				for (const i in value) {
+					if (Object.prototype.hasOwnProperty.call(value, i)) {
+						if (loopTimes > 999) {
 							value[i] = Object.prototype.toString.call(value[i])
+						} else {
+							value[i] = formatDataType(value[i], needWarn)
 						}
-					} catch (err) {
-						value[i] = valueType
+					} else {
+						value[i] = Object.prototype.toString.call(value[i])
 					}
 				}
 				formattedOnes = value
@@ -84,14 +79,15 @@ function formatDataType(value, needWarn) {
 				if (needWarn) console.warn("we don't recommend to print Set directly", value)
 				formattedOnes = [...value]
 				break;
-			case '[object Map]':
+			case '[object Map]': {
 				if (needWarn) console.warn("we don't recommend to print Map directly", value)
 				const obj = {}
-				for (let [key, item] of value) {
+				for (const [key, item] of value) {
 					obj[key] = item
 				}
 				formattedOnes = obj
 				break;
+			}
 			default:
 				formattedOnes = Object.prototype.toString.call(value)
 				break;
@@ -162,6 +158,7 @@ function checkFileState(level) {
 							currentLogFileExtnameWithoutDot = currentLogFileExtname.replace(".", "")
 						}
 						const fileList = files.filter(function (file) {
+							// eslint-disable-next-line no-useless-escape
 							return RegExp("^" + currentLogFilename + '[0-9]*\.*' + currentLogFileExtnameWithoutDot + "*$").test(file)
 						});
 						for (let i = fileList.length; i > 0; i--) {
@@ -192,7 +189,7 @@ function writeFile(buffer, level) {
 }
 
 function InitLogger(config) {
-	if (config === undefined || Object.prototype.toString.call(config) === '[object Object]') {
+	if (!config || Object.prototype.toString.call(config) === '[object Object]') {
 		if (isNodeJs) {
 			fs = require('fs')
 			path = require('path')
@@ -219,19 +216,19 @@ function InitLogger(config) {
 			// if enableMultipleLogFile, logFilePath must be an object and will generate multiple log files, although this.userConfig.logFilePath is a string
 			this.userConfig.enableMultipleLogFile = (typeof (this.userConfig.enableMultipleLogFile) === 'boolean' ? this.userConfig.enableMultipleLogFile : false)
 			if(Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]'){
-				for(let i in this.userConfig.logFilePath){
-					if(this.userConfig.logFilePath.hasOwnProperty(i)){
+				for(const i in this.userConfig.logFilePath){
+					if(Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)){
 						this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i]
 					}
 				}
 			}
 			if(!this.userConfig.enableMultipleLogFile){
-				if(typeof(this.userConfig.logFilePath) === 'string'){
+				if(typeof (this.userConfig.logFilePath) === 'string'){
 					this.userConfig.loggerFilePath = this.userConfig.logFilePath
 				} else if(Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]'){
 					let hasLogFilePathConfig = false
-					for(let i in this.userConfig.logFilePath){
-						if(this.userConfig.logFilePath.hasOwnProperty(i)){
+					for(const i in this.userConfig.logFilePath){
+						if(Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)){
 							if(['info', 'warn', 'error'].indexOf(i) !== -1){
 								this.userConfig.loggerFilePath = this.userConfig.logFilePath[i]
 								hasLogFilePathConfig = true
@@ -255,7 +252,7 @@ function InitLogger(config) {
 	}
 }
 
-function loggerInFile(level, data="", ...args) {
+function loggerInFile(level, data = "", ...args) {
 	if (isNodeJs) {
 		const { productionModel, dataTypeWarn } = this.userConfig
 		if(!productionModel) printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
@@ -272,7 +269,7 @@ function loggerInFile(level, data="", ...args) {
 				extend = `  [ext] ${extend.join("")}`;
 			}
 		}
-		const content = `${dist}` + `${extend}` + "\r\n";
+		const content = `${dist} ${extend} \r\n`;
 		return logInFile.bind(this)(`[${getTime()}]  [${level.toUpperCase()}]  ${content}`, level);
 	} else {
 		printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
@@ -286,7 +283,9 @@ LOGGER_LEVEL.forEach(function (level) {
 })
 
 // Export to popular environments boilerplate.
+// eslint-disable-next-line no-undef
 if (typeof define === 'function' && define.amd) {
+	// eslint-disable-next-line no-undef
 	define(InitLogger);
 } else if (typeof module !== 'undefined' && module.exports) {
 	module.exports = InitLogger;

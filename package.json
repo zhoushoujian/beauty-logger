@@ -1,31 +1,35 @@
 {
-	"name": "beauty-logger",
-	"version": "1.0.2",
-	"author": {
-		"name": "Shoujian Zhou",
-		"email": "qianchengyimeng@qq.com"
-	},
-	"license": "MIT",
-	"main": "beauty-logger.js",
-	"bugs": {
-		"url": "https://github.com/zhoushoujian/beauty-logger/issues"
-	},
-	"description": "A beautiful logger system for both nodejs and browser",
-	"devDependencies": {},
-	"scripts": {
-		"test": "node node_test.js "
-	},
-	"dependencies": {},
-	"homepage": "https://github.com/zhoushoujian/beauty-logger",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/zhoushoujian/beauty-logger"
-	},
-	"keywords": [
-		"logger",
-		"beauty-logger",
-		"browser",
-		"nodejs",
-		"stringify"
-	]
+  "name": "beauty-logger",
+  "version": "1.0.2",
+  "author": {
+    "name": "Shoujian Zhou",
+    "email": "qianchengyimeng@qq.com"
+  },
+  "license": "MIT",
+  "main": "beauty-logger.js",
+  "bugs": {
+    "url": "https://github.com/zhoushoujian/beauty-logger/issues"
+  },
+  "description": "A beautiful logger system for both nodejs and browser",
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.3.0"
+  },
+  "scripts": {
+    "test": "node node_test.js ",
+    "eslint": "eslint beauty-logger.js"
+  },
+  "dependencies": {},
+  "homepage": "https://github.com/zhoushoujian/beauty-logger",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhoushoujian/beauty-logger"
+  },
+  "keywords": [
+    "logger",
+    "beauty-logger",
+    "browser",
+    "nodejs",
+    "stringify"
+  ]
 }
