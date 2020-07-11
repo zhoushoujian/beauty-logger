@@ -4,7 +4,8 @@ const logger1 = new Logger({
 	logFileSize: 1024 * 1024 * 5,
 	logFilePath: path.join(__dirname, "./userActivity.log"),
 	dataTypeWarn: false,
-	productionModel: true,
+	productionModel: false,
+	onlyPrintInConsole: false,
 	enableMultipleLogFile: false
 })
 const logger2 = new Logger({
@@ -14,8 +15,9 @@ const logger2 = new Logger({
 		warn: path.join(__dirname, "./WARN.log"),
 		error: path.join(__dirname, "./ERROR.log"),
 	},
-	dataTypeWarn: false,
+	dataTypeWarn: true,
 	productionModel: false,
+	onlyPrintInConsole: false,
 	enableMultipleLogFile: true
 })
 
@@ -25,7 +27,7 @@ const bool = false;
 const empty = null;
 const undefined1 = undefined;
 const func = function (a, b) {
-	let sum = a + b;
+	var sum = a + b;
 	return sum;
 };
 const arr1 = [1, 5, 6];
@@ -51,13 +53,13 @@ const arr = [obj, func, arr2];
 const fun = obj.a.e.f(1,2)
 const symbol = Symbol('symbol')
 const set = new Set(arr2)
-const map = new Map([['title','hello world'],['year','2020']]);
+const map = new Map([['title', 'hello world'], ['year', '2020']]);
 
 console.time("time")
 
 {
 	console.log("*********************logger1 parameter test case***************************************");
-	logger1.debug(str);
+	logger1.debug('str', str);
 	logger1.debug(num);
 	logger1.info(bool);
 	logger1.info(empty);
@@ -70,6 +72,10 @@ console.time("time")
 	logger1.info(set)
 	logger1.info(map)
 }
+
+console.log("*********************logger config info***************************************");
+console.log("global.beautyLogger", global.beautyLogger)
+
 {
 	console.log("*********************logger2 parameter test case***************************************");
 	logger2.debug("str", str);
@@ -86,19 +92,12 @@ console.time("time")
 	logger2.info("map", map)
 }
 
-async function foo(){
-	function chain(){
-		return logger2.info("aaa")
-			.then((result => {
-				console.log("aaaa", result)
-			}))
-	}
-	await chain()
-	console.log("bbbbb")
-}
-foo()
-
-console.log("global.beautyLogger", global.beautyLogger)
+// console.log("global.beautyLogger", global.beautyLogger)
 
 console.timeEnd("time")
+
+logger2.info("0123456789")
+	.then((result => {
+		console.log("aaaa", result)
+	}))
 

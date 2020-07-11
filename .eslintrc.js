@@ -49,7 +49,6 @@ module.exports = {
 		'no-unreachable': 2, //禁止在 return、throw、continue 和 break 语句后出现不可达代码
 		'no-unsafe-finally': 2, //禁止在 finally 语句块中出现控制流语句
 		'no-unsafe-negation': 2, //禁止对关系运算符的左操作数使用否定操作符
-		// 'require-atomic-updates': 0, //禁止由于 await 或 yield的使用而可能导致出现竞态条件的赋值
 		'use-isnan': 2, //要求调用 isNaN()检查 NaN
 		'valid-typeof': 2, //强制 typeof 表达式与有效的字符串进行比较
 		'no-case-declarations': 2, //禁止在 case 或 default 子句中出现词法声明
@@ -61,13 +60,11 @@ module.exports = {
 		'no-self-assign': 2, // 禁止自身赋值
 		'no-unused-labels': 2, //禁用未使用过的标签
 		'no-useless-catch': 2, //禁止不必要的 catch 子句
-		'no-useless-escape': 2, // 禁用不必要的转义
 		'no-with': 2, //禁用 with 语句
 		'no-delete-var': 2, //禁止删除变量
 		'no-shadow-restricted-names': 2, // 禁止变量声明覆盖外层作用域的变量
 		'no-undef': 2, //不允许使用undefined变量
 		"no-unused-vars": ["error", { "argsIgnorePattern": "^_" }], //禁止未使用过的变量
-		// 'no-mixed-spaces-and-tabs': 2, //禁止使用 空格 和 tab 混合缩进
 		'constructor-super': 2, // 验证构造函数中 super() 的调用
 		'no-class-assign': 2, //不允许修改类声明的变量
 		'no-const-assign': 2, //不允许改变用const声明的变量
@@ -111,7 +108,7 @@ module.exports = {
 		"no-unmodified-loop-condition": 2, //禁用一成不变的循环条件
 		"no-useless-call": 0, //禁用不必要的 .call() 和 .apply()
 		"no-useless-concat": 2, //禁止没有必要的字符拼接
-		"vars-on-top": 2, //要求将变量声明放在它们作用域的顶部
+		// "vars-on-top": 2, //要求将变量声明放在它们作用域的顶部
 		"wrap-iife": ["error", "any"], //需要把立即执行的函数包裹起来
 		yoda: 2, //要求或者禁止Yoda条件
 		curly: ['error', 'multi-line'],
@@ -119,7 +116,6 @@ module.exports = {
 		//这些规则与变量声明有关：
 		"no-label-var": 2, //禁用与变量同名的标签
 		"no-undef-init": 2, //不允许初始化变量值为 undefined
-		"no-undefined": 2, //不允许使用undefined变量
 
 		//关于Node.js 或 在浏览器中使用CommonJS
 		"no-buffer-constructor": 2, //禁用 Buffer() 构造函数
@@ -132,7 +128,7 @@ module.exports = {
 		"no-duplicate-imports": ["error", { includeExports: true }], //禁止重复导入
 		"no-useless-computed-key": 2, //禁止在对象中使用不必要的计算属性
 		"no-useless-rename": 2, //禁止在 import 和 export 和解构赋值时将引用重命名为相同的名字
-		"no-var": 2, //要求使用 let 或 const 而不是 var
+		// "no-var": 2, //要求使用 let 或 const 而不是 var
 		"object-shorthand": 2, //要求对象字面量简写语法
 		"prefer-const": ["error", { destructuring: "all" }], //只有解构的值都没有被赋值才用const
 		"prefer-numeric-literals": 2, //禁用 parseInt() 和 Number.parseInt()，使用二进制，八进制和十六进制字面量
@@ -224,7 +220,6 @@ module.exports = {
 				message: 'Use the exponentiation operator (**) instead.'
 			}
 		],  //禁止使用对象的某些属性
-		'no-lone-blocks': 'error', //禁用不必要的嵌套块
 		'no-loop-func': 'error',  //禁止循环中存在函数
 		'no-return-assign': ['error', 'always'],  //禁止在返回语句中赋值
 		'no-throw-literal': 'error',  //限制可以被抛出的异常

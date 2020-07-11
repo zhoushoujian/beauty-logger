@@ -1,10 +1,10 @@
 const LOGGER_LEVEL = ["debug", "info", "warn", "error"]
-, 	isNodeJs = typeof (process) === 'object'
+	, isNodeJs = typeof (process) === 'object'
 
-let loopTimes = 0
-,	fs
-,	path
-,	deepcopy;
+var loopTimes = 0
+	, fs
+	, path
+	, deepcopy;
 
 const printFunc = {}
 
@@ -21,7 +21,9 @@ const printFunc = {}
 		const logger = function (...args) {
 			console.log(...args)
 		}
-		printFunc[log] = (...args) => logger.apply(null, [`${colors[color]}[${getTime()}] [${info.toUpperCase()}]${colors.Reset} `, ...args, isNodeJs ? colors.Reset : ""]);
+		printFunc[log] = function (...args) {
+			logger.apply(null, [`${colors[color]}[${getTime()}] [${info.toUpperCase()}]${colors.Reset} `, ...args, isNodeJs ? colors.Reset : ""])
+		}
 	});
 }
 
@@ -38,7 +40,7 @@ function dealWithItems(item, needWarn) {
 
 function formatDataType(value, needWarn) {
 	loopTimes++
-	let formattedOnes = ""
+	var formattedOnes = ""
 	try {
 		const valueType = Object.prototype.toString.call(value)
 		switch (valueType) {
@@ -77,14 +79,14 @@ function formatDataType(value, needWarn) {
 				break;
 			case '[object Set]':
 				if (needWarn) console.warn("we don't recommend to print Set directly", value)
-				formattedOnes = [...value]
+				formattedOnes = Array.from(value)
 				break;
 			case '[object Map]': {
 				if (needWarn) console.warn("we don't recommend to print Map directly", value)
 				const obj = {}
-				for (const [key, item] of value) {
+				value.forEach(function (item, key) {
 					obj[key] = item
-				}
+				})
 				formattedOnes = obj
 				break;
 			}
@@ -102,10 +104,10 @@ function getTime() {
 	const year = new Date().getFullYear();
 	const month = new Date().getMonth() + 1;
 	const day = new Date().getDate();
-	let hour = new Date().getHours();
-	let minute = new Date().getMinutes();
-	let second = new Date().getSeconds();
-	let mileSecond = new Date().getMilliseconds();
+	var hour = new Date().getHours();
+	var minute = new Date().getMinutes();
+	var second = new Date().getSeconds();
+	var mileSecond = new Date().getMilliseconds();
 	if (hour < 10) {
 		hour = "0" + hour
 	}
@@ -125,78 +127,94 @@ function getTime() {
 	return time;
 }
 
-function getLogPath(level){
-	const { enableMultipleLogFile, loggerFilePath } = this.userConfig
-	if(enableMultipleLogFile){
+function getLogPath(level) {
+	const enableMultipleLogFile = this.userConfig.enableMultipleLogFile
+	const loggerFilePath = this.userConfig.loggerFilePath
+	if (enableMultipleLogFile) {
 		return loggerFilePath[level]
 	} else {
 		return loggerFilePath
 	}
 }
 
-async function logInFile(buffer, level) {
+function logInFile(buffer, level) {
 	return checkFileState.bind(this)(level)
 		.then(writeFile.bind(this, buffer, level))
 }
 
 function checkFileState(level) {
-	// check file existed or file size
-	return new Promise((resolve) => {
-		const { logFileSize, currentProjectFolder } = this.userConfig
-		fs.stat(getLogPath.bind(this)(level), function (err, stats) {
-			if (!fs.existsSync(getLogPath.bind(this)(level))) {
-				fs.appendFileSync(getLogPath.bind(this)(level), "");
-				resolve();
-			} else {
-				// logger is async, so one logger has appendFile after next one check file state
-				if (stats && (stats.size > logFileSize)) {
-					fs.readdir(currentProjectFolder, (err, files) => {
-						const currentLogFilename = path.parse(getLogPath.bind(this)(level))['name']
-						const currentLogFileExtname = path.parse(getLogPath.bind(this)(level))['ext']
-						let currentLogFileExtnameWithoutDot
-						if(currentLogFileExtname){
-							currentLogFileExtnameWithoutDot = currentLogFileExtname.replace(".", "")
-						}
-						const fileList = files.filter(function (file) {
-							// eslint-disable-next-line no-useless-escape
-							return RegExp("^" + currentLogFilename + '[0-9]*\.*' + currentLogFileExtnameWithoutDot + "*$").test(file)
-						});
-						for (let i = fileList.length; i > 0; i--) {
-							if (i >= 10) {
-								fs.unlinkSync(currentProjectFolder + "/" + fileList[i - 1]);
-								continue;
-							}
-							fs.renameSync(currentProjectFolder + "/" + fileList[i - 1], currentLogFilename + i + currentLogFileExtname);
-							resolve();
-						}
-					});
+	// check file existed and file size
+	const self = this
+	return new Promise(function (resolve) {
+		const logFileSize = self.userConfig.logFileSize
+		const currentProjectFolder = self.userConfig.currentProjectFolder
+		if (!fs.existsSync(getLogPath.bind(self)(level))) {
+			fs.appendFileSync(getLogPath.bind(self)(level), "");
+			return resolve();
+		} else {
+			fs.stat(getLogPath.bind(self)(level), function (err, stats) {
+				if (err) {
+					console.debug("beauty-logger: checkFileState fs.stat err", err)
+					return resolve();
 				} else {
-					resolve();
+					// logger is async, so one logger has appendFile after next one check file state
+					if (stats && (stats.size > logFileSize)) {
+						fs.readdir(currentProjectFolder, function (err, files) {
+							if (err) console.debug("beauty-logger: checkFileState fs.stat fs.readdir err", err)
+							const currentLogFilename = path.parse(getLogPath.bind(self)(level))['name']
+							const currentLogFileExtname = path.parse(getLogPath.bind(self)(level))['ext']
+							var currentLogFileExtnameWithoutDot
+							if (currentLogFileExtname) {
+								currentLogFileExtnameWithoutDot = currentLogFileExtname.replace(".", "")
+							}
+							const fileList = files.filter(function (file) {
+								return RegExp("^" + currentLogFilename + '[0-9]*\.*' + currentLogFileExtnameWithoutDot + "*$").test(file)
+							});
+							for (var i = fileList.length; i > 0; i--) {
+								if (i >= 10) {
+									fs.unlinkSync(currentProjectFolder + "/" + fileList[i - 1]);
+									continue;
+								}
+								fs.renameSync(currentProjectFolder + "/" + fileList[i - 1], currentLogFilename + i + currentLogFileExtname);
+								resolve();
+							}
+						});
+					} else {
+						return resolve();
+					}
 				}
-			}
-		}.bind(this));
+			});
+		}
 	});
 }
 
 function writeFile(buffer, level) {
 	const self = this
 	return new Promise(function (res) {
-		fs.writeFileSync(getLogPath.bind(self)(level), buffer, {
+		fs.writeFile(getLogPath.bind(self)(level), buffer, {
 			flag: "a+"
+		}, function (err) {
+			if (err) console.debug("beauty-logger: writeFile err", err)
+			self.logQueue.shift()
+			res(buffer)
+			if (self.logQueue.length) {
+				const firstItem = self.logQueue[0]
+				return logInFile.call(self, firstItem.buffer, firstItem.level)
+			}
 		});
-		res(buffer);
 	})
 }
 
-function InitLogger(config) {
-	if (!config || Object.prototype.toString.call(config) === '[object Object]') {
+function InitLogger(config = {}) {
+	if (Object.prototype.toString.call(config) === '[object Object]') {
 		if (isNodeJs) {
 			fs = require('fs')
 			path = require('path')
 			deepcopy = require('./deepcopy')
-			this.userConfig = (config || {})
+			this.logQueue = []
+			this.userConfig = config
 			const currentProjectPath = process.cwd().split("node_modules")[0]
-			if(/node_modules/.test(process.cwd())){
+			if (/node_modules/.test(process.cwd())) {
 				this.userConfig.loggerFilePath = {
 					info: currentProjectPath + "info.log",
 					warn: currentProjectPath + "warn.log",
@@ -213,64 +231,77 @@ function InitLogger(config) {
 			this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
 			this.userConfig.dataTypeWarn = (typeof (this.userConfig.dataTypeWarn) === 'boolean' ? this.userConfig.dataTypeWarn : false)
 			this.userConfig.productionModel = (typeof (this.userConfig.productionModel) === 'boolean' ? this.userConfig.productionModel : false)
-			// if enableMultipleLogFile, logFilePath must be an object and will generate multiple log files, although this.userConfig.logFilePath is a string
-			this.userConfig.enableMultipleLogFile = (typeof (this.userConfig.enableMultipleLogFile) === 'boolean' ? this.userConfig.enableMultipleLogFile : false)
-			if(Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]'){
-				for(const i in this.userConfig.logFilePath){
-					if(Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)){
-						this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i]
-					}
-				}
-			}
-			if(!this.userConfig.enableMultipleLogFile){
-				if(typeof (this.userConfig.logFilePath) === 'string'){
+			this.userConfig.onlyPrintInConsole = (typeof (this.userConfig.onlyPrintInConsole) === 'boolean' ? this.userConfig.onlyPrintInConsole : false)
+			this.userConfig.enableMultipleLogFile = (typeof (this.userConfig.enableMultipleLogFile) === 'boolean' ? this.userConfig.enableMultipleLogFile : true)
+			if (!this.userConfig.enableMultipleLogFile) {
+				if (typeof (this.userConfig.logFilePath) === 'string') {
 					this.userConfig.loggerFilePath = this.userConfig.logFilePath
-				} else if(Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]'){
-					let hasLogFilePathConfig = false
-					for(const i in this.userConfig.logFilePath){
-						if(Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)){
-							if(['info', 'warn', 'error'].indexOf(i) !== -1){
-								this.userConfig.loggerFilePath = this.userConfig.logFilePath[i]
-								hasLogFilePathConfig = true
-								break;
-							}
+				} else if (typeof this.userConfig.logFilePath === "undefined") {
+					this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
+				} else {
+					throw new Error("beauty-logger: if enableMultipleLogFile is false, logFilePath must be a string")
+				}
+			} else {
+				if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
+					for (const i in this.userConfig.logFilePath) {
+						if (Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)) {
+							this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i]
 						}
 					}
-					if(!hasLogFilePathConfig) this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
-				} else {
+				} else if (typeof this.userConfig.logFilePath === "undefined") {
 					this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
+				} else {
+					throw new Error("beauty-logger: if enableMultipleLogFile is true, logFilePath must be an object or empty")
 				}
 			}
-			if(!global.beautyLogger){
+			if (!global.beautyLogger) {
 				global.beautyLogger = {}
 				global.beautyLogger.userConfig = []
 			}
 			global.beautyLogger.userConfig.push(this.userConfig)
+			global.beautyLogger.userConfig.push(this.logQueue)
 		}
 	} else {
-		throw new Error("beauty-logger config must be an object")
+		throw new Error("beauty-logger: config must be an object or empty")
 	}
 }
 
-function loggerInFile(level, data = "", ...args) {
+function loggerInFile(level, data = "") {
 	if (isNodeJs) {
-		const { productionModel, dataTypeWarn } = this.userConfig
-		if(!productionModel) printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
-		if (level === "debug") return
+		const productionModel = this.userConfig.productionModel
+		const dataTypeWarn = this.userConfig.dataTypeWarn
+		const onlyPrintInConsole = this.userConfig.onlyPrintInConsole
+		if (!productionModel) printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
+		if (level === "debug" || onlyPrintInConsole) return
 		loopTimes = 0
-		let dist = deepcopy(data);
+		var dist = deepcopy(data);
 		dist = JSON.stringify(dist, function (key, value) {
 			return formatDataType(value, dataTypeWarn)
 		}, 4)
-		let extend = [];
+		var extend = [];
+		const args = Array.prototype.slice.call(arguments).slice(2)
 		if (args.length) {
-			extend = args.map(item => dealWithItems(item, dataTypeWarn));
+			extend = args.map(function (item) {
+				return dealWithItems(item, dataTypeWarn)
+			});
 			if (extend.length) {
 				extend = `  [ext] ${extend.join("")}`;
 			}
 		}
 		const content = `${dist} ${extend} \r\n`;
-		return logInFile.bind(this)(`[${getTime()}]  [${level.toUpperCase()}]  ${content}`, level);
+		const buffer = `[${getTime()}]  [${level.toUpperCase()}]  ${content}`
+		if (this.logQueue.length) {
+			this.logQueue.push({
+				level,
+				buffer
+			})
+			return Promise.resolve(buffer)
+		}
+		this.logQueue.push({
+			level,
+			buffer
+		})
+		return logInFile.call(this, buffer, level);
 	} else {
 		printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
 	}
