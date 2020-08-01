@@ -214,18 +214,10 @@ function InitLogger(config = {}) {
 			this.logQueue = []
 			this.userConfig = config
 			const currentProjectPath = process.cwd().split("node_modules")[0]
-			if (/node_modules/.test(process.cwd())) {
-				this.userConfig.loggerFilePath = {
-					info: currentProjectPath + "info.log",
-					warn: currentProjectPath + "warn.log",
-					error: currentProjectPath + "error.log",
-				}
-			} else {
-				this.userConfig.loggerFilePath = {
-					info: path.join(__dirname, "./info.log"),
-					warn: path.join(__dirname, "./warn.log"),
-					error: path.join(__dirname, "./error.log"),
-				}
+			this.userConfig.loggerFilePath = {
+				info: currentProjectPath + "info.log",
+				warn: currentProjectPath + "warn.log",
+				error: currentProjectPath + "error.log",
 			}
 			this.userConfig.currentProjectFolder = currentProjectPath
 			this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
@@ -249,7 +241,7 @@ function InitLogger(config = {}) {
 						}
 					}
 				} else if (typeof this.userConfig.logFilePath === "undefined") {
-					this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
+					//use default value
 				} else {
 					throw new Error("beauty-logger: if enableMultipleLogFile is true, logFilePath must be an object or empty")
 				}
