@@ -215,9 +215,9 @@ function InitLogger(config = {}) {
 			this.userConfig = config
 			const currentProjectPath = process.cwd().split("node_modules")[0]
 			this.userConfig.loggerFilePath = {
-				info: currentProjectPath + "info.log",
-				warn: currentProjectPath + "warn.log",
-				error: currentProjectPath + "error.log",
+				info: currentProjectPath + "/INFO.log",
+				warn: currentProjectPath + "/WARN.log",
+				error: currentProjectPath + "/ERROR.log",
 			}
 			this.userConfig.currentProjectFolder = currentProjectPath
 			this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
