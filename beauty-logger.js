@@ -148,38 +148,43 @@ function checkFileState(level) {
 	return new Promise(function (resolve) {
 		const logFileSize = self.userConfig.logFileSize
 		const currentProjectFolder = self.userConfig.currentProjectFolder
-		return fs.stat(getLogPath.bind(self)(level), function (err, stats) {
-			if (err) {
-				console.debug("beauty-logger: checkFileState fs.stat err", err)
-				return resolve();
-			} else {
-				// logger is async, so one logger has appendFile after next one check file state
-				if (stats && (stats.size > logFileSize)) {
-					fs.readdir(currentProjectFolder, function (err, files) {
-						if (err) console.debug("beauty-logger: checkFileState fs.stat fs.readdir err", err)
-						const currentLogFilename = path.parse(getLogPath.bind(self)(level))['name']
-						const currentLogFileExtname = path.parse(getLogPath.bind(self)(level))['ext']
-						var currentLogFileExtnameWithoutDot
-						if (currentLogFileExtname) {
-							currentLogFileExtnameWithoutDot = currentLogFileExtname.replace(".", "")
-						}
-						const fileList = files.filter(function (file) {
-							return RegExp("^" + currentLogFilename + '[0-9]*\.*' + currentLogFileExtnameWithoutDot + "*$").test(file)
-						});
-						for (var i = fileList.length; i > 0; i--) {
-							if (i >= 10) {
-								fs.unlinkSync(currentProjectFolder + "/" + fileList[i - 1]);
-								continue;
-							}
-							fs.renameSync(currentProjectFolder + "/" + fileList[i - 1], currentLogFilename + i + currentLogFileExtname);
-							resolve();
-						}
-					});
-				} else {
+		if (!fs.existsSync(getLogPath.bind(self)(level))) {
+			fs.appendFileSync(getLogPath.bind(self)(level), "");
+			return resolve();
+		} else {
+			return fs.stat(getLogPath.bind(self)(level), function (err, stats) {
+				if (err) {
+					console.debug("beauty-logger: checkFileState fs.stat err", err)
 					return resolve();
+				} else {
+					// logger is async, so one logger has appendFile after next one check file state
+					if (stats && (stats.size > logFileSize)) {
+						fs.readdir(currentProjectFolder, function (err, files) {
+							if (err) console.debug("beauty-logger: checkFileState fs.stat fs.readdir err", err)
+							const currentLogFilename = path.parse(getLogPath.bind(self)(level))['name']
+							const currentLogFileExtname = path.parse(getLogPath.bind(self)(level))['ext']
+							var currentLogFileExtnameWithoutDot
+							if (currentLogFileExtname) {
+								currentLogFileExtnameWithoutDot = currentLogFileExtname.replace(".", "")
+							}
+							const fileList = files.filter(function (file) {
+								return RegExp("^" + currentLogFilename + '[0-9]*\.*' + currentLogFileExtnameWithoutDot + "*$").test(file)
+							});
+							for (var i = fileList.length; i > 0; i--) {
+								if (i >= 10) {
+									fs.unlinkSync(currentProjectFolder + "/" + fileList[i - 1]);
+									continue;
+								}
+								fs.renameSync(currentProjectFolder + "/" + fileList[i - 1], currentLogFilename + i + currentLogFileExtname);
+								resolve();
+							}
+						});
+					} else {
+						return resolve();
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 }
 
