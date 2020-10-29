@@ -208,62 +208,66 @@ function writeFile(buffer, level) {
 function InitLogger(config = {}) {
 	if (Object.prototype.toString.call(config) === '[object Object]') {
 		if (isNodeJs) {
-			fs = require('fs')
-			path = require('path')
-			deepcopy = require('./deepcopy')
-			this.logQueue = []
-			this.userConfig = config
-			const currentProjectPath = process.cwd().split("node_modules")[0]
-			this.userConfig.loggerFilePath = {
-				info: currentProjectPath + "/INFO.log",
-				warn: currentProjectPath + "/WARN.log",
-				error: currentProjectPath + "/ERROR.log",
-			}
-			this.userConfig.currentProjectFolder = currentProjectPath
-			this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
-			this.userConfig.dataTypeWarn = (typeof (this.userConfig.dataTypeWarn) === 'boolean' ? this.userConfig.dataTypeWarn : false)
-			this.userConfig.productionModel = (typeof (this.userConfig.productionModel) === 'boolean' ? this.userConfig.productionModel : false)
-			this.userConfig.onlyPrintInConsole = (typeof (this.userConfig.onlyPrintInConsole) === 'boolean' ? this.userConfig.onlyPrintInConsole : false)
-			this.userConfig.enableMultipleLogFile = (typeof (this.userConfig.enableMultipleLogFile) === 'boolean' ? this.userConfig.enableMultipleLogFile : true)
-			if (!this.userConfig.enableMultipleLogFile) {
-				if (typeof (this.userConfig.logFilePath) === 'string') {
-					this.userConfig.loggerFilePath = this.userConfig.logFilePath
-				} else if (typeof this.userConfig.logFilePath === "undefined") {
-					this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
-				} else {
-					throw new Error("beauty-logger: if enableMultipleLogFile is false, logFilePath must be a string")
+			try {
+				fs = require('fs')
+				path = require('path')
+				deepcopy = require('./deepcopy')
+				this.logQueue = []
+				this.userConfig = config
+				const currentProjectPath = process.cwd().split("node_modules")[0]
+				this.userConfig.loggerFilePath = {
+					info: currentProjectPath + "/INFO.log",
+					warn: currentProjectPath + "/WARN.log",
+					error: currentProjectPath + "/ERROR.log",
 				}
-			} else {
-				if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
-					for (const i in this.userConfig.logFilePath) {
-						if (Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)) {
-							this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i]
-						}
+				this.userConfig.currentProjectFolder = currentProjectPath
+				this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
+				this.userConfig.dataTypeWarn = (typeof (this.userConfig.dataTypeWarn) === 'boolean' ? this.userConfig.dataTypeWarn : false)
+				this.userConfig.productionModel = (typeof (this.userConfig.productionModel) === 'boolean' ? this.userConfig.productionModel : false)
+				this.userConfig.onlyPrintInConsole = (typeof (this.userConfig.onlyPrintInConsole) === 'boolean' ? this.userConfig.onlyPrintInConsole : false)
+				this.userConfig.enableMultipleLogFile = (typeof (this.userConfig.enableMultipleLogFile) === 'boolean' ? this.userConfig.enableMultipleLogFile : true)
+				if (!this.userConfig.enableMultipleLogFile) {
+					if (typeof (this.userConfig.logFilePath) === 'string') {
+						this.userConfig.loggerFilePath = this.userConfig.logFilePath
+					} else if (typeof this.userConfig.logFilePath === "undefined") {
+						this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
+					} else {
+						throw new Error("beauty-logger: if enableMultipleLogFile is false, logFilePath must be a string")
 					}
-				} else if (typeof this.userConfig.logFilePath === "undefined") {
-					//use default value
 				} else {
-					throw new Error("beauty-logger: if enableMultipleLogFile is true, logFilePath must be an object or empty")
-				}
-			}
-			if (!global.beautyLogger) {
-				global.beautyLogger = {}
-				global.beautyLogger.userConfig = []
-			}
-			global.beautyLogger.userConfig.push(this.userConfig)
-			global.beautyLogger.userConfig.push(this.logQueue)
-			if (typeof this.userConfig.loggerFilePath === 'string') {
-				if (!fs.existsSync(this.userConfig.loggerFilePath)) {
-					fs.appendFileSync(this.userConfig.loggerFilePath, "");
-				}
-			} else {
-				for (const i in this.userConfig.loggerFilePath) {
-					if (Object.prototype.hasOwnProperty.call(this.userConfig.loggerFilePath, i)) {
-						if (!fs.existsSync(this.userConfig.loggerFilePath[i])) {
-							fs.appendFileSync(this.userConfig.loggerFilePath[i], "");
+					if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
+						for (const i in this.userConfig.logFilePath) {
+							if (Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)) {
+								this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i]
+							}
 						}
+					} else if (typeof this.userConfig.logFilePath === "undefined") {
+						//use default value
+					} else {
+						throw new Error("beauty-logger: if enableMultipleLogFile is true, logFilePath must be an object or empty")
 					}
 				}
+				if (!global.beautyLogger) {
+					global.beautyLogger = {}
+					global.beautyLogger.userConfig = []
+				}
+				global.beautyLogger.userConfig.push(this.userConfig)
+				global.beautyLogger.userConfig.push(this.logQueue)
+				if (typeof this.userConfig.loggerFilePath === 'string') {
+					if (!fs.existsSync(this.userConfig.loggerFilePath)) {
+						fs.appendFileSync(this.userConfig.loggerFilePath, "");
+					}
+				} else {
+					for (const i in this.userConfig.loggerFilePath) {
+						if (Object.prototype.hasOwnProperty.call(this.userConfig.loggerFilePath, i)) {
+							if (!fs.existsSync(this.userConfig.loggerFilePath[i])) {
+								fs.appendFileSync(this.userConfig.loggerFilePath[i], "");
+							}
+						}
+					}
+				}
+			} catch (err) {
+				console.error('beauty-logger: err', err)
 			}
 		}
 	} else {
