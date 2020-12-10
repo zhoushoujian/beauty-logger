@@ -3,3 +3,7 @@ package-lock.json
 server.log
 launch.json
 server*.log
+INFO.log
+WARN.log
+ERROR.log
+userActivity.log

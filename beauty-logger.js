@@ -32,7 +32,7 @@ function dealWithItems(item, needWarn) {
 		const dist = deepcopy(item);
 		return JSON.stringify(dist, function (key, value) {
 			return formatDataType(value, needWarn)
-		}, 4)
+		}, 2)
 	} catch (err) {
 		return Object.prototype.toString.call(item)
 	}
