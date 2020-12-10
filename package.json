@@ -13,11 +13,13 @@
 	"description": "A beautiful logger system for both nodejs and browser",
 	"devDependencies": {
 		"babel-eslint": "^10.1.0",
-		"eslint": "^7.3.0"
+		"eslint": "^7.3.0",
+		"shelljs": "^0.8.4"
 	},
 	"scripts": {
 		"test": "node node_test.js ",
-		"eslint": "eslint beauty-logger.js"
+		"eslint": "eslint beauty-logger.js",
+		"publishToNpm": "node publish.js"
 	},
 	"dependencies": {},
 	"homepage": "https://github.com/zhoushoujian/beauty-logger",
