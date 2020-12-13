@@ -7,3 +7,4 @@ INFO.log
 WARN.log
 ERROR.log
 userActivity.log
+*.log

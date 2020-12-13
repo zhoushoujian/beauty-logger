@@ -69,8 +69,8 @@ console.time("time")
 	logger1.error(func);
 	logger1.info(fun)
 	logger1.info(symbol)
-	logger1.info(set)
-	logger1.info(map)
+	logger1.log(set)
+	logger1.log(map)
 }
 
 console.log("*********************logger config info***************************************");
@@ -88,8 +88,8 @@ console.log("global.beautyLogger", global.beautyLogger)
 	logger2.error("func", func);
 	logger2.info("fun", fun)
 	logger2.info("symbol", symbol)
-	logger2.info("set", set)
-	logger2.info("map", map)
+	logger2.log("set", set)
+	logger2.log("map", map)
 }
 
 // console.log("global.beautyLogger", global.beautyLogger)
@@ -98,6 +98,6 @@ console.timeEnd("time")
 
 logger2.info("0123456789")
 	.then((result => {
-		console.log("aaaa", result)
+		logger2.log("aaaa", result)
 	}))
 

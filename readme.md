@@ -1,8 +1,12 @@
 # beauty-logger
 
-[中文](https://github.com/zhoushoujian/beauty-logger/blob/master/readme_zh.md)
+[ENGLISH] | [中文](https://github.com/zhoushoujian/beauty-logger/blob/master/readme_zh.md)
 
 ```A beautiful logger system for both nodejs and browser```
+
+## Tip
+
+For browser logger, it's better to use [logger-for-cannot-duplicate](https://github.com/zhoushoujian/logger-for-cannot-duplicate)
 
 ## Usage
 
@@ -42,6 +46,14 @@ logger2.info("logger2", "beauty-logger"); // [2020-2-2 22:13:54.551]  [INFO]  lo
 console.log("logger2", logger2);
 ```
 
+## Apis
+
+1. logger.debug
+2. logger.info
+3. logger.warn
+4. logger.error
+5. logger.log
+
 ## Test
 
 ```shell
@@ -72,7 +84,7 @@ npm run test
 
 11. Reserve data type which is in console, only stringify data which will be written to file.
 
-12. Only support logger.debug, logger.info, logger.warn and logger.error
+12. Only support logger.debug, logger.info, logger.warn, logger.error and logger.log
 
 13. Support nodejs at least 6.x
 

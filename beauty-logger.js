@@ -1,4 +1,4 @@
-const LOGGER_LEVEL = ["debug", "info", "warn", "error"]
+const LOGGER_LEVEL = ["debug", "info", "warn", "error", "log"]
 	, isNodeJs = typeof (process) === 'object'
 
 var loopTimes = 0
@@ -16,7 +16,7 @@ const printFunc = {}
 		FgYellow: isNodeJs ? "\x1b[33m" : "\x1b[43m",
 		FgBlue: "\x1b[34m"
 	};
-	"debug:debug:FgBlue,info:info:FgGreen,warn:warn:FgYellow,error:error:FgRed".split(",").forEach(function (logColor) {
+	"debug:debug:FgBlue,info:info:FgGreen,warn:warn:FgYellow,error:error:FgRed,log:log:FgGreen".split(",").forEach(function (logColor) {
 		const [log, info, color] = logColor.split(':');
 		const logger = function (...args) {
 			console.log(...args)
@@ -211,7 +211,7 @@ function InitLogger(config = {}) {
 			try {
 				fs = require('fs')
 				path = require('path')
-				deepcopy = require('./deepcopy')
+				deepcopy = require('deepcopy')
 				this.logQueue = []
 				this.userConfig = config
 				const currentProjectPath = process.cwd().split("node_modules")[0]
@@ -219,6 +219,7 @@ function InitLogger(config = {}) {
 					info: currentProjectPath + "/INFO.log",
 					warn: currentProjectPath + "/WARN.log",
 					error: currentProjectPath + "/ERROR.log",
+					log: currentProjectPath + "/LOG.log",
 				}
 				this.userConfig.currentProjectFolder = currentProjectPath
 				this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)

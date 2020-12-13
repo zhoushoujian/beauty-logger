@@ -1,6 +1,12 @@
 # beauty-logger
 
+[中文] | [ENGLISH](https://github.com/zhoushoujian/beauty-logger/blob/master/readme.md)
+
 ```一款漂亮的nodejs和前端日志系统```
+
+## 提示
+
+对于浏览器的logger,最好使用[logger-for-cannot-duplicate](https://github.com/zhoushoujian/logger-for-cannot-duplicate)
 
 ## 用法
 
@@ -40,6 +46,14 @@ logger2.info("logger2", "beauty-logger"); // [2020-2-2 22:13:54.551]  [INFO]  lo
 console.log("logger2", logger2);
 ```
 
+## Apis
+
+1. logger.debug
+2. logger.info
+3. logger.warn
+4. logger.error
+5. logger.log
+
 ## Test
 
 ```shell
@@ -47,6 +61,7 @@ npm run test
 ```
 
 ## 功能
+
 1. 支持用户自己一日志文件切片大小和日志路径
 
 2. 只有logger.debug不会输出到日志文件，所有级别的日志都可以打印到控制台
