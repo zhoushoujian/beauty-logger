@@ -1,0 +1,60 @@
+[2021-1-5 10:24:22.102]  [WARN]  "arr"   [ext] [
+  {
+    "a": {
+      "e": {
+        "f": "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"
+      }
+    },
+    "b": [
+      2,
+      7,
+      [
+        1,
+        5,
+        6
+      ]
+    ],
+    "c": {
+      "D": {
+        "g": 1,
+        "h": {
+          "i": "undefined"
+        }
+      }
+    }
+  },
+  "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}",
+  [
+    2,
+    7,
+    [
+      1,
+      5,
+      6
+    ]
+  ]
+] 
+[2021-1-5 10:24:22.104]  [WARN]  "obj"   [ext] {
+  "a": {
+    "e": {
+      "f": "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"
+    }
+  },
+  "b": [
+    2,
+    7,
+    [
+      1,
+      5,
+      6
+    ]
+  ],
+  "c": {
+    "D": {
+      "g": 1,
+      "h": {
+        "i": "undefined"
+      }
+    }
+  }
+} 

@@ -1,8 +1,14 @@
+const fs = require('fs')
 const path = require("path")
 const Logger = require("./beauty-logger");
+
+if (!fs.existsSync(path.join(__dirname, "./logs"))) {
+    fs.mkdirSync(path.join(__dirname, "./logs"));
+}
+
 const logger1 = new Logger({
 	logFileSize: 1024 * 1024 * 5,
-	logFilePath: path.join(__dirname, "./userActivity.log"),
+	logFilePath: path.join(__dirname, "./logs/userActivity.log"),
 	dataTypeWarn: false,
 	productionModel: false,
 	onlyPrintInConsole: false,
@@ -11,9 +17,10 @@ const logger1 = new Logger({
 const logger2 = new Logger({
 	logFileSize: 1024 * 1024 * 10,
 	logFilePath: {
-		info: path.join(__dirname, "./INFO.log"),
-		warn: path.join(__dirname, "./WARN.log"),
-		error: path.join(__dirname, "./ERROR.log"),
+		info: path.join(__dirname, "./logs/INFO.log"),
+		warn: path.join(__dirname, "./logs/WARN.log"),
+		error: path.join(__dirname, "./logs/ERROR.log"),
+		log: path.join(__dirname, "./logs/LOG.log"),
 	},
 	dataTypeWarn: true,
 	productionModel: false,
