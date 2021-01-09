@@ -324,12 +324,12 @@ LOGGER_LEVEL.forEach(function (level) {
 })
 
 // Export to popular environments boilerplate.
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = InitLogger;
 // eslint-disable-next-line no-undef
-if (typeof define === 'function' && define.amd) {
+} else if (typeof define === 'function' && define.amd) {
 	// eslint-disable-next-line no-undef
 	define(InitLogger);
-} else if (typeof module !== 'undefined' && module.exports) {
-	module.exports = InitLogger;
 } else {
 	InitLogger._prevLogger = this.InitLogger;
 
