@@ -3,7 +3,7 @@ const path = require("path")
 const Logger = require("./beauty-logger");
 
 if (!fs.existsSync(path.join(__dirname, "./logs"))) {
-    fs.mkdirSync(path.join(__dirname, "./logs"));
+	fs.mkdirSync(path.join(__dirname, "./logs"));
 }
 
 const logger1 = new Logger({
@@ -57,7 +57,7 @@ const obj = {
 	}
 };
 const arr = [obj, func, arr2];
-const fun = obj.a.e.f(1,2)
+const fun = obj.a.e.f(1, 2)
 const symbol = Symbol('symbol')
 const set = new Set(arr2)
 const map = new Map([['title', 'hello world'], ['year', '2020']]);

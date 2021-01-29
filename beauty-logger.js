@@ -1,5 +1,5 @@
 const LOGGER_LEVEL = ["debug", "info", "warn", "error", "log"]
-	, isNodeJs = typeof (process) === 'object'
+	, isNodeJs = typeof process === 'object'
 
 var loopTimes = 0
 	, fs
@@ -32,7 +32,7 @@ function dealWithItems(item, needWarn) {
 		const dist = deepcopy(item);
 		return JSON.stringify(dist, function (key, value) {
 			return formatDataType(value, needWarn)
-		}, 2)
+		}, 0)
 	} catch (err) {
 		return Object.prototype.toString.call(item)
 	}
@@ -222,31 +222,24 @@ function InitLogger(config = {}) {
 					log: currentProjectPath + "/LOG.log",
 				}
 				this.userConfig.currentProjectFolder = currentProjectPath
-				this.userConfig.logFileSize = (typeof (this.userConfig.logFileSize) === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
-				this.userConfig.dataTypeWarn = (typeof (this.userConfig.dataTypeWarn) === 'boolean' ? this.userConfig.dataTypeWarn : false)
-				this.userConfig.productionModel = (typeof (this.userConfig.productionModel) === 'boolean' ? this.userConfig.productionModel : false)
-				this.userConfig.onlyPrintInConsole = (typeof (this.userConfig.onlyPrintInConsole) === 'boolean' ? this.userConfig.onlyPrintInConsole : false)
-				this.userConfig.enableMultipleLogFile = (typeof (this.userConfig.enableMultipleLogFile) === 'boolean' ? this.userConfig.enableMultipleLogFile : true)
-				if (!this.userConfig.enableMultipleLogFile) {
-					if (typeof (this.userConfig.logFilePath) === 'string') {
-						this.userConfig.loggerFilePath = this.userConfig.logFilePath
-					} else if (typeof this.userConfig.logFilePath === "undefined") {
-						this.userConfig.loggerFilePath = (this.userConfig.currentProjectFolder + "/server.log")
-					} else {
-						throw new Error("beauty-logger: if enableMultipleLogFile is false, logFilePath must be a string")
-					}
-				} else {
-					if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
-						for (const i in this.userConfig.logFilePath) {
-							if (Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)) {
-								this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i]
-							}
+				this.userConfig.logFileSize = (typeof this.userConfig.logFileSize === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10)
+				this.userConfig.dataTypeWarn = (typeof this.userConfig.dataTypeWarn === 'boolean' ? this.userConfig.dataTypeWarn : false)
+				this.userConfig.productionModel = (typeof this.userConfig.productionModel === 'boolean' ? this.userConfig.productionModel : false)
+				this.userConfig.onlyPrintInConsole = (typeof this.userConfig.onlyPrintInConsole === 'boolean' ? this.userConfig.onlyPrintInConsole : false)
+				if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
+					for (const i in this.userConfig.logFilePath) {
+						if (Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)) {
+							this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i]
 						}
-					} else if (typeof this.userConfig.logFilePath === "undefined") {
-						//use default value
-					} else {
-						throw new Error("beauty-logger: if enableMultipleLogFile is true, logFilePath must be an object or empty")
 					}
+					this.userConfig.enableMultipleLogFile = true;
+				} else if (typeof (this.userConfig.logFilePath) === 'string') {
+					this.userConfig.loggerFilePath = this.userConfig.logFilePath
+					this.userConfig.enableMultipleLogFile = false
+				} else if (typeof this.userConfig.logFilePath === "undefined") {
+					//use default value
+				} else {
+					throw new Error("beauty-logger: if enableMultipleLogFile is true, logFilePath must be an object or empty")
 				}
 				if (!global.beautyLogger) {
 					global.beautyLogger = {}
@@ -287,7 +280,7 @@ function loggerInFile(level, data = "") {
 		var dist = deepcopy(data);
 		dist = JSON.stringify(dist, function (key, value) {
 			return formatDataType(value, dataTypeWarn)
-		}, 4)
+		}, 0)
 		var extend = [];
 		const args = Array.prototype.slice.call(arguments).slice(2)
 		if (args.length) {

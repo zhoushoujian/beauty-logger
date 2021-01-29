@@ -1,79 +1,10 @@
-[2021-1-5 10:24:22.021]  [INFO]  false  
-[2021-1-5 10:24:22.023]  [INFO]  null  
-[2021-1-5 10:24:22.038]  [WARN]  [
-    {
-        "a": {
-            "e": {
-                "f": "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"
-            }
-        },
-        "b": [
-            2,
-            7,
-            [
-                1,
-                5,
-                6
-            ]
-        ],
-        "c": {
-            "D": {
-                "g": 1,
-                "h": {
-                    "i": "undefined"
-                }
-            }
-        }
-    },
-    "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}",
-    [
-        2,
-        7,
-        [
-            1,
-            5,
-            6
-        ]
-    ]
-]  
-[2021-1-5 10:24:22.039]  [WARN]  {
-    "a": {
-        "e": {
-            "f": "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"
-        }
-    },
-    "b": [
-        2,
-        7,
-        [
-            1,
-            5,
-            6
-        ]
-    ],
-    "c": {
-        "D": {
-            "g": 1,
-            "h": {
-                "i": "undefined"
-            }
-        }
-    }
-}  
-[2021-1-5 10:24:22.040]  [ERROR]  ""  
-[2021-1-5 10:24:22.050]  [ERROR]  "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"  
-[2021-1-5 10:24:22.051]  [INFO]  3  
-[2021-1-5 10:24:22.052]  [INFO]  "Symbol(symbol)"  
-[2021-1-5 10:24:22.053]  [LOG]  [
-    2,
-    7,
-    [
-        1,
-        5,
-        6
-    ]
-]  
-[2021-1-5 10:24:22.054]  [LOG]  {
-    "title": "hello world",
-    "year": "2020"
-}  
+[2021-1-29 13:57:54.328]  [INFO]  false  
+[2021-1-29 13:57:54.330]  [INFO]  null  
+[2021-1-29 13:57:54.334]  [WARN]  [{"a":{"e":{"f":"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}",[2,7,[1,5,6]]]  
+[2021-1-29 13:57:54.336]  [WARN]  {"a":{"e":{"f":"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}}  
+[2021-1-29 13:57:54.337]  [ERROR]  ""  
+[2021-1-29 13:57:54.337]  [ERROR]  "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"  
+[2021-1-29 13:57:54.338]  [INFO]  3  
+[2021-1-29 13:57:54.338]  [INFO]  "Symbol(symbol)"  
+[2021-1-29 13:57:54.339]  [LOG]  [2,7,[1,5,6]]  
+[2021-1-29 13:57:54.339]  [LOG]  {"title":"hello world","year":"2020"}  

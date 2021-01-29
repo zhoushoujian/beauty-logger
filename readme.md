@@ -28,8 +28,6 @@ const logger1 = new Logger({
   productionModel: false, 
   //only print log in console, default: false
   onlyPrintInConsole: false, 
-  //enable log file with log level, default: true
-  enableMultipleLogFile: true, 
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,
@@ -38,7 +36,6 @@ const logger2 = new Logger({
   dataTypeWarn: true,
   productionModel: false,
   onlyPrintInConsole: false,
-  enableMultipleLogFile: false,
 });
 logger1.info("logger1", "beauty-logger"); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
 console.log("logger1", logger1);
@@ -76,7 +73,7 @@ npm run test
 
 7. Enable productionModel will not print log to console, it will be fast for program in production environment.
 
-8. In default, it will log file by log level and it will log into multiple different kinds of files, if set enableMultipleLogFile to false, beauty-logger will print all logs to one file, at the same time, you should specify logFilePath as a path string.
+8. In default, it will log file by log level and it will log into multiple different kinds of files, if you should specify logFilePath as a path string, beauty-logger will print all logs to one file.
 
 9. Support new multiple beauty-logger instance to log different files.
 

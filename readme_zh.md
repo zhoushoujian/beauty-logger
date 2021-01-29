@@ -28,8 +28,6 @@ const logger1 = new Logger({
   productionModel: false, 
   //仅在控制台打印，默认：false
   onlyPrintInConsole: false, 
-  //启用日志级别打印多文件，默认：true
-  enableMultipleLogFile: true, 
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,
@@ -38,7 +36,6 @@ const logger2 = new Logger({
   dataTypeWarn: true,
   productionModel: false,
   onlyPrintInConsole: false,
-  enableMultipleLogFile: false,
 });
 logger1.info("logger1", "beauty-logger"); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
 console.log("logger1", logger1);
@@ -74,10 +71,9 @@ npm run test
 
 6. 虽然我们支持直接打印函数、Set、Map和Symbol，但是我们依然不推荐在没有任何转换的前提下打印它，并且会给你一个警告来提醒你假如你设置dataTypeWarn为true
 
-
 7. 启用productionModel将不再打印日志到控制台，程序会运行的很快当项目运行在生产环境上
 
-8. 默认情况，程序将按日志等级分别打印到多个文件里，假如设置enableMultipleLogFile为false，beauty-logger将会打印所有日志到同一个文件，同时你应该制定日志文件的地址
+8. 默认情况，程序将按日志等级分别打印到多个文件里，假如你应该指定日志文件的地址为字符串类型，beauty-logger将会打印所有日志到同一个文件
 
 9. 支持多实例beauty-logger打印不同的文件
 
