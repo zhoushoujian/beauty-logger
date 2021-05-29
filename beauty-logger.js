@@ -22,7 +22,7 @@ const printFunc = {}
 			console.log(...args)
 		}
 		printFunc[log] = function (...args) {
-			logger.apply(null, [`${colors[color]}[${getTime()}] [${info.toUpperCase()}]${colors.Reset} `, ...args, isNodeJs ? colors.Reset : ""])
+			logger.apply(null, [`${colors[color]}[${getTime()}] [${info.toUpperCase()}] ${isNodeJs ? `[${process.pid}]` : ""} ${colors.Reset} `, ...args, isNodeJs ? colors.Reset : ""])
 		}
 	});
 }
@@ -292,7 +292,7 @@ function loggerInFile(level, data = "") {
 			}
 		}
 		const content = `${dist} ${extend} \r\n`;
-		const buffer = `[${getTime()}]  [${level.toUpperCase()}]  ${content}`
+		const buffer = `[${getTime()}]  [${level.toUpperCase()}] [${process.pid}] ${content}`
 		if (this.logQueue.length) {
 			this.logQueue.push({
 				level,

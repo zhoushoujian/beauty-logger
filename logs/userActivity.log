@@ -1,10 +1,10 @@
-[2021-1-29 13:57:54.328]  [INFO]  false  
-[2021-1-29 13:57:54.330]  [INFO]  null  
-[2021-1-29 13:57:54.334]  [WARN]  [{"a":{"e":{"f":"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}",[2,7,[1,5,6]]]  
-[2021-1-29 13:57:54.336]  [WARN]  {"a":{"e":{"f":"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}}  
-[2021-1-29 13:57:54.337]  [ERROR]  ""  
-[2021-1-29 13:57:54.337]  [ERROR]  "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"  
-[2021-1-29 13:57:54.338]  [INFO]  3  
-[2021-1-29 13:57:54.338]  [INFO]  "Symbol(symbol)"  
-[2021-1-29 13:57:54.339]  [LOG]  [2,7,[1,5,6]]  
-[2021-1-29 13:57:54.339]  [LOG]  {"title":"hello world","year":"2020"}  
+[2021-5-29 20:55:25.608]  [INFO] [10468] false  
+[2021-5-29 20:55:25.609]  [INFO] [10468] null  
+[2021-5-29 20:55:25.614]  [WARN] [10468] [{"a":{"e":{"f":"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}",[2,7,[1,5,6]]]  
+[2021-5-29 20:55:25.617]  [WARN] [10468] {"a":{"e":{"f":"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}}  
+[2021-5-29 20:55:25.617]  [ERROR] [10468] ""  
+[2021-5-29 20:55:25.618]  [ERROR] [10468] "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"  
+[2021-5-29 20:55:25.618]  [INFO] [10468] 3  
+[2021-5-29 20:55:25.619]  [INFO] [10468] "Symbol(symbol)"  
+[2021-5-29 20:55:25.620]  [LOG] [10468] [2,7,[1,5,6]]  
+[2021-5-29 20:55:25.621]  [LOG] [10468] {"title":"hello world","year":"2020"}  

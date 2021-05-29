@@ -73,7 +73,7 @@ npm run test
 
 7. Enable productionModel will not print log to console, it will be fast for program in production environment.
 
-8. In default, it will log file by log level and it will log into multiple different kinds of files, if you should specify logFilePath as a path string, beauty-logger will print all logs to one file.
+8. In default, it will log file by log level and it will log into multiple different kinds of files, if you specify logFilePath as a path string, beauty-logger will print all logs to one file.
 
 9. Support new multiple beauty-logger instance to log different files.
 
