@@ -9,7 +9,7 @@ function getNpmConfig() {
 }
 
 function changeNpmConfig() {
-  console.log('正在临时关闭淘宝镜像');
+  console.log('正在临时关闭代理');
   return executeCmd('npm config set registry=https://registry.npmjs.org', '暂时关闭淘宝镜像');
 }
 
@@ -31,8 +31,8 @@ function executeCmd(cmd, logInfo) {
       if (logInfo === 'changeNpmConfig' && !data.includes('registry.npmjs.org')) {
         useTaobaoMirror = true;
         cancelChangeNpmConfig = () => {
-          shell.exec('npm config set registry=http://registry.npm.taobao.org/');
-          console.log('重新设置淘宝镜像');
+          shell.exec('npm config set registry=http://npm.kylin.shuyun.com/');
+          console.log('重新设置代理');
         };
       }
     });
