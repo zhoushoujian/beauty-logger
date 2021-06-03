@@ -312,8 +312,9 @@ function loggerInFile(level, data = '') {
     }
 }
 LOGGER_LEVEL.forEach(function (level) {
-    InitLogger.prototype[level] = function (data) {
-        return loggerInFile.bind(this)(level, data);
+    InitLogger.prototype[level] = function (data, ...args) {
+        //@ts-ignore
+        return loggerInFile.bind(this)(level, data, ...args);
     };
 });
 // Export to popular environments boilerplate.
