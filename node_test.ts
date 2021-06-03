@@ -1,7 +1,8 @@
 /* eslint-disable no-lone-blocks */
+export {};
 const fs = require('fs');
 const path = require('path');
-const Logger = require('./beauty-logger.ts');
+const Logger = require('./beauty-logger.js');
 
 if (!fs.existsSync(path.join(__dirname, './logs'))) {
   fs.mkdirSync(path.join(__dirname, './logs'));

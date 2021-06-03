@@ -1,56 +1,8 @@
 "use strict";
-const ErrorStackParser = require('error-stack-parser');
+Object.defineProperty(exports, "__esModule", { value: true });
+const { dealWithFilePath } = require('console-format');
 const LOGGER_LEVEL = ['debug', 'info', 'warn', 'error', 'log'], isNodeJs = typeof process === 'object';
 let loopTimes = 0, fs, path, deepcopy;
-const printFunc = {};
-{
-    const colors = {
-        Reset: '\x1b[0m',
-        FgRed: '\x1b[31m',
-        FgGreen: '\x1b[32m',
-        FgYellow: isNodeJs ? '\x1b[33m' : '\x1b[43m',
-        FgBlue: '\x1b[34m',
-    };
-    'debug:debug:FgBlue,info:info:FgGreen,warn:warn:FgYellow,error:error:FgRed,log:log:FgGreen'
-        .split(',')
-        .forEach(function (logColor) {
-        const [log, info, color] = logColor.split(':');
-        const logger = function (...args) {
-            console.log(...args);
-        };
-        printFunc[log] = function (...args) {
-            const filePath = dealWithFilePath();
-            logger.apply(null, [
-                `${colors[color]}[${getTime()}] [${info.toUpperCase()}] ${isNodeJs ? `[${process.pid}]` : ''} [${filePath}] ${colors.Reset} `,
-                ...args,
-                isNodeJs ? colors.Reset : '',
-            ]);
-        };
-    });
-}
-function dealWithFilePath() {
-    let filePath = 'node_modules';
-    try {
-        //@ts-ignore
-        [].callee();
-    }
-    catch (err) {
-        const error = ErrorStackParser.parse(err).reverse();
-        error.some(item => {
-            if (item.fileName &&
-                !/^internal.+/.test(item.fileName) &&
-                !/node_modules/.test(item.fileName) &&
-                !['net.js', 'events.js'].includes(item.fileName)) {
-                filePath = item.fileName + ':' + item.lineNumber;
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
-    }
-    return filePath;
-}
 function dealWithItems(item, needWarn) {
     try {
         const dist = deepcopy(item);
@@ -319,7 +271,7 @@ function loggerInFile(level, data = '') {
         const dataTypeWarn = this.userConfig.dataTypeWarn;
         const onlyPrintInConsole = this.userConfig.onlyPrintInConsole;
         if (!productionModel) {
-            printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
+            console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
         }
         if (level === 'debug' || onlyPrintInConsole)
             return;
@@ -356,7 +308,7 @@ function loggerInFile(level, data = '') {
         return logInFile.call(this, buffer, level);
     }
     else {
-        printFunc[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
+        console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
     }
 }
 LOGGER_LEVEL.forEach(function (level) {

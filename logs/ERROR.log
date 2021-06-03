@@ -1,2 +1,0 @@
-[2021-5-29 20:55:25.645]  [ERROR] [10468] "undefined"   [ext]  
-[2021-5-29 20:55:25.648]  [ERROR] [10468] "func"   [ext] "function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}" 

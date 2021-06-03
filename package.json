@@ -1,6 +1,6 @@
 {
 	"name": "beauty-logger",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"author": {
 		"name": "Shoujian Zhou",
 		"email": "qianchengyimeng@qq.com"
@@ -21,14 +21,14 @@
 		"typescript": "^3.5.1"
 	},
 	"scripts": {
-		"test": "node node_test.js ",
+		"test": "npm run build && node dist/node_test",
 		"build": "tsc",
 		"checkcode": "eslint -c .eslintrc.js  beauty-logger.ts",
 		"publishToNpm": "node publish.js"
 	},
 	"dependencies": {
-		"deepcopy": "^2.1.0",
-		"error-stack-parser": "^2.0.6"
+		"console-format": "^1.0.1",
+		"deepcopy": "^2.1.0"
 	},
 	"homepage": "https://github.com/zhoushoujian/beauty-logger",
 	"repository": {

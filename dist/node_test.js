@@ -1,8 +1,8 @@
 "use strict";
-/* eslint-disable no-lone-blocks */
+Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
 const path = require('path');
-const Logger = require('./beauty-logger.ts');
+const Logger = require('./beauty-logger.js');
 if (!fs.existsSync(path.join(__dirname, './logs'))) {
     fs.mkdirSync(path.join(__dirname, './logs'));
 }

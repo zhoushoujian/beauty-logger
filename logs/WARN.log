@@ -1,2 +1,0 @@
-[2021-5-29 20:55:25.639]  [WARN] [10468] "arr"   [ext] [{"a":{"e":{"f":"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}",[2,7,[1,5,6]]] 
-[2021-5-29 20:55:25.644]  [WARN] [10468] "obj"   [ext] {"a":{"e":{"f":"function (a, b) {\r\n\tvar sum = a + b;\r\n\treturn sum;\r\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}} 
