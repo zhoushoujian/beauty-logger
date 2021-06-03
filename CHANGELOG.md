@@ -1,16 +1,20 @@
 # CHANGELOG
 
+## 4.0.0 (2021.06.03)
+
+打印执行文件所在的路径
+
 ## 3.0.1 (2021.05.29)
 
 打印信息中添加进程号
 
 ## 3.0.0 (2021.03.29)
 
-移除参数enableMultipleLogFile，根据logFilePath的数据类型来判断打印到多文件还是单文件
+移除参数 enableMultipleLogFile，根据 logFilePath 的数据类型来判断打印到多文件还是单文件
 
 ## 2.1.1 (2021.01.10)
 
-调整module.exports和define的导出顺序,优先导出module.exports
+调整 module.exports 和 define 的导出顺序,优先导出 module.exports
 
 ## 2.1.0 (2021.01.05)
 
@@ -18,4 +22,4 @@
 
 ## 2.0.9 (2020.12.13)
 
-增加log方法
+增加 log 方法
