@@ -140,7 +140,7 @@ function checkFileState(level) {
   const self = this;
   return new Promise(function (resolve) {
     const logFileSize = self.userConfig.logFileSize;
-    const currentProjectFolder = self.userConfig.currentProjectFolder;
+    const currentProjectLoggerFolder = self.userConfig.currentProjectLoggerFolder;
     if (!fs.existsSync(getLogPath.bind(self)(level))) {
       fs.appendFileSync(getLogPath.bind(self)(level), '');
       return resolve(0);
@@ -152,7 +152,7 @@ function checkFileState(level) {
         } else {
           // logger is async, so one logger has appendFile after next one check file state
           if (stats && stats.size > logFileSize) {
-            fs.readdir(currentProjectFolder, function (err, files) {
+            fs.readdir(currentProjectLoggerFolder, function (err, files) {
               if (err) {
                 console.debug('beauty-logger: checkFileState fs.stat fs.readdir err', err);
               }
@@ -169,15 +169,15 @@ function checkFileState(level) {
               });
               for (let i = fileList.length; i > 0; i--) {
                 if (i >= 10) {
-                  fs.unlinkSync(currentProjectFolder + '/' + fileList[i - 1]);
+                  fs.unlinkSync(currentProjectLoggerFolder + '/' + fileList[i - 1]);
                   continue;
                 }
                 fs.renameSync(
-                  currentProjectFolder + '/' + fileList[i - 1],
-                  currentLogFilename + i + currentLogFileExtname,
+                  currentProjectLoggerFolder + '/' + fileList[i - 1],
+                  currentProjectLoggerFolder + '/' + currentLogFilename + i + currentLogFileExtname,
                 );
-                resolve(0);
               }
+              resolve(0);
             });
           } else {
             return resolve(0);
@@ -226,7 +226,6 @@ function InitLogger(config = {}) {
           error: currentProjectPath + '/ERROR.log',
           log: currentProjectPath + '/LOG.log',
         };
-        this.userConfig.currentProjectFolder = currentProjectPath;
         this.userConfig.logFileSize =
           typeof this.userConfig.logFileSize === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10;
         this.userConfig.dataTypeWarn =
@@ -235,9 +234,11 @@ function InitLogger(config = {}) {
           typeof this.userConfig.productionModel === 'boolean' ? this.userConfig.productionModel : false;
         this.userConfig.onlyPrintInConsole =
           typeof this.userConfig.onlyPrintInConsole === 'boolean' ? this.userConfig.onlyPrintInConsole : false;
+        let levelArr = ['info', 'warn', 'error', 'log'];
         if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
           for (const i in this.userConfig.logFilePath) {
-            if (Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i)) {
+            if (Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i) && i !== undefined) {
+              levelArr = levelArr.filter(item => item !== i.toLocaleLowerCase());
               this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i];
             }
           }
@@ -248,10 +249,18 @@ function InitLogger(config = {}) {
         } else if (typeof this.userConfig.logFilePath === 'undefined') {
           //use default value
         } else {
-          throw new Error('beauty-logger: if enableMultipleLogFile is true, logFilePath must be an object or empty');
+          throw new Error('beauty-logger: logFilePath must be an object or empty');
+        }
+        this.userConfig.currentProjectLoggerFolder = path.parse(getLogPath.bind(this)('info')).dir;
+        if (this.userConfig.enableMultipleLogFile) {
+          levelArr.forEach(item => {
+            this.userConfig.loggerFilePath[item] =
+              this.userConfig.currentProjectLoggerFolder + '/' + item.toUpperCase() + '.log';
+          });
         }
         if (!global.beautyLogger) {
           global.beautyLogger = {};
+          global.beautyLogger.currentProjectPath = currentProjectPath;
           global.beautyLogger.userConfig = [];
         }
         global.beautyLogger.userConfig.push(this.userConfig);
