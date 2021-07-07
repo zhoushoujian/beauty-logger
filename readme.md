@@ -2,7 +2,7 @@
 
 [ENGLISH] | [中文](https://github.com/zhoushoujian/beauty-logger/blob/master/readme_zh.md)
 
-```A beautiful logger system for both nodejs and browser```
+`A beautiful logger system for both nodejs and browser`
 
 ## Tip
 
@@ -11,36 +11,38 @@ For browser logger, it's better to use [logger-for-cannot-duplicate](https://git
 ## Usage
 
 ```js
-const path = require("path");
-const Logger = require("beauty-logger");
+const path = require('path');
+const Logger = require('beauty-logger');
 const logger1 = new Logger({
   //max size of per log file, default: 10MB
   logFileSize: 1024 * 1024 * 5,
   logFilePath: {
     //log file name, default: as follows
-    info: path.join(__dirname, "./info.log"),
-    warn: path.join(__dirname, "./warn.log"),
-    error: path.join(__dirname, "./error.log"),
+    info: path.join(__dirname, './info.log'),
+    warn: path.join(__dirname, './warn.log'),
+    error: path.join(__dirname, './error.log'),
   },
   //enable data type warn, default: false
-  dataTypeWarn: true, 
+  dataTypeWarn: true,
   //disable print log in console, default: false
-  productionModel: false, 
+  productionModel: false,
   //only print log in console, default: false
-  onlyPrintInConsole: false, 
+  onlyPrintInConsole: false,
+  //execute other beauty logger instance at the same time，default：[]
+  otherBeautyLoggerInstances: [],
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,
   //log in one file, default: server.log in current project root folder
-  logFilePath: path.join(__dirname, "./server.log"),
+  logFilePath: path.join(__dirname, './server.log'),
   dataTypeWarn: true,
   productionModel: false,
   onlyPrintInConsole: false,
 });
-logger1.info("logger1", "beauty-logger"); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
-console.log("logger1", logger1);
-logger2.info("logger2", "beauty-logger"); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
-console.log("logger2", logger2);
+logger1.info('logger1', 'beauty-logger'); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
+console.log('logger1', logger1);
+logger2.info('logger2', 'beauty-logger'); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
+console.log('logger2', logger2);
 ```
 
 ## Apis
@@ -84,6 +86,8 @@ npm run test
 12. Only support logger.debug, logger.info, logger.warn, logger.error and logger.log
 
 13. Support nodejs at least 6.x
+
+14. support more beauty logger working at the same time and print which file execute it correctly.
 
 ## Preview pictures
 
