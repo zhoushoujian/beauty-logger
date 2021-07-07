@@ -1,6 +1,6 @@
 {
 	"name": "beauty-logger",
-	"version": "4.2.0",
+	"version": "4.2.1",
 	"author": {
 		"name": "Shoujian Zhou",
 		"email": "qianchengyimeng@qq.com"
@@ -24,7 +24,7 @@
 		"test": "npm run build && node dist/node_test",
 		"build": "tsc",
 		"checkcode": "eslint -c .eslintrc.js  beauty-logger.ts",
-		"publishToNpm": "node publish.js"
+		"publishToNpm": "npm run build && node publish.js"
 	},
 	"dependencies": {
 		"console-format": "^1.0.1",

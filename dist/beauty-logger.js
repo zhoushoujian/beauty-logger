@@ -208,6 +208,7 @@ function InitLogger(config = {}) {
                     error: currentProjectPath + '/ERROR.log',
                     log: currentProjectPath + '/LOG.log',
                 };
+                this.userConfig.beautyLogger = true;
                 this.userConfig.logFileSize =
                     typeof this.userConfig.logFileSize === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10;
                 this.userConfig.dataTypeWarn =
@@ -216,6 +217,9 @@ function InitLogger(config = {}) {
                     typeof this.userConfig.productionModel === 'boolean' ? this.userConfig.productionModel : false;
                 this.userConfig.onlyPrintInConsole =
                     typeof this.userConfig.onlyPrintInConsole === 'boolean' ? this.userConfig.onlyPrintInConsole : false;
+                this.userConfig.otherBeautyLoggerInstances = Array.isArray(this.userConfig.otherBeautyLoggerInstances)
+                    ? this.userConfig.otherBeautyLoggerInstances
+                    : [];
                 let levelArr = ['info', 'warn', 'error', 'log'];
                 if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
                     for (const i in this.userConfig.logFilePath) {
@@ -302,7 +306,7 @@ function loggerInFile(level, data = '') {
         }
         const content = `${dist} ${extend} \r\n`;
         const filePath = dealWithFilePath();
-        const buffer = `[${getTime()}]  [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
+        const buffer = `[${getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
         if (this.logQueue.length) {
             this.logQueue.push({
                 level,
@@ -322,6 +326,17 @@ function loggerInFile(level, data = '') {
 }
 LOGGER_LEVEL.forEach(function (level) {
     InitLogger.prototype[level] = function (data, ...args) {
+        if (this && this.userConfig && this.userConfig.otherBeautyLoggerInstances) {
+            if (this.userConfig.otherBeautyLoggerInstances.length) {
+                this.userConfig.otherBeautyLoggerInstances.forEach(item => {
+                    if (item && item.userConfig) {
+                        if (item.userConfig.beautyLogger) {
+                            item[level]([data, ...args]);
+                        }
+                    }
+                });
+            }
+        }
         //@ts-ignore
         return loggerInFile.bind(this)(level, data, ...args);
     };
@@ -338,11 +353,13 @@ else if (typeof define === 'function' && define.amd) {
     define(InitLogger);
 }
 else {
+    //@ts-ignore
     InitLogger._prevLogger = this.InitLogger;
     InitLogger.noConflict = function () {
         this.InitLogger = InitLogger._prevLogger;
         return InitLogger;
     };
+    //@ts-ignore
     this.InitLogger = InitLogger;
 }
 //# sourceMappingURL=beauty-logger.js.map
