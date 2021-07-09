@@ -30,6 +30,12 @@ const logger1 = new Logger({
   onlyPrintInConsole: false,
   //execute other beauty logger instance at the same time，default：[]
   otherBeautyLoggerInstances: [],
+  //execute callback when logging, default: null
+ //level: log level
+ //data: log content
+ //pid: process pid
+ //filePath: execute log function filename
+  callback: (level, data, pid, filePath) => void,
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,
@@ -88,6 +94,8 @@ npm run test
 13. Support nodejs at least 6.x
 
 14. support more beauty logger working at the same time and print which file execute it correctly.
+
+15. execute callback when logging
 
 ## Preview pictures
 

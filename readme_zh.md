@@ -30,6 +30,12 @@ const logger1 = new Logger({
   onlyPrintInConsole: false,
   //同时执行其他beautyLogger实例，默认值：[]
   otherBeautyLoggerInstances: [],
+   //打印日志时并行的回调任务
+ //level: 日志级别
+ //data: 日志内容
+ //pid: 进程号
+ //filePath: 调用日志所在的文件
+  callback: (level, data, pid, filePath) => void,
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,
@@ -88,6 +94,8 @@ npm run test
 13. nodejs 版本至少大于 6
 
 14. 原生支持多实例合并打印并正确显示调用的文件
+
+15. 执行打印日志时并行的回调任务
 
 ## Preview pictures
 

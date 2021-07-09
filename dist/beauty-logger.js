@@ -220,6 +220,7 @@ function InitLogger(config = {}) {
                 this.userConfig.otherBeautyLoggerInstances = Array.isArray(this.userConfig.otherBeautyLoggerInstances)
                     ? this.userConfig.otherBeautyLoggerInstances
                     : [];
+                this.userConfig.callback = this.userConfig.callback instanceof Function ? this.userConfig.callback : null;
                 let levelArr = ['info', 'warn', 'error', 'log'];
                 if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
                     for (const i in this.userConfig.logFilePath) {
@@ -307,6 +308,9 @@ function loggerInFile(level, data = '') {
         const content = `${dist} ${extend} \r\n`;
         const filePath = dealWithFilePath();
         const buffer = `[${getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
+        if (Object.prototype.toString.call(this.userConfig.callback) === '[object Function]') {
+            this.userConfig.callback(level, buffer, process.pid, filePath);
+        }
         if (this.logQueue.length) {
             this.logQueue.push({
                 level,
@@ -326,8 +330,8 @@ function loggerInFile(level, data = '') {
 }
 LOGGER_LEVEL.forEach(function (level) {
     InitLogger.prototype[level] = function (data, ...args) {
-        if (this && this.userConfig && this.userConfig.otherBeautyLoggerInstances) {
-            if (this.userConfig.otherBeautyLoggerInstances.length) {
+        if (this && this.userConfig) {
+            if (this.userConfig.otherBeautyLoggerInstances && this.userConfig.otherBeautyLoggerInstances.length) {
                 this.userConfig.otherBeautyLoggerInstances.forEach(item => {
                     if (item && item.userConfig) {
                         if (item.userConfig.beautyLogger) {
