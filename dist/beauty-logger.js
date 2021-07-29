@@ -7,6 +7,7 @@ function dealWithItems(item, needWarn) {
     try {
         const dist = deepcopy(item);
         return JSON.stringify(dist, function (_key, value) {
+            loopTimes = 0;
             return formatDataType(value, needWarn);
         }, 0);
     }
@@ -38,9 +39,6 @@ function formatDataType(value, needWarn) {
                             value[i] = formatDataType(value[i], needWarn);
                         }
                     }
-                    else {
-                        value[i] = Object.prototype.toString.call(value[i]);
-                    }
                 }
                 formattedOnes = value;
                 break;
@@ -54,6 +52,7 @@ function formatDataType(value, needWarn) {
                 formattedOnes = value.stack || value.toString();
                 break;
             case '[object Symbol]':
+            case '[object Date]':
                 if (needWarn) {
                     console.warn("we don't recommend to print Symbol directly", value);
                 }
@@ -63,7 +62,7 @@ function formatDataType(value, needWarn) {
                 if (needWarn) {
                     console.warn("we don't recommend to print Set directly", value);
                 }
-                formattedOnes = Array.from(value);
+                formattedOnes = formatDataType(Array.from(value), needWarn);
                 break;
             case '[object Map]': {
                 if (needWarn) {
@@ -73,7 +72,7 @@ function formatDataType(value, needWarn) {
                 value.forEach(function (item, key) {
                     obj[key] = item;
                 });
-                formattedOnes = obj;
+                formattedOnes = formatDataType(obj, needWarn);
                 break;
             }
             default:

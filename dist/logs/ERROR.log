@@ -1,2 +1,2 @@
-[2021-6-3 11:56:21.028]  [ERROR] [1594] [/Users/charm/Documents/projects/beauty-logger/dist/node_test.js:92] "undefined"  
-[2021-6-3 11:56:21.029]  [ERROR] [1594] [/Users/charm/Documents/projects/beauty-logger/dist/node_test.js:93] "func"  
+[2021-7-29 11:01:45.044] [ERROR] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:92] "undefined"   [ext]  
+[2021-7-29 11:01:45.046] [ERROR] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:93] "func"   [ext] "function (a, b) {\n    const sum = a + b;\n    return sum;\n}" 
