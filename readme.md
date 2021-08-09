@@ -35,7 +35,8 @@ const logger1 = new Logger({
  //data: log content
  //pid: process pid
  //filePath: execute log function filename
-  callback: (level, data, pid, filePath) => void,
+  //content: pure log content, without time and pid and etc.
+  callback: (level, data, pid, filePath， content) => void,
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,

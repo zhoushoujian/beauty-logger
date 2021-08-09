@@ -1,5 +1,38 @@
-export {};
 const { dealWithFilePath } = require('console-format');
+
+declare namespace NodeJS {
+  interface Global {
+    beautyLogger: IBeautyLoggerInstance;
+  }
+}
+
+interface IBeautyLoggerInstance {
+  currentProjectPath: string;
+  userConfig: IUserConfig[] | ILogQueue[] | IUserConfig;
+  debug: (a: any[]) => void;
+  info: (a: any[]) => void;
+  warn: (a: any[]) => void;
+  error: (a: any[]) => void;
+  log: (a: any[]) => void;
+}
+
+interface IUserConfig {
+  beautyLogger: boolean;
+  loggerFilePath: string;
+  logFileSize: number;
+  dataTypeWarn: boolean;
+  productionModel: boolean;
+  onlyPrintInConsole: boolean;
+  otherBeautyLoggerInstances: IBeautyLoggerInstance;
+  callback: (level: ILevel, data: string, pid: number, filePath: string, content: string) => void;
+}
+
+type ILevel = 'debug' | 'info' | 'warn' | 'error' | 'log';
+
+interface ILogQueue {
+  level: ILevel;
+  buffer: string;
+}
 
 const LOGGER_LEVEL = ['debug', 'info', 'warn', 'error', 'log'],
   isNodeJs = typeof process === 'object';
@@ -7,9 +40,9 @@ const LOGGER_LEVEL = ['debug', 'info', 'warn', 'error', 'log'],
 let loopTimes = 0,
   fs: any,
   path: any,
-  deepcopy;
+  deepcopy: any;
 
-function dealWithItems(item, needWarn) {
+function dealWithItems(item: any, needWarn: boolean) {
   try {
     const dist = deepcopy(item);
     return JSON.stringify(
@@ -25,7 +58,7 @@ function dealWithItems(item, needWarn) {
   }
 }
 
-function formatDataType(value, needWarn) {
+function formatDataType(value: any, needWarn: boolean) {
   loopTimes++;
   let formattedOnes: any = '';
   try {
@@ -77,8 +110,8 @@ function formatDataType(value, needWarn) {
         if (needWarn) {
           console.warn("we don't recommend to print Map directly", value);
         }
-        const obj = {};
-        value.forEach(function (item, key) {
+        const obj: any = {};
+        value.forEach(function (item: any, key: any) {
           obj[key] = item;
         });
         formattedOnes = formatDataType(obj, needWarn);
@@ -121,7 +154,7 @@ function getTime() {
   return time;
 }
 
-function getLogPath(level) {
+function getLogPath(level: ILevel) {
   const enableMultipleLogFile = this.userConfig.enableMultipleLogFile;
   const loggerFilePath = this.userConfig.loggerFilePath;
   if (enableMultipleLogFile) {
@@ -131,11 +164,11 @@ function getLogPath(level) {
   }
 }
 
-function logInFile(buffer, level) {
+function logInFile(buffer: string, level: ILevel) {
   return checkFileState.bind(this)(level).then(writeFile.bind(this, buffer, level));
 }
 
-function checkFileState(level) {
+function checkFileState(level: ILevel) {
   // check file existed and file size
   const self = this;
   return new Promise(function (resolve) {
@@ -145,20 +178,20 @@ function checkFileState(level) {
       fs.appendFileSync(getLogPath.bind(self)(level), '');
       return resolve(0);
     } else {
-      return fs.stat(getLogPath.bind(self)(level), function (err, stats) {
+      return fs.stat(getLogPath.bind(self)(level), function (err: Error, stats: { size: number }) {
         if (err) {
           console.debug('beauty-logger: checkFileState fs.stat err', err);
           return resolve(0);
         } else {
           // logger is async, so one logger has appendFile after next one check file state
           if (stats && stats.size > logFileSize) {
-            fs.readdir(currentProjectLoggerFolder, function (err, files) {
+            fs.readdir(currentProjectLoggerFolder, function (err: Error, files: string[]) {
               if (err) {
                 console.debug('beauty-logger: checkFileState fs.stat fs.readdir err', err);
               }
               const currentLogFilename = path.parse(getLogPath.bind(self)(level)).name;
               const currentLogFileExtname = path.parse(getLogPath.bind(self)(level)).ext;
-              let currentLogFileExtnameWithoutDot;
+              let currentLogFileExtnameWithoutDot = '';
               if (currentLogFileExtname) {
                 currentLogFileExtnameWithoutDot = currentLogFileExtname.replace('.', '');
               }
@@ -188,7 +221,7 @@ function checkFileState(level) {
   });
 }
 
-function writeFile(buffer, level) {
+function writeFile(buffer: string, level: ILevel) {
   const self = this;
   return new Promise(function (res) {
     fs.writeFile(
@@ -197,8 +230,8 @@ function writeFile(buffer, level) {
       {
         flag: 'a+',
       },
-      function (err) {
-        if (err) console.debug('beauty-logger: writeFile err', err);
+      function (err: Error) {
+        if (err) console.debug('beauty-logger: writeFile err', err.stack || err.toString());
         self.logQueue.shift();
         res(buffer);
         if (self.logQueue.length) {
@@ -210,14 +243,14 @@ function writeFile(buffer, level) {
   });
 }
 
-function InitLogger(config = {}) {
+function InitLogger(config = {} as IUserConfig) {
   if (Object.prototype.toString.call(config) === '[object Object]') {
     if (isNodeJs) {
       try {
         fs = require('fs');
         path = require('path');
         deepcopy = require('deepcopy');
-        this.logQueue = [];
+        this.logQueue = [] as ILogQueue[];
         this.userConfig = config;
         const currentProjectPath = process.cwd().split('node_modules')[0];
         this.userConfig.loggerFilePath = {
@@ -264,12 +297,12 @@ function InitLogger(config = {}) {
           });
         }
         if (!global.beautyLogger) {
-          global.beautyLogger = {};
+          global.beautyLogger = {} as IBeautyLoggerInstance;
           global.beautyLogger.currentProjectPath = currentProjectPath;
           global.beautyLogger.userConfig = [];
         }
-        global.beautyLogger.userConfig.push(this.userConfig);
-        global.beautyLogger.userConfig.push(this.logQueue);
+        (global.beautyLogger.userConfig as IUserConfig[]).push(this.userConfig);
+        (global.beautyLogger.userConfig as IUserConfig[]).push(this.logQueue);
         if (typeof this.userConfig.loggerFilePath === 'string') {
           if (!fs.existsSync(this.userConfig.loggerFilePath)) {
             fs.appendFileSync(this.userConfig.loggerFilePath, '');
@@ -292,12 +325,13 @@ function InitLogger(config = {}) {
   }
 }
 
-function loggerInFile(level, data = '') {
+function loggerInFile(level: ILevel, data = '') {
   if (isNodeJs) {
     const productionModel = this.userConfig.productionModel;
     const dataTypeWarn = this.userConfig.dataTypeWarn;
     const onlyPrintInConsole = this.userConfig.onlyPrintInConsole;
     if (!productionModel) {
+      //@ts-ignore
       console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
     }
     if (level === 'debug' || onlyPrintInConsole) return;
@@ -317,7 +351,6 @@ function loggerInFile(level, data = '') {
         return dealWithItems(item, dataTypeWarn);
       });
       if (extend.length) {
-        //@ts-ignore
         extend = `  [ext] ${extend.join('')}`;
       }
     }
@@ -325,7 +358,7 @@ function loggerInFile(level, data = '') {
     const filePath = dealWithFilePath();
     const buffer = `[${getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
     if (Object.prototype.toString.call(this.userConfig.callback) === '[object Function]') {
-      this.userConfig.callback(level, buffer, process.pid, filePath);
+      this.userConfig.callback(level, buffer, process.pid, filePath, content);
     }
     if (this.logQueue.length) {
       this.logQueue.push({
@@ -340,17 +373,18 @@ function loggerInFile(level, data = '') {
     });
     return logInFile.call(this, buffer, level);
   } else {
+    //@ts-ignore
     console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
   }
 }
 
-LOGGER_LEVEL.forEach(function (level) {
-  InitLogger.prototype[level] = function (data, ...args) {
+(LOGGER_LEVEL as ILevel[]).forEach(function (level: ILevel) {
+  InitLogger.prototype[level] = function (data: any, ...args: any) {
     if (this && this.userConfig) {
       if (this.userConfig.otherBeautyLoggerInstances && this.userConfig.otherBeautyLoggerInstances.length) {
-        this.userConfig.otherBeautyLoggerInstances.forEach(item => {
+        this.userConfig.otherBeautyLoggerInstances.forEach((item: IBeautyLoggerInstance) => {
           if (item && item.userConfig) {
-            if (item.userConfig.beautyLogger) {
+            if ((item.userConfig as IUserConfig).beautyLogger) {
               item[level]([data, ...args]);
             }
           }
@@ -372,13 +406,12 @@ if (typeof module !== 'undefined' && module.exports) {
   // eslint-disable-next-line no-undef
   define(InitLogger);
 } else {
-  //@ts-ignore
   InitLogger._prevLogger = this.InitLogger;
 
   InitLogger.noConflict = function () {
+    //@ts-ignore
     this.InitLogger = InitLogger._prevLogger;
     return InitLogger;
   };
-  //@ts-ignore
   this.InitLogger = InitLogger;
 }

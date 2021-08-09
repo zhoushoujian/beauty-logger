@@ -98,7 +98,7 @@ console.log('global.beautyLogger', global.beautyLogger);
 }
 // console.log("global.beautyLogger", global.beautyLogger)
 console.timeEnd('time');
-logger2.info('0123456789').then(result => {
+logger2.info('0123456789').then((result) => {
     logger2.log('aaaa', result);
 });
 //# sourceMappingURL=node_test.js.map

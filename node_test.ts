@@ -35,7 +35,7 @@ const num = 0;
 const bool = false;
 const empty = null;
 const undefined1 = undefined;
-const func = function (a, b) {
+const func = function (a: number, b: number) {
   const sum = a + b;
   return sum;
 };
@@ -108,6 +108,6 @@ console.log('global.beautyLogger', global.beautyLogger);
 
 console.timeEnd('time');
 
-logger2.info('0123456789').then(result => {
+logger2.info('0123456789').then((result: string) => {
   logger2.log('aaaa', result);
 });

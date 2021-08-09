@@ -1,10 +1,10 @@
-[2021-7-29 11:01:45.0006] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:71] false  
-[2021-7-29 11:01:45.0008] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:72] null  
-[2021-7-29 11:01:45.017] [WARN] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:73] [{"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\n    const sum = a + b;\n    return sum;\n}",[2,7,[1,5,6]]]  
-[2021-7-29 11:01:45.018] [WARN] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:74] {"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}}  
-[2021-7-29 11:01:45.020] [ERROR] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:75] ""  
-[2021-7-29 11:01:45.022] [ERROR] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:76] "function (a, b) {\n    const sum = a + b;\n    return sum;\n}"  
-[2021-7-29 11:01:45.023] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:77] 3  
-[2021-7-29 11:01:45.024] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:78] "Symbol(symbol)"  
-[2021-7-29 11:01:45.026] [LOG] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:79] [2,7,[1,5,6]]  
-[2021-7-29 11:01:45.028] [LOG] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:80] {"title":"hello world","year":"2020"}  
+[2021-8-9 11:43:25.442] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:71] false  
+[2021-8-9 11:43:25.443] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:72] null  
+[2021-8-9 11:43:25.450] [WARN] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:73] [{"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\n    const sum = a + b;\n    return sum;\n}",[2,7,[1,5,6]]]  
+[2021-8-9 11:43:25.452] [WARN] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:74] {"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}}  
+[2021-8-9 11:43:25.452] [ERROR] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:75] ""  
+[2021-8-9 11:43:25.454] [ERROR] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:76] "function (a, b) {\n    const sum = a + b;\n    return sum;\n}"  
+[2021-8-9 11:43:25.455] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:77] 3  
+[2021-8-9 11:43:25.456] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:78] "Symbol(symbol)"  
+[2021-8-9 11:43:25.457] [LOG] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:79] [2,7,[1,5,6]]  
+[2021-8-9 11:43:25.459] [LOG] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:80] {"title":"hello world","year":"2020"}  

@@ -31,11 +31,12 @@ const logger1 = new Logger({
   //同时执行其他beautyLogger实例，默认值：[]
   otherBeautyLoggerInstances: [],
    //打印日志时并行的回调任务
- //level: 日志级别
- //data: 日志内容
- //pid: 进程号
- //filePath: 调用日志所在的文件
-  callback: (level, data, pid, filePath) => void,
+  //level: 日志级别
+  //data: 日志内容
+  //pid: 进程号
+  //filePath: 调用日志所在的文件
+  //content: 纯净的日志内容，没有时间，进程号等信息
+  callback: (level, data, pid, filePath, content) => void,
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,

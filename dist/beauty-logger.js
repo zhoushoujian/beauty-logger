@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const { dealWithFilePath } = require('console-format');
 const LOGGER_LEVEL = ['debug', 'info', 'warn', 'error', 'log'], isNodeJs = typeof process === 'object';
 let loopTimes = 0, fs, path, deepcopy;
@@ -149,7 +148,7 @@ function checkFileState(level) {
                             }
                             const currentLogFilename = path.parse(getLogPath.bind(self)(level)).name;
                             const currentLogFileExtname = path.parse(getLogPath.bind(self)(level)).ext;
-                            let currentLogFileExtnameWithoutDot;
+                            let currentLogFileExtnameWithoutDot = '';
                             if (currentLogFileExtname) {
                                 currentLogFileExtnameWithoutDot = currentLogFileExtname.replace('.', '');
                             }
@@ -181,7 +180,7 @@ function writeFile(buffer, level) {
             flag: 'a+',
         }, function (err) {
             if (err)
-                console.debug('beauty-logger: writeFile err', err);
+                console.debug('beauty-logger: writeFile err', err.stack || err.toString());
             self.logQueue.shift();
             res(buffer);
             if (self.logQueue.length) {
@@ -284,6 +283,7 @@ function loggerInFile(level, data = '') {
         const dataTypeWarn = this.userConfig.dataTypeWarn;
         const onlyPrintInConsole = this.userConfig.onlyPrintInConsole;
         if (!productionModel) {
+            //@ts-ignore
             console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
         }
         if (level === 'debug' || onlyPrintInConsole)
@@ -300,7 +300,6 @@ function loggerInFile(level, data = '') {
                 return dealWithItems(item, dataTypeWarn);
             });
             if (extend.length) {
-                //@ts-ignore
                 extend = `  [ext] ${extend.join('')}`;
             }
         }
@@ -308,7 +307,7 @@ function loggerInFile(level, data = '') {
         const filePath = dealWithFilePath();
         const buffer = `[${getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
         if (Object.prototype.toString.call(this.userConfig.callback) === '[object Function]') {
-            this.userConfig.callback(level, buffer, process.pid, filePath);
+            this.userConfig.callback(level, buffer, process.pid, filePath, content);
         }
         if (this.logQueue.length) {
             this.logQueue.push({
@@ -324,6 +323,7 @@ function loggerInFile(level, data = '') {
         return logInFile.call(this, buffer, level);
     }
     else {
+        //@ts-ignore
         console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
     }
 }
@@ -331,7 +331,7 @@ LOGGER_LEVEL.forEach(function (level) {
     InitLogger.prototype[level] = function (data, ...args) {
         if (this && this.userConfig) {
             if (this.userConfig.otherBeautyLoggerInstances && this.userConfig.otherBeautyLoggerInstances.length) {
-                this.userConfig.otherBeautyLoggerInstances.forEach(item => {
+                this.userConfig.otherBeautyLoggerInstances.forEach((item) => {
                     if (item && item.userConfig) {
                         if (item.userConfig.beautyLogger) {
                             item[level]([data, ...args]);
@@ -356,13 +356,12 @@ else if (typeof define === 'function' && define.amd) {
     define(InitLogger);
 }
 else {
-    //@ts-ignore
     InitLogger._prevLogger = this.InitLogger;
     InitLogger.noConflict = function () {
+        //@ts-ignore
         this.InitLogger = InitLogger._prevLogger;
         return InitLogger;
     };
-    //@ts-ignore
     this.InitLogger = InitLogger;
 }
 //# sourceMappingURL=beauty-logger.js.map

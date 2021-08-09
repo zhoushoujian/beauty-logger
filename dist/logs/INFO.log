@@ -1,5 +1,5 @@
-[2021-7-29 11:01:45.037] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:88] "bool"   [ext] false 
-[2021-7-29 11:01:45.038] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:89] "null"   [ext] null 
-[2021-7-29 11:01:45.048] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:94] "fun"   [ext] 3 
-[2021-7-29 11:01:45.050] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:95] "symbol"   [ext] "Symbol(symbol)" 
-[2021-7-29 11:01:45.056] [INFO] [33147] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:101] "0123456789"  
+[2021-8-9 11:43:25.466] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:88] "bool"   [ext] false 
+[2021-8-9 11:43:25.468] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:89] "null"   [ext] null 
+[2021-8-9 11:43:25.478] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:94] "fun"   [ext] 3 
+[2021-8-9 11:43:25.479] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:95] "symbol"   [ext] "Symbol(symbol)" 
+[2021-8-9 11:43:25.489] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:101] "0123456789"  
