@@ -1,3 +1,3 @@
-[2021-8-9 11:43:25.481] [LOG] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:96] "set"   [ext] [2,7,[1,5,6]] 
-[2021-8-9 11:43:25.486] [LOG] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:97] "map"   [ext] {"title":"hello world","year":"2020"} 
-[2021-8-9 11:43:25.492] [LOG] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:102] "aaaa"   [ext] "[2021-8-9 11:43:25.489] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:101] \"0123456789\"  \r\n" 
+[2021-08-26 14:45:08.670] [LOG] [61355] [dist/beauty-logger.js:282] "set"   [ext] [2,7,[1,5,6]] 
+[2021-08-26 14:45:08.672] [LOG] [61355] [dist/beauty-logger.js:282] "map"   [ext] {"title":"hello world","year":"2020"} 
+[2021-08-26 14:45:08.676] [LOG] [61355] [dist/beauty-logger.js:282] "aaaa"   [ext] "[2021-08-26 14:45:08.674] [INFO] [61355] [dist/beauty-logger.js:282] \"0123456789\"  \r\n" 

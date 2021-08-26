@@ -1,4 +1,6 @@
-const { dealWithFilePath } = require('console-format');
+const consoleFormat = require('console-format');
+
+consoleFormat();
 
 declare namespace NodeJS {
   interface Global {
@@ -125,33 +127,6 @@ function formatDataType(value: any, needWarn: boolean) {
     formattedOnes = {};
   }
   return formattedOnes;
-}
-
-function getTime() {
-  const year = new Date().getFullYear();
-  const month = new Date().getMonth() + 1;
-  const day = new Date().getDate();
-  let hour: number | string = new Date().getHours();
-  let minute: number | string = new Date().getMinutes();
-  let second: number | string = new Date().getSeconds();
-  let mileSecond: number | string = new Date().getMilliseconds();
-  if (hour < 10) {
-    hour = '0' + hour;
-  }
-  if (minute < 10) {
-    minute = '0' + minute;
-  }
-  if (second < 10) {
-    second = '0' + second;
-  }
-  if (mileSecond < 10) {
-    mileSecond = '00' + mileSecond;
-  }
-  if (mileSecond < 100) {
-    mileSecond = '0' + mileSecond;
-  }
-  const time = `${year}-${month}-${day} ${hour}:${minute}:${second}.${mileSecond}`;
-  return time;
 }
 
 function getLogPath(level: ILevel) {
@@ -355,8 +330,8 @@ function loggerInFile(level: ILevel, data = '') {
       }
     }
     const content = `${dist} ${extend} \r\n`;
-    const filePath = dealWithFilePath();
-    const buffer = `[${getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
+    const filePath = consoleFormat.dealWithFilePath();
+    const buffer = `[${consoleFormat.getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
     if (Object.prototype.toString.call(this.userConfig.callback) === '[object Function]') {
       this.userConfig.callback(level, buffer, process.pid, filePath, content);
     }

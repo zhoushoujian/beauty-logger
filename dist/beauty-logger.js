@@ -1,5 +1,6 @@
 "use strict";
-const { dealWithFilePath } = require('console-format');
+const consoleFormat = require('console-format');
+consoleFormat();
 const LOGGER_LEVEL = ['debug', 'info', 'warn', 'error', 'log'], isNodeJs = typeof process === 'object';
 let loopTimes = 0, fs, path, deepcopy;
 function dealWithItems(item, needWarn) {
@@ -83,32 +84,6 @@ function formatDataType(value, needWarn) {
         formattedOnes = {};
     }
     return formattedOnes;
-}
-function getTime() {
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth() + 1;
-    const day = new Date().getDate();
-    let hour = new Date().getHours();
-    let minute = new Date().getMinutes();
-    let second = new Date().getSeconds();
-    let mileSecond = new Date().getMilliseconds();
-    if (hour < 10) {
-        hour = '0' + hour;
-    }
-    if (minute < 10) {
-        minute = '0' + minute;
-    }
-    if (second < 10) {
-        second = '0' + second;
-    }
-    if (mileSecond < 10) {
-        mileSecond = '00' + mileSecond;
-    }
-    if (mileSecond < 100) {
-        mileSecond = '0' + mileSecond;
-    }
-    const time = `${year}-${month}-${day} ${hour}:${minute}:${second}.${mileSecond}`;
-    return time;
 }
 function getLogPath(level) {
     const enableMultipleLogFile = this.userConfig.enableMultipleLogFile;
@@ -304,8 +279,8 @@ function loggerInFile(level, data = '') {
             }
         }
         const content = `${dist} ${extend} \r\n`;
-        const filePath = dealWithFilePath();
-        const buffer = `[${getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
+        const filePath = consoleFormat.dealWithFilePath();
+        const buffer = `[${consoleFormat.getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
         if (Object.prototype.toString.call(this.userConfig.callback) === '[object Function]') {
             this.userConfig.callback(level, buffer, process.pid, filePath, content);
         }

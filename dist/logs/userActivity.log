@@ -1,10 +1,10 @@
-[2021-8-9 11:43:25.442] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:71] false  
-[2021-8-9 11:43:25.443] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:72] null  
-[2021-8-9 11:43:25.450] [WARN] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:73] [{"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\n    const sum = a + b;\n    return sum;\n}",[2,7,[1,5,6]]]  
-[2021-8-9 11:43:25.452] [WARN] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:74] {"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}}  
-[2021-8-9 11:43:25.452] [ERROR] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:75] ""  
-[2021-8-9 11:43:25.454] [ERROR] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:76] "function (a, b) {\n    const sum = a + b;\n    return sum;\n}"  
-[2021-8-9 11:43:25.455] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:77] 3  
-[2021-8-9 11:43:25.456] [INFO] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:78] "Symbol(symbol)"  
-[2021-8-9 11:43:25.457] [LOG] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:79] [2,7,[1,5,6]]  
-[2021-8-9 11:43:25.459] [LOG] [50347] [/Users/charm/Documents/projects/github/beauty-logger/dist/node_test.js:80] {"title":"hello world","year":"2020"}  
+[2021-08-26 14:45:08.629] [INFO] [61355] [dist/beauty-logger.js:282] false  
+[2021-08-26 14:45:08.630] [INFO] [61355] [dist/beauty-logger.js:282] null  
+[2021-08-26 14:45:08.637] [WARN] [61355] [dist/beauty-logger.js:282] [{"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\n    const sum = a + b;\n    return sum;\n}",[2,7,[1,5,6]]]  
+[2021-08-26 14:45:08.639] [WARN] [61355] [dist/beauty-logger.js:282] {"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}}  
+[2021-08-26 14:45:08.641] [ERROR] [61355] [dist/beauty-logger.js:282] ""  
+[2021-08-26 14:45:08.642] [ERROR] [61355] [dist/beauty-logger.js:282] "function (a, b) {\n    const sum = a + b;\n    return sum;\n}"  
+[2021-08-26 14:45:08.643] [INFO] [61355] [dist/beauty-logger.js:282] 3  
+[2021-08-26 14:45:08.644] [INFO] [61355] [dist/beauty-logger.js:282] "Symbol(symbol)"  
+[2021-08-26 14:45:08.645] [LOG] [61355] [dist/beauty-logger.js:282] [2,7,[1,5,6]]  
+[2021-08-26 14:45:08.647] [LOG] [61355] [dist/beauty-logger.js:282] {"title":"hello world","year":"2020"}  

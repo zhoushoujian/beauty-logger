@@ -1,6 +1,6 @@
 {
 	"name": "beauty-logger",
-	"version": "4.4.0",
+	"version": "4.5.0",
 	"author": {
 		"name": "Shoujian Zhou",
 		"email": "qianchengyimeng@qq.com"
@@ -27,7 +27,7 @@
 		"publishToNpm": "npm run build && node publish.js"
 	},
 	"dependencies": {
-		"console-format": "^1.0.1",
+		"console-format": "^2.0.0",
 		"deepcopy": "^2.1.0"
 	},
 	"homepage": "https://github.com/zhoushoujian/beauty-logger",
