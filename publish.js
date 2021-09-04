@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
 const shell = require('shelljs');
+const consoleFormat = require('console-format');
+
+consoleFormat();
 
 let cancelChangeNpmConfig = () => {};
 let useTaobaoMirror = false;
@@ -16,7 +19,7 @@ function changeNpmConfig() {
 
 function publish() {
   console.log('开始发布');
-  return executeCmd('npm publish --registry http://registry.npmjs.org', 'publish');
+  return executeCmd('npm publish --registry https://registry.npmjs.org', 'publish');
 }
 
 function syncTaoBao() {
@@ -25,7 +28,7 @@ function syncTaoBao() {
 }
 
 function executeCmd(cmd, logInfo) {
-  return new Promise(res => {
+  return new Promise((res, rej) => {
     const child = shell.exec(cmd, { async: true });
     child.stdout.on('data', function (data) {
       console.log(`${logInfo} stdout: `, data);
@@ -46,7 +49,7 @@ function executeCmd(cmd, logInfo) {
         console.log(`${logInfo} 成功`);
       } else {
         console.error(`${logInfo} 失败`);
-        process.exit(1);
+        rej(code);
       }
       res();
     });
@@ -62,12 +65,12 @@ getNpmConfig()
   })
   .then(publish)
   .then(syncTaoBao)
-  .then(() => cancelChangeNpmConfig())
   .then(() => {
     console.log('发布成功');
-    process.exit(0);
   })
   .catch(err => {
     console.error('publish catch err', err);
-    process.exit(1);
+  })
+  .finally(() => {
+    cancelChangeNpmConfig();
   });
