@@ -37,6 +37,8 @@ const logger1 = new Logger({
   //filePath: 调用日志所在的文件
   //content: 纯净的日志内容，没有时间，进程号等信息
   callback: (level, data, pid, filePath, content) => void,
+ //对包使用情况进行上报统计
+ uploadPackageInfoUrl: ""
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,

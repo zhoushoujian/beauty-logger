@@ -37,6 +37,8 @@ const logger1 = new Logger({
  //filePath: execute log function filename
   //content: pure log content, without time and pid and etc.
   callback: (level, data, pid, filePath， content) => void,
+ //count package usage to upload
+ uploadPackageInfoUrl: ""
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,

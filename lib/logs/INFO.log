@@ -1,0 +1,5 @@
+[2021-09-04 22:39:47.319] [INFO] [7995] [lib/beauty-logger.ts:302] "bool"   [ext] false 
+[2021-09-04 22:39:47.321] [INFO] [7995] [lib/beauty-logger.ts:302] "null"   [ext] null 
+[2021-09-04 22:39:47.343] [INFO] [7995] [lib/beauty-logger.ts:302] "fun"   [ext] 3 
+[2021-09-04 22:39:47.349] [INFO] [7995] [lib/beauty-logger.ts:302] "symbol"   [ext] "Symbol(symbol)" 
+[2021-09-04 22:39:47.361] [INFO] [7995] [lib/beauty-logger.ts:302] "0123456789"  

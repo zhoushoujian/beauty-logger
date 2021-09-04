@@ -18,6 +18,7 @@ module.exports = {
     'prefer-rest-params': 0,
     'global-require': 0,
     'no-useless-call': 0,
+    'no-console': 0,
   },
   plugins: [],
 };

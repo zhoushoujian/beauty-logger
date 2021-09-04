@@ -1,40 +1,9 @@
-const consoleFormat = require('console-format');
+//@ts-ignore
+import * as consoleFormat from 'console-format';
+import uploadPackageInfo from './upload-package-info';
+import { IBeautyLoggerInstance, IUserConfig, ILevel, ILogQueue } from './type';
 
 consoleFormat();
-
-declare namespace NodeJS {
-  interface Global {
-    beautyLogger: IBeautyLoggerInstance;
-  }
-}
-
-interface IBeautyLoggerInstance {
-  currentProjectPath: string;
-  userConfig: IUserConfig[] | ILogQueue[] | IUserConfig;
-  debug: (a: any[]) => void;
-  info: (a: any[]) => void;
-  warn: (a: any[]) => void;
-  error: (a: any[]) => void;
-  log: (a: any[]) => void;
-}
-
-interface IUserConfig {
-  beautyLogger: boolean;
-  loggerFilePath: string;
-  logFileSize: number;
-  dataTypeWarn: boolean;
-  productionModel: boolean;
-  onlyPrintInConsole: boolean;
-  otherBeautyLoggerInstances: IBeautyLoggerInstance;
-  callback: (level: ILevel, data: string, pid: number, filePath: string, content: string) => void;
-}
-
-type ILevel = 'debug' | 'info' | 'warn' | 'error' | 'log';
-
-interface ILogQueue {
-  level: ILevel;
-  buffer: string;
-}
 
 const LOGGER_LEVEL = ['debug', 'info', 'warn', 'error', 'log'],
   isNodeJs = typeof process === 'object';
@@ -219,6 +188,7 @@ function writeFile(buffer: string, level: ILevel) {
 }
 
 function InitLogger(config = {} as IUserConfig) {
+  this.userConfig = config;
   if (Object.prototype.toString.call(config) === '[object Object]') {
     if (isNodeJs) {
       try {
@@ -226,7 +196,6 @@ function InitLogger(config = {} as IUserConfig) {
         path = require('path');
         deepcopy = require('deepcopy');
         this.logQueue = [] as ILogQueue[];
-        this.userConfig = config;
         const currentProjectPath = process.cwd().split('node_modules')[0];
         this.userConfig.loggerFilePath = {
           info: currentProjectPath + '/INFO.log',
@@ -295,6 +264,7 @@ function InitLogger(config = {} as IUserConfig) {
         console.error('beauty-logger: err', err);
       }
     }
+    uploadPackageInfo(this.userConfig);
   } else {
     throw new Error('beauty-logger: config must be an object or empty');
   }
@@ -381,12 +351,12 @@ if (typeof module !== 'undefined' && module.exports) {
   // eslint-disable-next-line no-undef
   define(InitLogger);
 } else {
-  InitLogger._prevLogger = this.InitLogger;
+  InitLogger._prevLogger = (this as any).InitLogger;
 
   InitLogger.noConflict = function () {
     //@ts-ignore
     this.InitLogger = InitLogger._prevLogger;
     return InitLogger;
   };
-  this.InitLogger = InitLogger;
+  (this as any).InitLogger = InitLogger;
 }

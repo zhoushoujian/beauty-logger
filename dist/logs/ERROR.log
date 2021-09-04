@@ -1,2 +1,0 @@
-[2021-08-26 14:45:08.663] [ERROR] [61355] [dist/beauty-logger.js:282] "undefined"   [ext]  
-[2021-08-26 14:45:08.665] [ERROR] [61355] [dist/beauty-logger.js:282] "func"   [ext] "function (a, b) {\n    const sum = a + b;\n    return sum;\n}" 

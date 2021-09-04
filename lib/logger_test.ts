@@ -2,7 +2,7 @@
 export {};
 const fs = require('fs');
 const path = require('path');
-const Logger = require('./beauty-logger.js');
+const Logger = require('./beauty-logger');
 
 if (!fs.existsSync(path.join(__dirname, './logs'))) {
   fs.mkdirSync(path.join(__dirname, './logs'));
@@ -86,6 +86,7 @@ console.time('time');
 }
 
 console.log('*********************logger config info***************************************');
+
 console.log('global.beautyLogger', global.beautyLogger);
 
 {

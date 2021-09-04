@@ -1,2 +1,0 @@
-[2021-08-26 14:45:08.660] [WARN] [61355] [dist/beauty-logger.js:282] "arr"   [ext] [{"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}},"function (a, b) {\n    const sum = a + b;\n    return sum;\n}",[2,7,[1,5,6]]] 
-[2021-08-26 14:45:08.662] [WARN] [61355] [dist/beauty-logger.js:282] "obj"   [ext] {"a":{"e":{"f":"function (a, b) {\n    const sum = a + b;\n    return sum;\n}"}},"b":[2,7,[1,5,6]],"c":{"D":{"g":1,"h":{"i":"undefined"}}}} 

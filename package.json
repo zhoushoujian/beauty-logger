@@ -1,6 +1,6 @@
 {
 	"name": "beauty-logger",
-	"version": "4.5.0",
+	"version": "4.6.0",
 	"author": {
 		"name": "Shoujian Zhou",
 		"email": "qianchengyimeng@qq.com"
@@ -11,6 +11,18 @@
 		"url": "https://github.com/zhoushoujian/beauty-logger/issues"
 	},
 	"description": "A beautiful logger system for both nodejs and browser",
+	"scripts": {
+		"test": "npm run checkcode && ts-node --transpile-only ./lib/logger_test.ts",
+		"build:test": "npm run build && node dist/logger_test",
+		"build": "npm run checkcode && tsc",
+		"checkcode": "eslint -c .eslintrc.js ./lib/beauty-logger.ts",
+		"publishToNpm": "npm run build && node publish.js"
+	},
+	"dependencies": {
+		"axios": "^0.21.2",
+		"console-format": "^2.0.0",
+		"deepcopy": "^2.1.0"
+	},
 	"devDependencies": {
 		"@shuyun-ep-team/eslint-config": "^1.3.6",
 		"@types/node": "^15.6.2",
@@ -18,17 +30,7 @@
 		"eslint": "6.8.0",
 		"shelljs": "^0.8.4",
 		"ts-node": "^9.0.0",
-		"typescript": "^3.5.1"
-	},
-	"scripts": {
-		"test": "npm run build && node dist/node_test",
-		"build": "tsc",
-		"checkcode": "eslint -c .eslintrc.js  beauty-logger.ts",
-		"publishToNpm": "npm run build && node publish.js"
-	},
-	"dependencies": {
-		"console-format": "^2.0.0",
-		"deepcopy": "^2.1.0"
+		"typescript": "^4.3.5"
 	},
 	"homepage": "https://github.com/zhoushoujian/beauty-logger",
 	"repository": {

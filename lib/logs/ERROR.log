@@ -1,0 +1,2 @@
+[2021-09-04 22:39:47.335] [ERROR] [7995] [lib/beauty-logger.ts:302] "undefined"   [ext]  
+[2021-09-04 22:39:47.341] [ERROR] [7995] [lib/beauty-logger.ts:302] "func"   [ext] "function (a, b) {\n    const sum = a + b;\n    return sum;\n}" 

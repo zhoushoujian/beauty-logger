@@ -1,5 +1,0 @@
-[2021-08-26 14:45:08.655] [INFO] [61355] [dist/beauty-logger.js:282] "bool"   [ext] false 
-[2021-08-26 14:45:08.656] [INFO] [61355] [dist/beauty-logger.js:282] "null"   [ext] null 
-[2021-08-26 14:45:08.666] [INFO] [61355] [dist/beauty-logger.js:282] "fun"   [ext] 3 
-[2021-08-26 14:45:08.668] [INFO] [61355] [dist/beauty-logger.js:282] "symbol"   [ext] "Symbol(symbol)" 
-[2021-08-26 14:45:08.674] [INFO] [61355] [dist/beauty-logger.js:282] "0123456789"  
