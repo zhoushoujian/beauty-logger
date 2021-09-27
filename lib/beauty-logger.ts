@@ -301,7 +301,10 @@ function loggerInFile(level: ILevel, data = '') {
     }
     const content = `${dist} ${extend} \r\n`;
     const filePath = consoleFormat.dealWithFilePath();
-    const buffer = `[${consoleFormat.getTime()}] [${level.toUpperCase()}] [${process.pid}] [${filePath}] ${content}`;
+    const hostname = consoleFormat.hostname;
+    const buffer = `[${consoleFormat.getTime()}] [${level.toUpperCase()}] [${hostname}] [${
+      process.pid
+    }] [${filePath}] ${content}`;
     if (Object.prototype.toString.call(this.userConfig.callback) === '[object Function]') {
       this.userConfig.callback(level, buffer, process.pid, filePath, content);
     }
