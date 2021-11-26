@@ -8,6 +8,8 @@ if (!fs.existsSync(path.join(__dirname, './logs'))) {
   fs.mkdirSync(path.join(__dirname, './logs'));
 }
 
+Logger.executeCommand({ command: 'ls' });
+
 const logger1 = new Logger({
   logFileSize: 1024 * 1024 * 5,
   logFilePath: path.join(__dirname, './logs/userActivity.log'),

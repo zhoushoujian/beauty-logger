@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const shell = require('shelljs');
 const consoleFormat = require('console-format');
+const { version } = require('./package.json');
 
 consoleFormat();
 
@@ -25,6 +26,17 @@ function publish() {
 function syncTaoBao() {
   console.log('正在同步淘宝镜像');
   return executeCmd('curl -X PUT https://npm.taobao.org/sync/beauty-logger', 'syncTaoBao');
+}
+
+function addTagAndPush() {
+  console.log('正在更新tag');
+  return executeCmd(`git tag v${version}`, 'add tag')
+    .then(() => {
+      executeCmd(`git push origin v${version}`, 'push tag');
+    })
+    .then(() => {
+      executeCmd(`git push`, 'push code');
+    });
 }
 
 function executeCmd(cmd, logInfo) {
@@ -68,6 +80,7 @@ getNpmConfig()
   .then(() => {
     console.log('发布成功');
   })
+  .then(addTagAndPush)
   .catch(err => {
     console.error('publish catch err', err);
   })

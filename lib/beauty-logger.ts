@@ -1,6 +1,8 @@
+import { exec } from 'child_process';
 //@ts-ignore
 import * as consoleFormat from 'console-format';
-import uploadPackageInfo from './upload-package-info';
+//@ts-ignore
+import { name, version } from '../package.json';
 import { IBeautyLoggerInstance, IUserConfig, ILevel, ILogQueue } from './type';
 
 consoleFormat();
@@ -264,7 +266,7 @@ function InitLogger(config = {} as IUserConfig) {
         console.error('beauty-logger: err', err);
       }
     }
-    uploadPackageInfo(this.userConfig);
+    consoleFormat.uploadPackageInfo({ ...this.userConfig, name, version });
   } else {
     throw new Error('beauty-logger: config must be an object or empty');
   }
@@ -343,6 +345,54 @@ function loggerInFile(level: ILevel, data = '') {
     return loggerInFile.bind(this)(level, data, ...args);
   };
 });
+
+type IExecuteCommand = {
+  identify?: string; //用于打印日志的标识符
+  command: string; //要运行的命令
+  exitCallback?: (n: number) => void; //命令退出时的回调
+  logFileSize?: number; //日志切片大小
+  logFilePath?: string; //日志路径
+};
+InitLogger.executeCommand = ({
+  identify = 'identify',
+  command,
+  exitCallback,
+  logFileSize,
+  logFilePath,
+}: IExecuteCommand) => {
+  const path = require('path');
+  const logger = new (InitLogger as any)({
+    logFileSize: logFileSize || 1024 * 1024 * 100,
+    logFilePath: logFilePath || path.join(__dirname, `./${identify}.log`),
+  });
+
+  function run() {
+    const child = exec(command);
+
+    child.stdout!.on('data', async function (data: string) {
+      logger.info(`${identify} data`, data);
+    });
+    child.stderr!.on('data', function (data: string) {
+      logger.warn(`${identify} stderr`, data);
+    });
+    child.on('exit', function (code: number) {
+      logger[code === 0 ? 'info' : 'error'](`${identify} exit code`, code);
+      if (exitCallback) exitCallback(code);
+    });
+  }
+
+  run();
+
+  process.on('uncaughtException', err => {
+    logger.error('uncaughtException process', err.stack || err.toString());
+    // process.exit(0);
+  });
+
+  process.on('unhandledRejection', error => {
+    logger.error('unhandledRejection process', error?.toString());
+    // process.exit(0);
+  });
+};
 
 // Export to popular environments boilerplate.
 if (typeof module !== 'undefined' && module.exports) {

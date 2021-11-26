@@ -1,6 +1,6 @@
 {
 	"name": "beauty-logger",
-	"version": "4.7.0",
+	"version": "4.7.1",
 	"author": {
 		"name": "Shoujian Zhou",
 		"email": "qianchengyimeng@qq.com"
@@ -18,9 +18,19 @@
 		"checkcode": "eslint -c .eslintrc.js ./lib/beauty-logger.ts",
 		"publishToNpm": "npm run build && node publish.js"
 	},
+	"files": [
+		"dist",
+		"lib",
+		"CHANGELOG.md",
+		"LICENSE",
+		"package.json",
+		"readme_zh.md",
+		"readme.md",
+		"tsconfig.json"
+	],
 	"dependencies": {
 		"axios": "^0.21.2",
-		"console-format": "^2.1.0",
+		"console-format": "^2.2.8",
 		"deepcopy": "^2.1.0"
 	},
 	"devDependencies": {
