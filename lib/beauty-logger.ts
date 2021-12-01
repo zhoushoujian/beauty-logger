@@ -266,7 +266,7 @@ function InitLogger(config = {} as IUserConfig) {
         console.error('beauty-logger: err', err);
       }
     }
-    consoleFormat.uploadPackageInfo({ ...this.userConfig, name, version });
+    consoleFormat.uploadPackageInfo(name, version, null);
   } else {
     throw new Error('beauty-logger: config must be an object or empty');
   }
