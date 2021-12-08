@@ -110,8 +110,23 @@ function getLogPath(level: ILevel) {
   }
 }
 
-function logInFile(buffer: string, level: ILevel) {
-  return checkFileState.bind(this)(level).then(writeFile.bind(this, buffer, level));
+function dealWithError(err: Error, info: string) {
+  console.error(`${name}: ${info}`, err);
+  this.logQueue.push({
+    level: 'error',
+    buffer: `${name}: ${info}` + (err ? err.stack || err.toString() : 'error is undefined'),
+  });
+}
+
+function logInFile(buffer: string, level: ILevel): Promise<unknown> {
+  return checkFileState
+    .bind(this)(level)
+    .then(writeFile.bind(this, buffer, level))
+    .catch(err => {
+      dealWithError(err, 'logInFile error');
+      const firstItem = this.logQueue[0];
+      return logInFile.call(self, firstItem.buffer, firstItem.level);
+    });
 }
 
 function checkFileState(level: ILevel) {
@@ -126,14 +141,14 @@ function checkFileState(level: ILevel) {
     } else {
       return fs.stat(getLogPath.bind(self)(level), function (err: Error, stats: { size: number }) {
         if (err) {
-          console.debug('beauty-logger: checkFileState fs.stat err', err);
+          dealWithError(err, 'checkFileState fs.stat err');
           return resolve(0);
         } else {
           // logger is async, so one logger has appendFile after next one check file state
           if (stats && stats.size > logFileSize) {
             fs.readdir(currentProjectLoggerFolder, function (err: Error, files: string[]) {
               if (err) {
-                console.debug('beauty-logger: checkFileState fs.stat fs.readdir err', err);
+                dealWithError(err, 'checkFileState fs.stat fs.readdir err');
               }
               const currentLogFilename = path.parse(getLogPath.bind(self)(level)).name;
               const currentLogFileExtname = path.parse(getLogPath.bind(self)(level)).ext;
@@ -147,10 +162,6 @@ function checkFileState(level: ILevel) {
                 );
               });
               for (let i = fileList.length; i > 0; i--) {
-                if (i >= 10) {
-                  fs.unlinkSync(currentProjectLoggerFolder + '/' + fileList[i - 1]);
-                  continue;
-                }
                 fs.renameSync(
                   currentProjectLoggerFolder + '/' + fileList[i - 1],
                   currentProjectLoggerFolder + '/' + currentLogFilename + i + currentLogFileExtname,
@@ -177,7 +188,9 @@ function writeFile(buffer: string, level: ILevel) {
         flag: 'a+',
       },
       function (err: Error) {
-        if (err) console.debug('beauty-logger: writeFile err', err.stack || err.toString());
+        if (err) {
+          dealWithError(err, 'writeFile err');
+        }
         self.logQueue.shift();
         res(buffer);
         if (self.logQueue.length) {
@@ -233,7 +246,7 @@ function InitLogger(config = {} as IUserConfig) {
         } else if (typeof this.userConfig.logFilePath === 'undefined') {
           //use default value
         } else {
-          throw new Error('beauty-logger: logFilePath must be an object or empty');
+          throw new Error(`${name}: logFilePath must be an object or empty`);
         }
         this.userConfig.currentProjectLoggerFolder = path.parse(getLogPath.bind(this)('info')).dir;
         if (this.userConfig.enableMultipleLogFile) {
@@ -262,13 +275,13 @@ function InitLogger(config = {} as IUserConfig) {
             }
           }
         }
-      } catch (err) {
-        console.error('beauty-logger: err', err);
+      } catch (err: any) {
+        dealWithError(err, 'InitLogger err');
       }
     }
     consoleFormat.uploadPackageInfo(name, version, null);
   } else {
-    throw new Error('beauty-logger: config must be an object or empty');
+    throw new Error(`${name}: config must be an object or empty`);
   }
 }
 
