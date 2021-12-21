@@ -19,6 +19,7 @@ module.exports = {
     'global-require': 0,
     'no-useless-call': 0,
     'no-console': 0,
+    'consistent-return': ['error', { treatUndefinedAsUnspecified: false }],
   },
   plugins: [],
 };

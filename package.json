@@ -1,6 +1,6 @@
 {
 	"name": "beauty-logger",
-	"version": "4.7.3",
+	"version": "4.7.4",
 	"author": {
 		"name": "Shoujian Zhou",
 		"email": "qianchengyimeng@qq.com"
@@ -15,7 +15,7 @@
 		"test": "npm run checkcode && ts-node --transpile-only ./lib/logger_test.ts",
 		"build:test": "npm run build && node dist/logger_test",
 		"build": "npm run checkcode && tsc",
-		"checkcode": "eslint -c .eslintrc.js ./lib/beauty-logger.ts",
+		"checkcode": "tsc && eslint -c .eslintrc.js ./lib/beauty-logger.ts",
 		"publishToNpm": "npm run build && node publish.js"
 	},
 	"files": [

@@ -1,0 +1,2 @@
+[2021-12-21 16:38:42.436] [INFO] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "command data"   [ext] "CHANGELOG.md\nLICENSE\ndist\ndocs\nlib\nnode_modules\npackage-lock.json\npackage.json\npublish.js\nreadme.md\nreadme_zh.md\ntsconfig.json\n" 
+[2021-12-21 16:38:42.440] [INFO] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "command exit code"   [ext] 0 

@@ -146,7 +146,7 @@ function checkFileState(level: ILevel) {
         } else {
           // logger is async, so one logger has appendFile after next one check file state
           if (stats && stats.size > logFileSize) {
-            fs.readdir(currentProjectLoggerFolder, function (err: Error, files: string[]) {
+            return fs.readdir(currentProjectLoggerFolder, function (err: Error, files: string[]) {
               if (err) {
                 dealWithError(err, 'checkFileState fs.stat fs.readdir err');
               }
@@ -167,7 +167,7 @@ function checkFileState(level: ILevel) {
                   currentProjectLoggerFolder + '/' + currentLogFilename + i + currentLogFileExtname,
                 );
               }
-              resolve(0);
+              return resolve(0);
             });
           } else {
             return resolve(0);
@@ -181,7 +181,7 @@ function checkFileState(level: ILevel) {
 function writeFile(buffer: string, level: ILevel) {
   const self = this;
   return new Promise(function (res) {
-    fs.writeFile(
+    return fs.writeFile(
       getLogPath.bind(self)(level),
       buffer,
       {
@@ -196,6 +196,8 @@ function writeFile(buffer: string, level: ILevel) {
         if (self.logQueue.length) {
           const firstItem = self.logQueue[0];
           return logInFile.call(self, firstItem.buffer, firstItem.level);
+        } else {
+          return Promise.resolve(buffer);
         }
       },
     );
@@ -231,6 +233,9 @@ function InitLogger(config = {} as IUserConfig) {
           ? this.userConfig.otherBeautyLoggerInstances
           : [];
         this.userConfig.callback = this.userConfig.callback instanceof Function ? this.userConfig.callback : null;
+        this.userConfig.uploadPackageInfoUrl =
+          typeof this.userConfig.uploadPackageInfoUrl === 'string' ? this.userConfig.uploadPackageInfoUrl : null;
+
         let levelArr = ['info', 'warn', 'error', 'log'];
         if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
           for (const i in this.userConfig.logFilePath) {
@@ -279,7 +284,7 @@ function InitLogger(config = {} as IUserConfig) {
         dealWithError(err, 'InitLogger err');
       }
     }
-    consoleFormat.uploadPackageInfo(name, version, null);
+    consoleFormat.uploadPackageInfo(name, version, this.userConfig.uploadPackageInfoUrl || null);
   } else {
     throw new Error(`${name}: config must be an object or empty`);
   }
@@ -294,7 +299,7 @@ function loggerInFile(level: ILevel, data = '') {
       //@ts-ignore
       console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
     }
-    if (level === 'debug' || onlyPrintInConsole) return;
+    if (level === 'debug' || onlyPrintInConsole) return Promise.resolve(data);
     loopTimes = 0;
     let dist = deepcopy(data);
     dist = JSON.stringify(
@@ -336,8 +341,10 @@ function loggerInFile(level: ILevel, data = '') {
     });
     return logInFile.call(this, buffer, level);
   } else {
+    const content = Array.prototype.slice.call(arguments).slice(1);
     //@ts-ignore
-    console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
+    console[level].apply(null, content);
+    return Promise.resolve(content);
   }
 }
 
@@ -362,6 +369,7 @@ function loggerInFile(level: ILevel, data = '') {
 type IExecuteCommand = {
   identify?: string; //用于打印日志的标识符
   command: string; //要运行的命令
+  commandOptions: any; //执行exec的选项参数
   exitCallback?: (n: number) => void; //命令退出时的回调
   logFileSize?: number; //日志切片大小
   logFilePath?: string; //日志路径
@@ -369,6 +377,7 @@ type IExecuteCommand = {
 InitLogger.executeCommand = ({
   identify = 'identify',
   command,
+  commandOptions = {},
   exitCallback,
   logFileSize,
   logFilePath,
@@ -378,9 +387,12 @@ InitLogger.executeCommand = ({
     logFileSize: logFileSize || 1024 * 1024 * 100,
     logFilePath: logFilePath || path.join(__dirname, `./${identify}.log`),
   });
+  if (commandOptions.windowsHide !== false) {
+    commandOptions.windowsHide = true; //在windows系统上自动隐藏cmd窗口
+  }
 
   function run() {
-    const child = exec(command);
+    const child = exec(command, commandOptions);
 
     child.stdout!.on('data', async function (data: string) {
       logger.info(`${identify} data`, data);

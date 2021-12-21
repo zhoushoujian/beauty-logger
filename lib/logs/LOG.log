@@ -1,3 +1,3 @@
-[2021-09-04 22:39:47.353] [LOG] [7995] [lib/beauty-logger.ts:302] "set"   [ext] [2,7,[1,5,6]] 
-[2021-09-04 22:39:47.358] [LOG] [7995] [lib/beauty-logger.ts:302] "map"   [ext] {"title":"hello world","year":"2020"} 
-[2021-09-04 22:39:47.365] [LOG] [7995] [lib/beauty-logger.ts:302] "aaaa"   [ext] "[2021-09-04 22:39:47.361] [INFO] [7995] [lib/beauty-logger.ts:302] \"0123456789\"  \r\n" 
+[2021-12-21 16:38:42.420] [LOG] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "set"   [ext] [2,7,[1,5,6]] 
+[2021-12-21 16:38:42.423] [LOG] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "map"   [ext] {"title":"hello world","year":"2020"} 
+[2021-12-21 16:38:42.430] [LOG] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "aaaa"   [ext] "[2021-12-21 16:38:42.426] [INFO] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] \"0123456789\"  \r\n" 

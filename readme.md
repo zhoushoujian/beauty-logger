@@ -13,7 +13,12 @@ For browser logger, it's better to use [logger-for-cannot-duplicate](https://git
 ```js
 const path = require('path');
 const Logger = require('beauty-logger');
+
 const logger1 = new Logger({
+  logFilePath: path.join(__dirname, './server.log'),
+});
+
+const logger2 = new Logger({
   //max size of per log file, default: 10MB
   logFileSize: 1024 * 1024 * 5,
   logFilePath: {
@@ -31,27 +36,17 @@ const logger1 = new Logger({
   //execute other beauty logger instance at the same time，default：[]
   otherBeautyLoggerInstances: [],
   //execute callback when logging, default: null
- //level: log level
- //data: log content
- //pid: process pid
- //filePath: execute log function filename
+  //level: log level
+  //data: log content
+  //pid: process pid
+  //filePath: execute log function filename
   //content: pure log content, without time and pid and etc.
   callback: (level, data, pid, filePath， content) => void,
- //count package usage to upload
- uploadPackageInfoUrl: ""
+  //count package usage to upload
+  uploadPackageInfoUrl: ""
 });
-const logger2 = new Logger({
-  logFileSize: 1024 * 1024 * 10,
-  //log in one file, default: server.log in current project root folder
-  logFilePath: path.join(__dirname, './server.log'),
-  dataTypeWarn: true,
-  productionModel: false,
-  onlyPrintInConsole: false,
-});
-logger1.info('logger1', 'beauty-logger'); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
-console.log('logger1', logger1);
-logger2.info('logger2', 'beauty-logger'); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
-console.log('logger2', logger2);
+logger1.info('logger1', 'beauty-logger'); // [2021-12-21 16:30:18.998] [INFO] [charms-Mac-Pro.local] [3400] [lib/beauty-logger.ts:323] "logger1"   [ext] "beauty-logger"
+logger2.info('logger2', 'beauty-logger'); // [2021-12-21 16:30:18.998] [INFO] [charms-Mac-Pro.local] [3400] [lib/beauty-logger.ts:323] "logger2"   [ext] "beauty-logger"
 ```
 
 ## Apis

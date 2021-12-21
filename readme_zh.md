@@ -13,7 +13,12 @@
 ```js
 const path = require('path');
 const Logger = require('beauty-logger');
+
 const logger1 = new Logger({
+  logFilePath: path.join(__dirname, './server.log'),
+});
+
+const logger2 = new Logger({
   //每个日志文件的大小限制，默认10MB
   logFileSize: 1024 * 1024 * 5,
   logFilePath: {
@@ -30,28 +35,19 @@ const logger1 = new Logger({
   onlyPrintInConsole: false,
   //同时执行其他beautyLogger实例，默认值：[]
   otherBeautyLoggerInstances: [],
-   //打印日志时并行的回调任务
+  //打印日志时并行的回调任务
   //level: 日志级别
   //data: 日志内容
   //pid: 进程号
   //filePath: 调用日志所在的文件
   //content: 纯净的日志内容，没有时间，进程号等信息
   callback: (level, data, pid, filePath, content) => void,
- //对包使用情况进行上报统计
- uploadPackageInfoUrl: ""
+  //对包使用情况进行上报统计
+  uploadPackageInfoUrl: ""
 });
-const logger2 = new Logger({
-  logFileSize: 1024 * 1024 * 10,
-  //打印到一个文件，默认文件名：server.log，保存在当前项目目录下
-  logFilePath: path.join(__dirname, './server.log'),
-  dataTypeWarn: true,
-  productionModel: false,
-  onlyPrintInConsole: false,
-});
-logger1.info('logger1', 'beauty-logger'); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
-console.log('logger1', logger1);
-logger2.info('logger2', 'beauty-logger'); // [2020-2-2 22:13:54.551]  [INFO]  logger [ext] beauty-logger
-console.log('logger2', logger2);
+
+logger1.info('logger1', 'beauty-logger'); // [2021-12-21 16:30:18.998] [INFO] [charms-Mac-Pro.local] [3400] [lib/beauty-logger.ts:323] "logger1"   [ext] "beauty-logger"
+logger2.info('logger2', 'beauty-logger'); // [2021-12-21 16:30:18.998] [INFO] [charms-Mac-Pro.local] [3400] [lib/beauty-logger.ts:323] "logger2"   [ext] "beauty-logger"
 ```
 
 ## Apis
