@@ -123,7 +123,7 @@ function logInFile(buffer: string, level: ILevel): Promise<unknown> {
     .bind(this)(level)
     .then(writeFile.bind(this, buffer, level))
     .catch(err => {
-      dealWithError(err, 'logInFile error');
+      dealWithError.bind(this)(err, 'logInFile error');
       const firstItem = this.logQueue[0];
       return logInFile.call(self, firstItem.buffer, firstItem.level);
     });
@@ -141,14 +141,14 @@ function checkFileState(level: ILevel) {
     } else {
       return fs.stat(getLogPath.bind(self)(level), function (err: Error, stats: { size: number }) {
         if (err) {
-          dealWithError(err, 'checkFileState fs.stat err');
+          dealWithError.bind(self)(err, 'checkFileState fs.stat err');
           return resolve(0);
         } else {
           // logger is async, so one logger has appendFile after next one check file state
           if (stats && stats.size > logFileSize) {
             return fs.readdir(currentProjectLoggerFolder, function (err: Error, files: string[]) {
               if (err) {
-                dealWithError(err, 'checkFileState fs.stat fs.readdir err');
+                dealWithError.bind(self)(err, 'checkFileState fs.stat fs.readdir err');
               }
               const currentLogFilename = path.parse(getLogPath.bind(self)(level)).name;
               const currentLogFileExtname = path.parse(getLogPath.bind(self)(level)).ext;
@@ -189,7 +189,7 @@ function writeFile(buffer: string, level: ILevel) {
       },
       function (err: Error) {
         if (err) {
-          dealWithError(err, 'writeFile err');
+          dealWithError.bind(self)(err, 'writeFile err');
         }
         self.logQueue.shift();
         res(buffer);
@@ -281,7 +281,7 @@ function InitLogger(config = {} as IUserConfig) {
           }
         }
       } catch (err: any) {
-        dealWithError(err, 'InitLogger err');
+        dealWithError.bind(this)(err, 'InitLogger err');
       }
     }
     consoleFormat.uploadPackageInfo(name, version, this.userConfig.uploadPackageInfoUrl || null);
