@@ -1,5 +1,0 @@
-[2021-12-21 16:38:42.377] [INFO] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "bool"   [ext] false 
-[2021-12-21 16:38:42.380] [INFO] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "null"   [ext] null 
-[2021-12-21 16:38:42.411] [INFO] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "fun"   [ext] 3 
-[2021-12-21 16:38:42.415] [INFO] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "symbol"   [ext] "Symbol(symbol)" 
-[2021-12-21 16:38:42.426] [INFO] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "0123456789"  

@@ -1,2 +1,0 @@
-[2021-12-21 16:38:42.398] [ERROR] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "undefined"   [ext]  
-[2021-12-21 16:38:42.404] [ERROR] [charms-Mac-Pro.local] [4194] [lib/beauty-logger.ts:323] "func"   [ext] "function (a, b) {\n    const sum = a + b;\n    return sum;\n}" 

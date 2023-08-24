@@ -1,36 +1,37 @@
 /* eslint-disable no-lone-blocks */
 export {};
-const fs = require('fs');
 const path = require('path');
 const Logger = require('./beauty-logger');
 
-if (!fs.existsSync(path.join(__dirname, './logs'))) {
-  fs.mkdirSync(path.join(__dirname, './logs'));
-}
-
-Logger.executeCommand({ command: 'ls', identify: 'command' });
-
 const logger1 = new Logger({
   logFileSize: 1024 * 1024 * 5,
-  logFilePath: path.join(__dirname, './logs/userActivity.log'),
+  logFilePath: path.join(__dirname, '../logs/userActivity.log'),
   dataTypeWarn: false,
   productionModel: false,
   onlyPrintInConsole: false,
   enableMultipleLogFile: false,
+  showBriefInfo: true,
+  storeAsJSON: true,
+  customPrefixField: 'charm',
+  useLogPrefixInConsole: true,
 });
 const logger2 = new Logger({
   logFileSize: 1024 * 1024 * 10,
   logFilePath: {
-    info: path.join(__dirname, './logs/INFO.log'),
-    warn: path.join(__dirname, './logs/WARN.log'),
-    error: path.join(__dirname, './logs/ERROR.log'),
-    log: path.join(__dirname, './logs/LOG.log'),
+    info: path.join(__dirname, '../logs/INFO.log'),
+    warn: path.join(__dirname, '../logs/WARN.log'),
+    error: path.join(__dirname, '../logs/ERROR.log'),
+    log: path.join(__dirname, '../logs/LOG.log'),
   },
-  dataTypeWarn: true,
+  dataTypeWarn: false,
   productionModel: false,
   onlyPrintInConsole: false,
   enableMultipleLogFile: true,
+  storeAsJSON: false,
+  useLogPrefixInConsole: false,
 });
+
+Logger.executeCommand({ command: 'ls', identify: 'command', logFilePath: path.join(__dirname, '../logs/command.log') });
 
 const str = 'this is string';
 const num = 0;
@@ -89,7 +90,7 @@ console.time('time');
 
 console.log('*********************logger config info***************************************');
 
-console.log('global.beautyLogger', global.beautyLogger);
+console.log('global.beautyLogger', (global as any).beautyLogger);
 
 {
   console.log('*********************logger2 parameter test case***************************************');
@@ -107,10 +108,10 @@ console.log('global.beautyLogger', global.beautyLogger);
   logger2.log('map', map);
 }
 
-// console.log("global.beautyLogger", global.beautyLogger)
+// console.log('global.beautyLogger', global.beautyLogger);
 
 console.timeEnd('time');
 
-logger2.info('0123456789').then((result: string) => {
-  logger2.log('aaaa', result);
+logger1.info('0123456789').then((result: string) => {
+  logger1.log('logger1 aaaa', result);
 });

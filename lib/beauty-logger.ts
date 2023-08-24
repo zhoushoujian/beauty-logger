@@ -1,11 +1,12 @@
 import { exec } from 'child_process';
-//@ts-ignore
-import * as consoleFormat from 'console-format';
+import * as versionCheck from 'specified-package-version-check';
+import consoleFormat from './console-format';
+import { defaultValues } from './constants';
 //@ts-ignore
 import { name, version } from '../package.json';
-import { IBeautyLoggerInstance, IUserConfig, ILevel, ILogQueue } from './type';
+import { IBeautyLoggerInstance, IUserConfig, ILevel, ILogQueue } from './types';
 
-consoleFormat();
+const { uploadPackageInfo, hostname, dealWithFilePath, getTime } = versionCheck;
 
 const LOGGER_LEVEL = ['debug', 'info', 'warn', 'error', 'log'],
   isNodeJs = typeof process === 'object';
@@ -59,6 +60,7 @@ function formatDataType(value: any, needWarn: boolean) {
         break;
       case '[object Function]':
         if (needWarn) {
+          // eslint-disable-next-line no-console
           console.warn("we don't recommend to print function directly", value);
         }
         formattedOnes = Function.prototype.toString.call(value);
@@ -69,18 +71,21 @@ function formatDataType(value: any, needWarn: boolean) {
       case '[object Symbol]':
       case '[object Date]':
         if (needWarn) {
+          // eslint-disable-next-line no-console
           console.warn("we don't recommend to print Symbol directly", value);
         }
         formattedOnes = value.toString();
         break;
       case '[object Set]':
         if (needWarn) {
+          // eslint-disable-next-line no-console
           console.warn("we don't recommend to print Set directly", value);
         }
         formattedOnes = formatDataType(Array.from(value), needWarn);
         break;
       case '[object Map]': {
         if (needWarn) {
+          // eslint-disable-next-line no-console
           console.warn("we don't recommend to print Map directly", value);
         }
         const obj: any = {};
@@ -101,8 +106,7 @@ function formatDataType(value: any, needWarn: boolean) {
 }
 
 function getLogPath(level: ILevel) {
-  const enableMultipleLogFile = this.userConfig.enableMultipleLogFile;
-  const loggerFilePath = this.userConfig.loggerFilePath;
+  const { enableMultipleLogFile, loggerFilePath } = this.userConfig;
   if (enableMultipleLogFile) {
     return loggerFilePath[level];
   } else {
@@ -111,6 +115,7 @@ function getLogPath(level: ILevel) {
 }
 
 function dealWithError(err: Error, info: string) {
+  // eslint-disable-next-line no-console
   console.error(`${name}: ${info}`, err);
   this.logQueue.push({
     level: 'error',
@@ -119,16 +124,18 @@ function dealWithError(err: Error, info: string) {
 }
 
 function logInFile(buffer: string, level: ILevel): Promise<unknown> {
+  const self = this;
   return checkFileState
     .bind(this)(level)
     .then(writeFile.bind(this, buffer, level))
-    .catch(err => {
-      dealWithError.bind(this)(err, 'logInFile error');
+    .catch((err) => {
+      dealWithError(err, 'logInFile error');
       const firstItem = this.logQueue[0];
       return logInFile.call(self, firstItem.buffer, firstItem.level);
     });
 }
 
+//检查文件状态
 function checkFileState(level: ILevel) {
   // check file existed and file size
   const self = this;
@@ -141,14 +148,14 @@ function checkFileState(level: ILevel) {
     } else {
       return fs.stat(getLogPath.bind(self)(level), function (err: Error, stats: { size: number }) {
         if (err) {
-          dealWithError.bind(self)(err, 'checkFileState fs.stat err');
+          dealWithError(err, 'checkFileState fs.stat err');
           return resolve(0);
         } else {
           // logger is async, so one logger has appendFile after next one check file state
           if (stats && stats.size > logFileSize) {
             return fs.readdir(currentProjectLoggerFolder, function (err: Error, files: string[]) {
               if (err) {
-                dealWithError.bind(self)(err, 'checkFileState fs.stat fs.readdir err');
+                dealWithError(err, 'checkFileState fs.stat fs.readdir err');
               }
               const currentLogFilename = path.parse(getLogPath.bind(self)(level)).name;
               const currentLogFileExtname = path.parse(getLogPath.bind(self)(level)).ext;
@@ -178,6 +185,7 @@ function checkFileState(level: ILevel) {
   });
 }
 
+//写入文件
 function writeFile(buffer: string, level: ILevel) {
   const self = this;
   return new Promise(function (res) {
@@ -189,7 +197,7 @@ function writeFile(buffer: string, level: ILevel) {
       },
       function (err: Error) {
         if (err) {
-          dealWithError.bind(self)(err, 'writeFile err');
+          dealWithError(err, 'writeFile err');
         }
         self.logQueue.shift();
         res(buffer);
@@ -201,6 +209,34 @@ function writeFile(buffer: string, level: ILevel) {
         }
       },
     );
+  });
+}
+
+//递归创建目录 同步方法
+function mkdirSync(dirname: string) {
+  if (fs.existsSync(dirname)) {
+    return true;
+  } else {
+    if (mkdirSync(path.dirname(dirname))) {
+      fs.mkdirSync(dirname);
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+//赋值默认参数
+type IAssignDefaultValueParams = {
+  fieldName: string;
+  dataType: string;
+  defaultValue: any;
+}[];
+function assignDefaultValue(params: IAssignDefaultValueParams, self: any) {
+  params.forEach((item) => {
+    const { fieldName, dataType, defaultValue } = item;
+    self.userConfig[fieldName] =
+      typeof self.userConfig[fieldName] === dataType ? self.userConfig[fieldName] : defaultValue;
   });
 }
 
@@ -221,32 +257,30 @@ function InitLogger(config = {} as IUserConfig) {
           log: currentProjectPath + '/LOG.log',
         };
         this.userConfig.beautyLogger = true;
-        this.userConfig.logFileSize =
-          typeof this.userConfig.logFileSize === 'number' ? this.userConfig.logFileSize : 1024 * 1024 * 10;
-        this.userConfig.dataTypeWarn =
-          typeof this.userConfig.dataTypeWarn === 'boolean' ? this.userConfig.dataTypeWarn : false;
-        this.userConfig.productionModel =
-          typeof this.userConfig.productionModel === 'boolean' ? this.userConfig.productionModel : false;
-        this.userConfig.onlyPrintInConsole =
-          typeof this.userConfig.onlyPrintInConsole === 'boolean' ? this.userConfig.onlyPrintInConsole : false;
-        this.userConfig.otherBeautyLoggerInstances = Array.isArray(this.userConfig.otherBeautyLoggerInstances)
-          ? this.userConfig.otherBeautyLoggerInstances
+        assignDefaultValue(defaultValues, this);
+        const { showBriefInfo, customPrefixField, logFilePath, otherBeautyLoggerInstances, useLogPrefixInConsole } =
+          this.userConfig;
+        this.userConfig.otherBeautyLoggerInstances = Array.isArray(otherBeautyLoggerInstances)
+          ? otherBeautyLoggerInstances
           : [];
-        this.userConfig.callback = this.userConfig.callback instanceof Function ? this.userConfig.callback : null;
-        this.userConfig.uploadPackageInfoUrl =
-          typeof this.userConfig.uploadPackageInfoUrl === 'string' ? this.userConfig.uploadPackageInfoUrl : null;
-
-        let levelArr = ['info', 'warn', 'error', 'log'];
-        if (Object.prototype.toString.call(this.userConfig.logFilePath) === '[object Object]') {
-          for (const i in this.userConfig.logFilePath) {
-            if (Object.prototype.hasOwnProperty.call(this.userConfig.logFilePath, i) && i !== undefined) {
-              levelArr = levelArr.filter(item => item !== i.toLocaleLowerCase());
-              this.userConfig.loggerFilePath[i] = this.userConfig.logFilePath[i];
+        consoleFormat({
+          showBriefInfo,
+          customPrefixField,
+          useLogPrefixInConsole,
+        });
+        if (Object.prototype.toString.call(logFilePath) === '[object Object]') {
+          for (const i in logFilePath) {
+            if (Object.prototype.hasOwnProperty.call(logFilePath, i) && i !== undefined) {
+              this.userConfig.loggerFilePath[i] = logFilePath[i];
+              //检查并创建文件夹
+              mkdirSync(path.dirname(this.userConfig.loggerFilePath[i]));
             }
           }
           this.userConfig.enableMultipleLogFile = true;
         } else if (typeof this.userConfig.logFilePath === 'string') {
           this.userConfig.loggerFilePath = this.userConfig.logFilePath;
+          //检查并创建文件夹
+          mkdirSync(path.dirname(this.userConfig.loggerFilePath));
           this.userConfig.enableMultipleLogFile = false;
         } else if (typeof this.userConfig.logFilePath === 'undefined') {
           //use default value
@@ -254,37 +288,38 @@ function InitLogger(config = {} as IUserConfig) {
           throw new Error(`${name}: logFilePath must be an object or empty`);
         }
         this.userConfig.currentProjectLoggerFolder = path.parse(getLogPath.bind(this)('info')).dir;
-        if (this.userConfig.enableMultipleLogFile) {
-          levelArr.forEach(item => {
-            this.userConfig.loggerFilePath[item] =
-              this.userConfig.currentProjectLoggerFolder + '/' + item.toUpperCase() + '.log';
-          });
-        }
+        //@ts-ignore
         if (!global.beautyLogger) {
+          //@ts-ignore
           global.beautyLogger = {} as IBeautyLoggerInstance;
+          //@ts-ignore
           global.beautyLogger.currentProjectPath = currentProjectPath;
+          //@ts-ignore
           global.beautyLogger.userConfig = [];
         }
-        (global.beautyLogger.userConfig as IUserConfig[]).push(this.userConfig);
-        (global.beautyLogger.userConfig as IUserConfig[]).push(this.logQueue);
-        if (typeof this.userConfig.loggerFilePath === 'string') {
-          if (!fs.existsSync(this.userConfig.loggerFilePath)) {
-            fs.appendFileSync(this.userConfig.loggerFilePath, '');
+        //@ts-ignore
+        (global.beautyLogger.userConfig as IUserConfig[]).push({ userConfig: this.userConfig });
+        //@ts-ignore
+        (global.beautyLogger.userConfig as IUserConfig[]).push({ logQueue: this.logQueue });
+        const { loggerFilePath } = this.userConfig;
+        if (typeof loggerFilePath === 'string') {
+          if (!fs.existsSync(loggerFilePath)) {
+            fs.appendFileSync(loggerFilePath, '');
           }
         } else {
-          for (const i in this.userConfig.loggerFilePath) {
-            if (Object.prototype.hasOwnProperty.call(this.userConfig.loggerFilePath, i)) {
-              if (!fs.existsSync(this.userConfig.loggerFilePath[i])) {
-                fs.appendFileSync(this.userConfig.loggerFilePath[i], '');
+          for (const i in loggerFilePath) {
+            if (Object.prototype.hasOwnProperty.call(loggerFilePath, i)) {
+              if (!fs.existsSync(loggerFilePath[i])) {
+                fs.appendFileSync(loggerFilePath[i], '');
               }
             }
           }
         }
       } catch (err: any) {
-        dealWithError.bind(this)(err, 'InitLogger err');
+        dealWithError(err, 'InitLogger err');
       }
     }
-    consoleFormat.uploadPackageInfo(name, version, this.userConfig.uploadPackageInfoUrl || null);
+    uploadPackageInfo(name, version, this.userConfig.uploadPackageInfoUrl || null);
   } else {
     throw new Error(`${name}: config must be an object or empty`);
   }
@@ -292,11 +327,10 @@ function InitLogger(config = {} as IUserConfig) {
 
 function loggerInFile(level: ILevel, data = '') {
   if (isNodeJs) {
-    const productionModel = this.userConfig.productionModel;
-    const dataTypeWarn = this.userConfig.dataTypeWarn;
-    const onlyPrintInConsole = this.userConfig.onlyPrintInConsole;
+    const { productionModel, dataTypeWarn, onlyPrintInConsole, storeAsJSON, callback, customPrefixField } =
+      this.userConfig;
     if (!productionModel) {
-      //@ts-ignore
+      // eslint-disable-next-line no-console
       console[level].apply(null, Array.prototype.slice.call(arguments).slice(1));
     }
     if (level === 'debug' || onlyPrintInConsole) return Promise.resolve(data);
@@ -316,17 +350,32 @@ function loggerInFile(level: ILevel, data = '') {
         return dealWithItems(item, dataTypeWarn);
       });
       if (extend.length) {
-        extend = `  [ext] ${extend.join('')}`;
+        extend = `, ${(extend as string[]).join(', ')}`;
       }
     }
-    const content = `${dist} ${extend} \r\n`;
-    const filePath = consoleFormat.dealWithFilePath();
-    const hostname = consoleFormat.hostname;
-    const buffer = `[${consoleFormat.getTime()}] [${level.toUpperCase()}] [${hostname}] [${
-      process.pid
-    }] [${filePath}] ${content}`;
-    if (Object.prototype.toString.call(this.userConfig.callback) === '[object Function]') {
-      this.userConfig.callback(level, buffer, process.pid, filePath, content);
+    const content = `${dist}${extend}`;
+    const filePath = dealWithFilePath();
+    const time = getTime();
+    const levelUpperCase = level.toUpperCase();
+
+    const buffer = storeAsJSON
+      ? dealWithItems(
+          {
+            time,
+            level: levelUpperCase,
+            customPrefixField,
+            hostname,
+            pid: process.pid,
+            filePath,
+            content: Array.prototype.slice.call(arguments).slice(1),
+          },
+          dataTypeWarn,
+        ) + '\r\n'
+      : `[${time}] [${levelUpperCase}]${customPrefixField ? ` [${customPrefixField}] ` : ` `}[${hostname}] [${
+          process.pid
+        }] [${filePath}] ${content}\r\n`;
+    if (Object.prototype.toString.call(callback) === '[object Function]') {
+      callback(level, buffer, process.pid, filePath, content);
     }
     if (this.logQueue.length) {
       this.logQueue.push({
@@ -342,7 +391,7 @@ function loggerInFile(level: ILevel, data = '') {
     return logInFile.call(this, buffer, level);
   } else {
     const content = Array.prototype.slice.call(arguments).slice(1);
-    //@ts-ignore
+    // eslint-disable-next-line no-console
     console[level].apply(null, content);
     return Promise.resolve(content);
   }
@@ -350,16 +399,14 @@ function loggerInFile(level: ILevel, data = '') {
 
 (LOGGER_LEVEL as ILevel[]).forEach(function (level: ILevel) {
   InitLogger.prototype[level] = function (data: any, ...args: any) {
-    if (this && this.userConfig) {
-      if (this.userConfig.otherBeautyLoggerInstances && this.userConfig.otherBeautyLoggerInstances.length) {
-        this.userConfig.otherBeautyLoggerInstances.forEach((item: IBeautyLoggerInstance) => {
-          if (item && item.userConfig) {
-            if ((item.userConfig as IUserConfig).beautyLogger) {
-              item[level]([data, ...args]);
-            }
+    if (this && this.userConfig && Array.isArray(this.userConfig.otherBeautyLoggerInstances)) {
+      this.userConfig.otherBeautyLoggerInstances.forEach((item: IBeautyLoggerInstance) => {
+        if (item && item.userConfig) {
+          if ((item.userConfig as IUserConfig).beautyLogger) {
+            item[level]([data, ...args]);
           }
-        });
-      }
+        }
+      });
     }
     //@ts-ignore
     return loggerInFile.bind(this)(level, data, ...args);
@@ -408,16 +455,18 @@ InitLogger.executeCommand = ({
 
   run();
 
-  process.on('uncaughtException', err => {
+  process.on('uncaughtException', (err) => {
     logger.error('uncaughtException process', err.stack || err.toString());
     // process.exit(0);
   });
 
-  process.on('unhandledRejection', error => {
+  process.on('unhandledRejection', (error) => {
     logger.error('unhandledRejection process', error?.toString());
     // process.exit(0);
   });
 };
+
+InitLogger.consoleFormat = consoleFormat;
 
 // Export to popular environments boilerplate.
 if (typeof module !== 'undefined' && module.exports) {

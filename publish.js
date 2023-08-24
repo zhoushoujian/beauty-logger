@@ -5,7 +5,6 @@ const { version } = require('./package.json');
 
 consoleFormat();
 
-let cancelChangeNpmConfig = () => {};
 let useTaobaoMirror = false;
 
 function getNpmConfig() {
@@ -46,10 +45,6 @@ function executeCmd(cmd, logInfo) {
       console.log(`${logInfo} stdout: `, data);
       if (logInfo === 'changeNpmConfig' && !data.includes('registry.npmjs.org')) {
         useTaobaoMirror = true;
-        cancelChangeNpmConfig = () => {
-          shell.exec('npm config set registry=http://npm.kylin.shuyun.com/');
-          console.log('重新设置代理');
-        };
       }
     });
     child.stderr.on('data', function (data) {
@@ -84,6 +79,3 @@ getNpmConfig()
   .catch(err => {
     console.error('publish catch err', err);
   })
-  .finally(() => {
-    cancelChangeNpmConfig();
-  });
